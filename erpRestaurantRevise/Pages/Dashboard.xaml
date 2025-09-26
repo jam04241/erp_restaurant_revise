@@ -1,0 +1,34 @@
+﻿<Page x:Class="practice.Pages.Dashboard"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:practice.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="900"
+      Title="Dashboard">
+
+    <Grid Background="#FF051821" MaxHeight="900" MaxWidth="900">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Height="900" Width="900">
+            <Grid Margin="76,197,495,478">
+                <Image Source="/Assets/chartsample.jpg" HorizontalAlignment="Left" Height="177" VerticalAlignment="Top" Width="329" RenderTransformOrigin="0.506,0.584" Stretch="Fill"/>
+                <Label Content="Sales" HorizontalAlignment="Left" Margin="143,191,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15"/>
+            </Grid>
+            <Grid Margin="502,197,69,478">
+                <Image Source="/Assets/chartsample.jpg" HorizontalAlignment="Left" Height="177" VerticalAlignment="Top" Width="329" RenderTransformOrigin="0.506,0.584" Stretch="Fill"/>
+                <Label Content="Sales" HorizontalAlignment="Left" Margin="143,191,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15"/>
+            </Grid>
+            <Grid Margin="76,450,495,216">
+                <Image Source="/Assets/chartsample.jpg" HorizontalAlignment="Left" Height="177" VerticalAlignment="Top" Width="329" RenderTransformOrigin="0.506,0.584" Stretch="Fill"/>
+                <Label Content="Sales" HorizontalAlignment="Left" Margin="143,191,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15"/>
+            </Grid>
+            <Grid Margin="502,450,69,216">
+                <Image Source="/Assets/chartsample.jpg" HorizontalAlignment="Left" Height="177" VerticalAlignment="Top" Width="329" RenderTransformOrigin="0.506,0.584" Stretch="Fill"/>
+                <Label Content="Sales" HorizontalAlignment="Left" Margin="143,191,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

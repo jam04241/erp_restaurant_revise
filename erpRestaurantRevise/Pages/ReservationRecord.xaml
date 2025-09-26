@@ -1,0 +1,26 @@
+﻿<Page x:Class="practice.Pages.ReservationRecord"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:practice.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="900"
+      Title="ReservationRecord">
+
+    <Grid Background="#FF051821">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="700"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="1">
+            <StackPanel Background="#FF28666E" Height="600" Width="750">
+                <Label Content="Reservation Records" Margin="20,20,20,0" Foreground="White" FontSize="18"/>
+                <DataGrid Height="100" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="20,20,20,0"/>
+
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

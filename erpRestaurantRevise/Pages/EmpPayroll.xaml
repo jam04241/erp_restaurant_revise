@@ -1,0 +1,47 @@
+﻿<Page x:Class="practice.Pages.EmpPayroll"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:practice.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="900"
+      Title="EmpPayroll">
+
+    <Grid Background="#FF051821">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="700"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1" Width="900">
+            <Label Content="Payroll Employee" HorizontalAlignment="Left" Margin="42,0,0,0" VerticalAlignment="Top" Width="155" Foreground="White" FontSize="18" FontWeight="Bold"/>
+            <TextBox HorizontalAlignment="Left" Margin="468,36,0,0" TextWrapping="Wrap" Text="Name / Employee no." VerticalAlignment="Top" Width="230" Height="24"/>
+            <Button Content="Search" HorizontalAlignment="Left" Margin="712,36,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.114,0.125" Height="24" Width="96" Background="#FF7DD22C" Foreground="White"/>
+            <WrapPanel Margin="92,407,108,61" Width="700">
+                <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Height="232" MaxHeight="600" MaxWidth="600" Width="700"/>
+            </WrapPanel>
+            <Label Content="Payroll Transactions" HorizontalAlignment="Left" Margin="42,0,0,0" VerticalAlignment="Center" Width="178" Foreground="White" FontSize="18" FontWeight="Bold"/>
+            <Grid Margin="196,112,212,380" Background="#FF28666E">
+                <Label Content="Employee #" HorizontalAlignment="Left" Margin="7,17,0,0" VerticalAlignment="Top" Width="110" Foreground="White" FontSize="15" FontWeight="Bold"/>
+                <Label Content="Tatskie Stifin" HorizontalAlignment="Left" Margin="28,50,0,0" VerticalAlignment="Top" Width="154" Foreground="White" FontSize="18" FontWeight="Bold"/>
+                <TextBox HorizontalAlignment="Left" Margin="199,27,0,0" TextWrapping="Wrap" Text="Basic pay" VerticalAlignment="Top" Width="123" Height="24"/>
+                <TextBox HorizontalAlignment="Left" Margin="334,27,0,0" TextWrapping="Wrap" Text="Overtime pay" VerticalAlignment="Top" Width="123" Height="24"/>
+                <TextBox HorizontalAlignment="Left" Margin="199,72,0,0" TextWrapping="Wrap" Text="Deduction" VerticalAlignment="Top" Width="123" Height="24"/>
+                <TextBox HorizontalAlignment="Left" Margin="334,72,0,0" TextWrapping="Wrap" Text="Net pay" VerticalAlignment="Top" Width="123" Height="24"/>
+                <TextBox HorizontalAlignment="Left" Margin="334,114,0,0" TextWrapping="Wrap" Text="Name / Employee no." VerticalAlignment="Top" Width="123" Height="24"/>
+                <DatePicker x:Name="dateissueDatePicker" HorizontalAlignment="Left" Margin="199,114,0,0" VerticalAlignment="Top" Width="123"/>
+                <Button Content="Submit" HorizontalAlignment="Left" Margin="361,158,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.114,0.125" Height="24" Width="96" Background="#FFD22C2C" Foreground="White"/>
+
+            </Grid>
+            <ComboBox HorizontalAlignment="Left" Margin="672,364,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
+                <ComboBoxItem Content="Sort By:" IsEnabled="False" Visibility="Collapsed"/>
+                <ComboBoxItem x:Name="newestItem" Content="Newest"/>
+                <ComboBoxItem x:Name="pastweekItem" Content="Past Week"/>
+                <ComboBoxItem x:Name="pastmonthItem" Content="Past Month"/>
+                <ComboBoxItem x:Name="oldestItem" Content="Oldest"/>
+            </ComboBox>
+
+        </Grid>
+    </Grid>
+</Page>

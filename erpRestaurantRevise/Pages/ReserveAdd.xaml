@@ -1,0 +1,46 @@
+﻿<Page x:Class="practice.Pages.ReserveAdd"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:practice.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="900"
+      Title="ReserveAdd">
+
+    <Grid Background="#FF051821">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="700"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1" Margin="50,38,50,64" Background="#FF28666E">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="539*"/>
+                <ColumnDefinition Width="261*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Add Customer Reservation" HorizontalAlignment="Left" Margin="20,38,0,0" VerticalAlignment="Top" Width="246" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalContentAlignment="Center"/>
+            <Label Content="First Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="46,128,363,440"/>
+            <Button Content="Submit" Margin="76,508,66,54" Background="#FFCA0C0C" Foreground="White" Grid.Column="1" />
+            <TextBox x:Name="firstnameField" Height="30" Width="220" Margin="46,158,273,410"/>
+            <Label Content="MIddle Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="300,128,109,440"/>
+            <TextBox x:Name="firstnameField_Copy" Height="30" Width="220" Margin="300,158,19,410"/>
+            <Label Content="Last Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="11,128,120,440" Grid.Column="1"/>
+            <TextBox x:Name="firstnameField_Copy1" Height="30" Width="220" Margin="11,158,30,410" Grid.Column="1"/>
+            <Label Content="Email" FontSize="15" FontWeight="Bold" Foreground="White" Margin="46,208,363,360"/>
+            <TextBox x:Name="firstnameField_Copy2" Height="30" Width="220" Margin="46,238,273,330"/>
+            <Label Content="Contact No." FontSize="15" FontWeight="Bold" Foreground="White" Margin="300,208,109,360"/>
+            <TextBox x:Name="firstnameField_Copy3" Height="30" Width="220" Margin="300,238,19,330"/>
+            <Label Content="Date Reserve" FontSize="15" FontWeight="Bold" Foreground="White" Margin="46,384,363,184"/>
+            <TextBox x:Name="firstnameField_Copy4" Height="30" Width="220" Margin="46,414,273,154"/>
+            <Label Content="Time Reserve" FontSize="15" FontWeight="Bold" Foreground="White" Margin="300,384,109,184"/>
+            <TextBox x:Name="firstnameField_Copy5" Height="30" Width="220" Margin="300,414,19,154"/>
+            <TextBox x:Name="firstnameField_Copy7" Height="30" Margin="10,414,31,154" Grid.Column="1"/>
+            <Label Content="Reservation Details" HorizontalAlignment="Left" Margin="23,337,0,0" VerticalAlignment="Top" Width="176" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalContentAlignment="Center"/>
+            <Label Content="No. of Guest/s" FontSize="15" FontWeight="Bold" Foreground="White" Margin="10,384,121,184" Grid.Column="1"/>
+
+        </Grid>
+
+
+    </Grid>
+</Page>

@@ -1,0 +1,70 @@
+﻿<Page x:Class="practice.Pages.ReserveManage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:practice.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="900"
+      Title="ReserveManage">
+
+    <Grid Background="#FF051821">
+        <TextBox HorizontalAlignment="Left" Margin="68,128,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="209" Height="24"/>
+        <StackPanel Background="#FF1A4645" Margin="68,169,376,293">
+            <Rectangle Height="20"/>
+            <StackPanel Background="#FF328C86" Height="100" Width="350" HorizontalAlignment="Center">
+                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="White" Background="#FFCA0B0B" Content="Cancel"/>
+            </StackPanel>
+            <Rectangle Height="50"/>
+            <StackPanel Background="#FF328C86" Height="100" Width="350" HorizontalAlignment="Center">
+                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="White" Background="#FFCA0B0B" Content="Cancel"/>
+            </StackPanel>
+            <Rectangle Height="50"/>
+            <StackPanel Background="#FF328C86" Height="100" Width="350" HorizontalAlignment="Center">
+                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="White" Background="#FFCA0B0B" Content="Cancel"/>
+            </StackPanel>
+            <Rectangle Height="20"/>
+        </StackPanel>
+        <Grid Width="300" Margin="558,169,42,615" Background="#FF1A4645">
+            <Label Content="20/50" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="50" Width="144" Height="82"/>
+
+        </Grid>
+        <Grid Width="300" Margin="558,357,42,293" Background="#FF1A4645">
+            <WrapPanel Height="41" Width="268" Margin="16,74,16,135" Background="#FF328C86">
+                <TextBlock Width="20"/>
+                <Label Content="Harold Lubot" FontSize="14" Foreground="White" Margin="0,5,0,0" />
+                <TextBlock Width="20"/>
+                <Button Background="#FF7DD22C" Content="Confirm Reservation" Margin="0,5,0,0"/>
+            </WrapPanel>
+            <WrapPanel Height="41" Width="268" Margin="16,19,16,190" Background="#FF328C86">
+                <TextBlock Width="20"/>
+                <Label Content="Harold Lubot" FontSize="14" Foreground="White" Margin="0,5,0,0" />
+                <TextBlock Width="20"/>
+                <Button Background="#FF7DD22C" Content="Confirm Reservation" Margin="0,5,0,0"/>
+            </WrapPanel>
+            <WrapPanel Height="41" Width="268" Margin="16,132,16,77" Background="#FF328C86">
+                <TextBlock Width="20"/>
+                <Label Content="Harold Lubot" FontSize="14" Foreground="White" Margin="0,5,0,0" />
+                <TextBlock Width="20"/>
+                <Button Background="#FF7DD22C" Content="Confirm Reservation" Margin="0,5,0,0"/>
+            </WrapPanel>
+            <WrapPanel Height="41" Width="268" Margin="16,189,16,20" Background="#FF328C86">
+                <TextBlock Width="20"/>
+                <Label Content="Harold Lubot" FontSize="14" Foreground="White" Margin="0,5,0,0" />
+                <TextBlock Width="20"/>
+                <Button Background="#FF7DD22C" Content="Confirm Reservation" Margin="0,5,0,0"/>
+            </WrapPanel>
+
+        </Grid>
+        <Label Content="Available tables with Chair" HorizontalAlignment="Left" Margin="558,111,0,0" VerticalAlignment="Top" Foreground="White" FontSize="18" Width="223"/>
+        <Label Content="Upcoming Reservation" HorizontalAlignment="Left" Margin="557,301,0,0" VerticalAlignment="Top" Foreground="White" FontSize="18" Width="190"/>
+        <StackPanel Margin="74,715,36,49" Background="#FF1A4645">
+            <DataGrid Height="100" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="20,15,20,15"/>
+
+        </StackPanel>
+        <ComboBox Margin="336,652,468,224"/>
+        <TextBox HorizontalAlignment="Left" Margin="74,652,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="230" Height="24"/>
+        <Button Content="Add Table" HorizontalAlignment="Left" Margin="428,128,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.114,0.125" Height="24" Width="96" Background="#FF7DD22C" Foreground="Black"/>
+        <ComboBox Margin="304,128,500,748"/>
+    </Grid>
+</Page>

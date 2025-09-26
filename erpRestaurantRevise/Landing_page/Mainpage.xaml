@@ -1,0 +1,86 @@
+﻿<Window x:Class="practice.Landing_Page.Mainpage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:practice.Landing_Page"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="966" Width="1200"
+ >
+    <Grid Background='#FF051821' Height="950" Width="1200">
+
+        <!--DEFINE GRID COLUMNS-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" MaxWidth="300"/>
+            <ColumnDefinition Width="95*" MaxWidth="900"/>
+            <ColumnDefinition Width="806*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- CHILD OF GRID-->
+        <!--<Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="300"></RowDefinition>
+                <RowDefinition Height="300"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="700*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </Grid>-->
+
+        <!-- FIRST COLUMN FOR MENU DASHBOARD-->
+        <Grid Grid.Column="0" Background="#FF1A4645">
+
+            <StackPanel Grid.Column="0" Background="#FF1A4645">
+                <Rectangle Height="20"/>
+                <Image MaxHeight="200" Source="/Assets/Logo.png">
+
+                </Image>
+                <WrapPanel>
+                </WrapPanel>
+                <Button x:Name="DashboardBtn"  Content="Dashboard" Height="50" AutomationProperties.Name="dashboardBTN" HorizontalContentAlignment="Left" Padding="20,1,1,1" Background="#FF1A4645" Foreground="White" BorderBrush="#FF2B6B6A" FontSize="15" FontFamily="Segoe UI Variable Display" FontWeight="Bold" BorderThickness="0,0,0,0" Click="DashboardBtn_Click"/>
+                <Button x:Name="EmployeeBtn" Content="Employee" Height="50" AutomationProperties.Name="employeeBTN" HorizontalContentAlignment="Left" Padding="20,1,1,1" Background="#FF1A4645" Foreground="White" BorderBrush="#FF2B6B6A" FontSize="15" FontFamily="Segoe UI Variable Display" FontWeight="Bold" BorderThickness="0,0,0,0" Click="EmployeeBtn_Click"/>
+                <!--  Subclass for EmployeeBTN -->
+                <StackPanel x:Name="employeePanel" Visibility="Collapsed">
+                    <!--Visibility="Collapsed"-->
+                    <Button x:Name="empaddBtn" Content="Add Employee" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="empaddBtn_Click"/>
+                    <Button x:Name="empmanagedBtn" Content="Employee Records" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="empmanagedBtn_Click"/>
+                </StackPanel>
+                <Button x:Name="AttendanceBtn" Content="Attendance" Height="50" AutomationProperties.Name="dashboardBTN" HorizontalContentAlignment="Left" Padding="20,1,1,1" Foreground="White" Background="#FF1A4645" FontFamily="Segoe UI Variable Display" FontSize="15" FontWeight="Bold" BorderThickness="0,0,0,0" Click="AttendanceBtn_Click"/>
+                <!--  Subclass for reservationBTN -->
+                <StackPanel x:Name="attendancePanel" Visibility="Collapsed">
+                    <Button x:Name="createAttendanceBtn" Content="Create Attendance" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="createAttendanceBtn_Click" />
+                    <Button x:Name="attendanceRecordsBtn" Content="Attendances Records" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="attendanceRecordsBtn_Click" />
+                </StackPanel>
+                <Button x:Name="PayrollBtn" Content="Payroll" Height="50" AutomationProperties.Name="dashboardBTN" HorizontalContentAlignment="Left" Padding="20,1,1,1" Foreground="White" Background="#FF1A4645" FontFamily="Segoe UI Variable Display" FontSize="15" FontWeight="Bold" BorderThickness="0,0,0,0" Click="PayrollBtn_Click"/>
+                <StackPanel x:Name="payrollPanel" Visibility="Collapsed">
+                    <Button x:Name="payrollEmployeeSalaryBtn" Content="Employee Salary" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" />
+                    <Button x:Name="payrollSalaryRecordsBtn" Content="Salary Records" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" />
+                </StackPanel>
+                <Button x:Name="CustomermanageBtn" Content="Customer Manage" Height="50" AutomationProperties.Name="dashboardBTN" HorizontalContentAlignment="Left" Padding="20,1,1,1" Foreground="White" Background="#FF1A4645" FontFamily="Segoe UI Variable Display" FontSize="15" FontWeight="Bold" BorderThickness="0,0,0,0" Click="CustomerManageBtn_Click"/>
+                <StackPanel x:Name="customerManagePanel" Visibility="Visible">
+                    <Button x:Name="addCustomersBtn" Content="Add Customer" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="addCustomersBtn_Click"/>
+                    <Button x:Name="customerTableBtn" Content="Customer Tables" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="customerTableBtn_Click"/>
+                    <Button x:Name="customerReservationBtn" Content="Customer Reservation" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="customerReservationBtn_Click"/>
+                    <Button x:Name="reservationListBtn" Content="Reservation List" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="reservationListBtn_Click"/>
+                    <Button x:Name="reservationRecordsBtn" Content="Reservation Records" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="reservationRecordsBtn_Click"/>
+
+                </StackPanel>
+                <Rectangle Height="20"/>
+            </StackPanel>
+
+            <Button x:Name="LogoutBtn" Content="Logout" Height="45" AutomationProperties.Name="dashboardBTN" HorizontalContentAlignment="Center" Foreground="White" Background="#FFDC2E2E" FontFamily="Segoe UI Variable Display" FontSize="15" FontWeight="Bold" BorderThickness="0,0,0,0" Width="100" Margin="100,803,100,52"/>
+            <!-- Footer for Navigate Menu-->
+        </Grid>
+        <Grid Grid.Column="1" Height="900" Width="900" Grid.ColumnSpan="2" Margin="0,25,0,25">
+            <Frame Name="Navigate_Panel" NavigationUIVisibility="Hidden" Height="900" Width="900"/>
+
+        </Grid>
+
+    </Grid>
+    <!-- END -->
+
+</Window>
