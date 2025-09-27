@@ -18,9 +18,9 @@ namespace practice.Pages
     /// <summary>
     /// Interaction logic for EmpManage.xaml
     /// </summary>
-    public partial class EmpManage : Page
+    public partial class EmpSalaryRecord : Page
     {
-        public EmpManage()
+        public EmpSalaryRecord()
         {
             InitializeComponent();
         }

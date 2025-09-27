@@ -15,16 +15,14 @@
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1">
-            <Grid>
-
-            </Grid>
+            <Label Content="Employee Attendance Records" Width="750" Foreground="White" FontSize="20"/>
             <TextBlock Height="50"/>
 
             <WrapPanel Height="50" Width="750" HorizontalAlignment="Center" VerticalAlignment="Center">
 
                 <TextBox Width="200" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                 <TextBlock Width="30"/>
-                <ComboBox Width="100">
+                <ComboBox Width="100" SelectedIndex="0">
                     <ComboBoxItem Content="Newest"/>
                     <ComboBoxItem Content="Oldest"/>
 
@@ -36,7 +34,6 @@
 
             </WrapPanel>
             <StackPanel Width="750">
-                <Label Content="Employee Attendance Records" Foreground="White" FontSize="20"/>
                 <DataGrid Height="100" d:ItemsSource="{d:SampleData ItemCount=5}"/>
 
             </StackPanel>

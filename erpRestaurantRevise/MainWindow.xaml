@@ -5,14 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:erpRestaurantRevise"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="600">
+        Title="Restaurant" Height="800" Width="600"
+        WindowStartupLocation="CenterScreen">
     <Grid Background='#FF051821'>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="7*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="600"/>
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="500*"/>
@@ -23,7 +28,7 @@
                 <StackPanel>
                     <Rectangle x:Name="PaddingHeader" Height="50"></Rectangle>
                     <StackPanel Height="500">
-                        <Image MaxHeight="200" Source="/Assets/Logo.png"/>
+                        <Image MaxHeight="200" Source="/Assets/Daydongs.png"/>
                         <Rectangle Height="50"/>
                         <Label Content="Welcome Admin" HorizontalAlignment="Center" FontWeight="Bold" Foreground="White"/>
                         <Rectangle Height="20"/>

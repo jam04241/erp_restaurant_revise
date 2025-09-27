@@ -9,8 +9,8 @@
       Title="ReserveManage">
 
     <Grid Background="#FF051821">
-        <TextBox HorizontalAlignment="Left" Margin="68,128,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="209" Height="24"/>
-        <StackPanel Background="#FF1A4645" Margin="68,169,376,293">
+        <TextBox HorizontalAlignment="Left" Margin="74,128,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="209" Height="24"/>
+        <StackPanel Background="#FF1A4645" Margin="74,169,370,293">
             <Rectangle Height="20"/>
             <StackPanel Background="#FF328C86" Height="100" Width="350" HorizontalAlignment="Center">
                 <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="White" Background="#FFCA0B0B" Content="Cancel"/>
@@ -62,9 +62,15 @@
             <DataGrid Height="100" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="20,15,20,15"/>
 
         </StackPanel>
-        <ComboBox Margin="336,652,468,224"/>
+        <ComboBox Margin="336,652,468,224" SelectedIndex="0">
+            <ComboBoxItem Content="Newest"/>
+            <ComboBoxItem Content="Oldest"/>
+        </ComboBox>
         <TextBox HorizontalAlignment="Left" Margin="74,652,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="230" Height="24"/>
-        <Button Content="Add Table" HorizontalAlignment="Left" Margin="428,128,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.114,0.125" Height="24" Width="96" Background="#FF7DD22C" Foreground="Black"/>
-        <ComboBox Margin="304,128,500,748"/>
+        <Button Content="Add Table" HorizontalAlignment="Left" Margin="434,128,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.114,0.125" Height="24" Width="96" Background="#FF7DD22C" Foreground="Black"/>
+        <ComboBox Margin="310,128,494,748" SelectedIndex="0">
+            <ComboBoxItem Content="Newest"/>
+            <ComboBoxItem Content="Oldest"/>
+        </ComboBox>
     </Grid>
 </Page>

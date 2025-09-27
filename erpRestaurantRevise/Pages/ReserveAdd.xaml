@@ -19,25 +19,25 @@
                 <ColumnDefinition Width="539*"/>
                 <ColumnDefinition Width="261*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Add Customer Reservation" HorizontalAlignment="Left" Margin="20,38,0,0" VerticalAlignment="Top" Width="246" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalContentAlignment="Center"/>
-            <Label Content="First Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="46,128,363,440"/>
-            <Button Content="Submit" Margin="76,508,66,54" Background="#FFCA0C0C" Foreground="White" Grid.Column="1" />
+            <Label Content="Add Customer Reservation" HorizontalAlignment="Left" Margin="46,41,0,0" VerticalAlignment="Top" Width="259" Foreground="White" FontSize="18" HorizontalContentAlignment="Center" FontFamily="Sitka Small" FontStyle="Italic" FontWeight="Bold"/>
+            <Label Content="First Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="46,128,363,440" FontFamily="Sitka Small"/>
+            <Button Content="Submit" Margin="76,508,66,54" Background="#FFCA0C0C" Foreground="White" Grid.Column="1" FontFamily="Sitka Small" />
             <TextBox x:Name="firstnameField" Height="30" Width="220" Margin="46,158,273,410"/>
-            <Label Content="MIddle Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="300,128,109,440"/>
+            <Label Content="Middle Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="300,128,109,440" FontFamily="Sitka Small"/>
             <TextBox x:Name="firstnameField_Copy" Height="30" Width="220" Margin="300,158,19,410"/>
-            <Label Content="Last Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="11,128,120,440" Grid.Column="1"/>
+            <Label Content="Last Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="11,128,120,440" Grid.Column="1" FontFamily="Sitka Small"/>
             <TextBox x:Name="firstnameField_Copy1" Height="30" Width="220" Margin="11,158,30,410" Grid.Column="1"/>
-            <Label Content="Email" FontSize="15" FontWeight="Bold" Foreground="White" Margin="46,208,363,360"/>
+            <Label Content="Email" FontSize="15" FontWeight="Bold" Foreground="White" Margin="46,208,363,360" FontFamily="Sitka Small"/>
             <TextBox x:Name="firstnameField_Copy2" Height="30" Width="220" Margin="46,238,273,330"/>
             <Label Content="Contact No." FontSize="15" FontWeight="Bold" Foreground="White" Margin="300,208,109,360"/>
             <TextBox x:Name="firstnameField_Copy3" Height="30" Width="220" Margin="300,238,19,330"/>
-            <Label Content="Date Reserve" FontSize="15" FontWeight="Bold" Foreground="White" Margin="46,384,363,184"/>
+            <Label Content="Date Reserve" FontSize="15" FontWeight="Bold" Foreground="White" Margin="46,384,363,184" FontFamily="Sitka Small"/>
             <TextBox x:Name="firstnameField_Copy4" Height="30" Width="220" Margin="46,414,273,154"/>
-            <Label Content="Time Reserve" FontSize="15" FontWeight="Bold" Foreground="White" Margin="300,384,109,184"/>
+            <Label Content="Time Reserve" FontSize="15" FontWeight="Bold" Foreground="White" Margin="300,384,109,184" FontFamily="Sitka Small"/>
             <TextBox x:Name="firstnameField_Copy5" Height="30" Width="220" Margin="300,414,19,154"/>
             <TextBox x:Name="firstnameField_Copy7" Height="30" Margin="10,414,31,154" Grid.Column="1"/>
             <Label Content="Reservation Details" HorizontalAlignment="Left" Margin="23,337,0,0" VerticalAlignment="Top" Width="176" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalContentAlignment="Center"/>
-            <Label Content="No. of Guest/s" FontSize="15" FontWeight="Bold" Foreground="White" Margin="10,384,121,184" Grid.Column="1"/>
+            <Label Content="No. of Guest/s" FontSize="15" Foreground="White" Margin="10,384,121,184" Grid.Column="1" FontFamily="Sitka Small" FontWeight="Bold"/>
 
         </Grid>
 

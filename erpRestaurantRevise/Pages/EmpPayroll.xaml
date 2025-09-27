@@ -15,14 +15,14 @@
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="1" Width="900">
-            <Label Content="Payroll Employee" HorizontalAlignment="Left" Margin="42,0,0,0" VerticalAlignment="Top" Width="155" Foreground="White" FontSize="18" FontWeight="Bold"/>
-            <TextBox HorizontalAlignment="Left" Margin="468,36,0,0" TextWrapping="Wrap" Text="Name / Employee no." VerticalAlignment="Top" Width="230" Height="24"/>
-            <Button Content="Search" HorizontalAlignment="Left" Margin="712,36,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.114,0.125" Height="24" Width="96" Background="#FF7DD22C" Foreground="White"/>
-            <WrapPanel Margin="92,407,108,61" Width="700">
-                <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Height="232" MaxHeight="600" MaxWidth="600" Width="700"/>
-            </WrapPanel>
-            <Label Content="Payroll Transactions" HorizontalAlignment="Left" Margin="42,0,0,0" VerticalAlignment="Center" Width="178" Foreground="White" FontSize="18" FontWeight="Bold"/>
-            <Grid Margin="196,112,212,380" Background="#FF28666E">
+            <Label Content="Employee Details" HorizontalAlignment="Left" Margin="88,10,0,0" VerticalAlignment="Top" Width="155" Foreground="White" FontSize="18" FontWeight="Bold"/>
+            <TextBox HorizontalAlignment="Left" Margin="450,45,0,0" TextWrapping="Wrap" Text="Name / Employee no." VerticalAlignment="Top" Width="230" Height="24"/>
+            <Button Content="Search" HorizontalAlignment="Left" Margin="694,45,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.114,0.125" Height="24" Width="96" Background="#FF7DD22C" Foreground="White"/>
+            <StackPanel Margin="88,431,112,37" Width="700">
+                <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Height="232" MaxHeight="600"/>
+            </StackPanel>
+            <Label Content="Payroll Transactions" HorizontalAlignment="Left" Margin="88,350,0,0" VerticalAlignment="Top" Width="178" Foreground="White" FontSize="18" FontWeight="Bold"/>
+            <Grid Margin="145,108,168,384" Background="#FF28666E">
                 <Label Content="Employee #" HorizontalAlignment="Left" Margin="7,17,0,0" VerticalAlignment="Top" Width="110" Foreground="White" FontSize="15" FontWeight="Bold"/>
                 <Label Content="Tatskie Stifin" HorizontalAlignment="Left" Margin="28,50,0,0" VerticalAlignment="Top" Width="154" Foreground="White" FontSize="18" FontWeight="Bold"/>
                 <TextBox HorizontalAlignment="Left" Margin="199,27,0,0" TextWrapping="Wrap" Text="Basic pay" VerticalAlignment="Top" Width="123" Height="24"/>
@@ -34,7 +34,7 @@
                 <Button Content="Submit" HorizontalAlignment="Left" Margin="361,158,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.114,0.125" Height="24" Width="96" Background="#FFD22C2C" Foreground="White"/>
 
             </Grid>
-            <ComboBox HorizontalAlignment="Left" Margin="672,364,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
+            <ComboBox HorizontalAlignment="Left" Margin="670,390,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
                 <ComboBoxItem Content="Sort By:" IsEnabled="False" Visibility="Collapsed"/>
                 <ComboBoxItem x:Name="newestItem" Content="Newest"/>
                 <ComboBoxItem x:Name="pastweekItem" Content="Past Week"/>

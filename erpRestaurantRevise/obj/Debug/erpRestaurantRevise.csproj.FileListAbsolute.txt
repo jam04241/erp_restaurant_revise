@@ -5,7 +5,6 @@ J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\EmpAdd.g.cs
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\EmpAttendanceRecord.g.cs
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\EmpCreateAttendance.g.cs
-J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\EmpManage.g.cs
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\EmpPayroll.g.cs
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\EmpRecord.g.cs
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\ReservationList.g.cs
@@ -26,7 +25,6 @@ J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\EmpAdd.baml
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\EmpAttendanceRecord.baml
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\EmpCreateAttendance.baml
-J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\EmpManage.baml
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\EmpPayroll.baml
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\EmpRecord.baml
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\ReservationList.baml
@@ -41,3 +39,6 @@ J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\erpRestaurantRevise.csproj.CoreCompileInputs.cache
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\erpRestaurantRevise.exe
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\erpRestaurantRevise.pdb
+J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\erpRestaurantRevise.exe.config
+J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\EmpSalaryRecord.g.cs
+J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\PROJECTS\erpRestaurantRevise\erpRestaurantRevise\obj\Debug\Pages\EmpSalaryRecord.baml

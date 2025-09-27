@@ -1,4 +1,5 @@
-﻿using practice.Pages;
+﻿using erpRestaurantRevise;
+using practice.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,9 +39,9 @@ namespace practice.Landing_Page
 
             else
                 employeePanel.Visibility = Visibility.Collapsed;
-                payrollPanel.Visibility = Visibility.Collapsed;
-                customerManagePanel.Visibility = Visibility.Collapsed;
-                attendancePanel.Visibility = Visibility.Collapsed;
+            payrollPanel.Visibility = Visibility.Collapsed;
+            customerManagePanel.Visibility = Visibility.Collapsed;
+            attendancePanel.Visibility = Visibility.Collapsed;
         }
 
         private void CustomerManageBtn_Click(object sender, RoutedEventArgs e)
@@ -50,9 +51,9 @@ namespace practice.Landing_Page
 
             else
                 customerManagePanel.Visibility = Visibility.Collapsed;
-                payrollPanel.Visibility = Visibility.Collapsed;  
-                attendancePanel.Visibility = Visibility.Collapsed;
-                employeePanel.Visibility = Visibility.Collapsed;
+            payrollPanel.Visibility = Visibility.Collapsed;
+            attendancePanel.Visibility = Visibility.Collapsed;
+            employeePanel.Visibility = Visibility.Collapsed;
 
         }
 
@@ -63,9 +64,9 @@ namespace practice.Landing_Page
 
             else
                 payrollPanel.Visibility = Visibility.Collapsed;
-                attendancePanel.Visibility = Visibility.Collapsed;
-                customerManagePanel.Visibility = Visibility.Collapsed;
-                employeePanel.Visibility = Visibility.Collapsed;
+            attendancePanel.Visibility = Visibility.Collapsed;
+            customerManagePanel.Visibility = Visibility.Collapsed;
+            employeePanel.Visibility = Visibility.Collapsed;
         }
 
         private void AttendanceBtn_Click(object sender, RoutedEventArgs e)
@@ -75,9 +76,9 @@ namespace practice.Landing_Page
 
             else
                 attendancePanel.Visibility = Visibility.Collapsed;
-                payrollPanel.Visibility = Visibility.Collapsed;
-                customerManagePanel.Visibility = Visibility.Collapsed;
-                employeePanel.Visibility = Visibility.Collapsed;
+            payrollPanel.Visibility = Visibility.Collapsed;
+            customerManagePanel.Visibility = Visibility.Collapsed;
+            employeePanel.Visibility = Visibility.Collapsed;
         }
 
         private void empaddBtn_Click(object sender, RoutedEventArgs e)
@@ -112,7 +113,7 @@ namespace practice.Landing_Page
 
         private void addCustomersBtn_Click(object sender, RoutedEventArgs e)
         {
-           Navigate_Panel.Navigate(new ReserveAdd());
+            Navigate_Panel.Navigate(new ReserveAdd());
         }
 
         private void reservationListBtn_Click(object sender, RoutedEventArgs e)
@@ -123,6 +124,23 @@ namespace practice.Landing_Page
         private void reservationRecordsBtn_Click(object sender, RoutedEventArgs e)
         {
             Navigate_Panel.Navigate(new ReservationRecord());
+        }
+
+        private void payrollEmployeeSalaryBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Navigate_Panel.Navigate(new EmpPayroll());
+        }
+
+        private void payrollSalaryRecordsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Navigate_Panel.Navigate(new EmpSalaryRecord());
+        }
+
+        private void LogoutBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow loginform = new MainWindow();
+            loginform.Show();
+            this.Close();
         }
     }
 }
