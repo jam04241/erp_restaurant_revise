@@ -28,13 +28,13 @@
                 <StackPanel>
                     <Rectangle x:Name="PaddingHeader" Height="50"></Rectangle>
                     <StackPanel Height="500">
-                        <Image MaxHeight="200" Source="/Assets/Daydongs.png"/>
+                        <Image MaxHeight="200" Source="Assets/Daydongs.png"/>
                         <Rectangle Height="50"/>
                         <Label Content="Welcome Admin" HorizontalAlignment="Center" FontWeight="Bold" Foreground="White"/>
                         <Rectangle Height="20"/>
-                        <TextBox Width="200" Height="30" BorderThickness="0,0,0,0" AutomationProperties.Name="usernameField" />
+                        <TextBox Width="200" Height="30" BorderThickness="0,0,0,0" x:Name="usernameField" />
                         <Rectangle Height="20"/>
-                        <TextBox Width="200" Height="30" AutomationProperties.Name="passwordField"/>
+                        <PasswordBox Width="200" Height="30" x:Name="passwordField" PasswordChar="*"/>
                         <Rectangle Height="20"/>
                         <Button x:Name="LoginBtn" Width="200" Height="30" Content="Login" Background="#FF051821" Foreground="White" BorderBrush="#FF051821" Click="LoginBtn_Click"/>
                     </StackPanel>
