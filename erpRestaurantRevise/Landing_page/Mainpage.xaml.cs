@@ -1,4 +1,5 @@
 ﻿using erpRestaurantRevise;
+using erpRestaurantRevise.Pages;
 using practice.Pages;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using practice.Pages;
 
 namespace practice.Landing_Page
 {
@@ -24,12 +26,13 @@ namespace practice.Landing_Page
         public Mainpage()
         {
             InitializeComponent();
+            Navigate_Panel.Navigate(new Dashboard(Navigate_Panel));
         }
 
         private void DashboardBtn_Click(object sender, RoutedEventArgs e)
         {
 
-            Navigate_Panel.Navigate(new Dashboard());
+            Navigate_Panel.Navigate(new Dashboard(Navigate_Panel));
         }
 
         private void EmployeeBtn_Click(object sender, RoutedEventArgs e)
@@ -141,6 +144,11 @@ namespace practice.Landing_Page
             MainWindow loginform = new MainWindow();
             loginform.Show();
             this.Close();
+        }
+
+        private void attendanceReportsBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using erpRestaurantRevise;
+using erpRestaurantRevise.Pages;
+
 
 namespace practice.Pages
 {
@@ -20,9 +23,18 @@ namespace practice.Pages
     /// </summary>
     public partial class Dashboard : Page
     {
-        public Dashboard()
+        private Frame _navigate_Panel;
+
+        public Dashboard(Frame navigate_Panel)
         {
             InitializeComponent();
+
+            _navigate_Panel = navigate_Panel;
+        }
+
+        private void positionTableBtn_Click(object sender, RoutedEventArgs e)
+        {
+            _navigate_Panel.Navigate(new EmpAddPosition()); // from Landing_page
         }
     }
 }
