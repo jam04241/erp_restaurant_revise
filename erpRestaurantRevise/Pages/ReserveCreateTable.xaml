@@ -15,6 +15,8 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid Grid.RowSpan="2">
+            <Label Content="Create Table" Margin="70,78,0,0" VerticalAlignment="Top" Foreground="White" FontSize="18" FontFamily="Arial" HorizontalAlignment="Left" FontWeight="Bold" />
+
             <Label Content="Table. No" Margin="70,198,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="Arial" HorizontalAlignment="Left" />
             <Label Content="Station" HorizontalAlignment="Left" Margin="231,198,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="Arial" />
             <Label Content="Table Quantity" HorizontalAlignment="Left" Margin="371,198,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="Arial" />
@@ -25,12 +27,12 @@
 
 
             </StackPanel>
-            <Button Content="Create" HorizontalAlignment="Left" Margin="690,239,0,0" VerticalAlignment="Top" Foreground="Black" Background="#FFABFF00" FontWeight="Bold" FontSize="15" Width="122"/>
-            <TextBox HorizontalAlignment="Left" Margin="231,241,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="117" Height="22" VerticalContentAlignment="Center" FontSize="15"/>
-            <TextBox HorizontalAlignment="Left" Margin="70,241,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="117" Height="22" VerticalContentAlignment="Center" FontSize="15"/>
-            <TextBox HorizontalAlignment="Left" Margin="381,241,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="117" Height="22" VerticalContentAlignment="Center" FontSize="15"/>
-            <TextBox HorizontalAlignment="Left" Margin="533,241,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="118" Height="22" VerticalContentAlignment="Center" FontSize="15"/>
-
+            <Button Content="Create" HorizontalAlignment="Left" Margin="690,239,0,0" VerticalAlignment="Top" Foreground="Black" Background="#FFABFF00" FontWeight="Bold" FontSize="15" Width="122" Height="24"/>
+            <TextBox HorizontalAlignment="Left" Margin="231,241,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="117" Height="29" VerticalContentAlignment="Center" FontSize="15"/>
+            <TextBox HorizontalAlignment="Left" Margin="70,241,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="117" Height="29" VerticalContentAlignment="Center" FontSize="15"/>
+            <TextBox HorizontalAlignment="Left" Margin="381,241,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="117" Height="29" VerticalContentAlignment="Center" FontSize="15"/>
+            <TextBox HorizontalAlignment="Left" Margin="533,241,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="118" Height="29" VerticalContentAlignment="Center" FontSize="15"/>
+            
         </Grid>
 
     </Grid>

@@ -14,7 +14,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="53.311" MaxWidth="300"/>
             <ColumnDefinition Width="246.689"/>
-            <ColumnDefinition Width="95*" MaxWidth="900"/>
             <ColumnDefinition Width="806*"/>
         </Grid.ColumnDefinitions>
 
@@ -43,9 +42,11 @@
                 </Image>
                 <WrapPanel>
                 </WrapPanel>
-                <Rectangle Height="10" Fill="#FF28666E" />
-                <Button x:Name="DashboardBtn"  Content="Dashboard" Height="50" AutomationProperties.Name="dashboardBTN" HorizontalContentAlignment="Left" Padding="20,1,1,1" Background="#FF1A4645" Foreground="White" BorderBrush="#FF2B6B6A" FontSize="15" FontFamily="Segoe UI Variable Display" FontWeight="Bold" BorderThickness="0,0,0,0" Click="DashboardBtn_Click"/>
+                <Rectangle Height="2" Fill="#FF28666E" />
+                <Button x:Name="DashboardBtn"  Content="Dashboard" Height="50" AutomationProperties.Name="dashboardBTN" HorizontalContentAlignment="Left" Padding="0,0,11,0" Background="#FF1A4645" Foreground="White" BorderBrush="#FF2B6B6A" FontSize="15" FontFamily="Segoe UI Variable Display" FontWeight="Bold" BorderThickness="0,0,0,0" Click="DashboardBtn_Click" VerticalContentAlignment="Center"/>
+                <Rectangle Height="2" Fill="#FF28666E" />
                 <Button x:Name="EmployeeBtn" Content="Employee" Height="50" AutomationProperties.Name="employeeBTN" HorizontalContentAlignment="Left" Padding="20,1,1,1" Background="#FF1A4645" Foreground="White" BorderBrush="#FF2B6B6A" FontSize="15" FontFamily="Segoe UI Variable Display" FontWeight="Bold" BorderThickness="0,0,0,0" Click="EmployeeBtn_Click"/>
+                <Rectangle Height="2" Fill="#FF28666E" />
                 <!--  Subclass for EmployeeBTN -->
                 <StackPanel x:Name="employeePanel" Visibility="Collapsed">
                     <!--Visibility="Collapsed"-->
@@ -53,17 +54,21 @@
                     <Button x:Name="empmanagedBtn" Content="Employee Records" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="empmanagedBtn_Click"/>
                 </StackPanel>
                 <Button x:Name="AttendanceBtn" Content="Attendance" Height="50" AutomationProperties.Name="dashboardBTN" HorizontalContentAlignment="Left" Padding="20,1,1,1" Foreground="White" Background="#FF1A4645" FontFamily="Segoe UI Variable Display" FontSize="15" FontWeight="Bold" BorderThickness="0,0,0,0" Click="AttendanceBtn_Click"/>
+                <Rectangle Height="2" Fill="#FF28666E" />
                 <!--  Subclass for reservationBTN -->
                 <StackPanel x:Name="attendancePanel" Visibility="Collapsed">
-                    <Button x:Name="createAttendanceBtn" Content="Create Attendance" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="createAttendanceBtn_Click" />
-                    <Button x:Name="attendanceRecordsBtn" Content="Attendances Records" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="attendanceRecordsBtn_Click" />
+                    <Button x:Name="createAttendanceBtn" Content="Daily Attendance" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="createAttendanceBtn_Click" />
+                    <Button x:Name="attendanceRecordsBtn" Content="Attendance Records" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="attendanceRecordsBtn_Click" />
                 </StackPanel>
+                
                 <Button x:Name="PayrollBtn" Content="Payroll" Height="50" AutomationProperties.Name="dashboardBTN" HorizontalContentAlignment="Left" Padding="20,1,1,1" Foreground="White" Background="#FF1A4645" FontFamily="Segoe UI Variable Display" FontSize="15" FontWeight="Bold" BorderThickness="0,0,0,0" Click="PayrollBtn_Click"/>
+                <Rectangle Height="2" Fill="#FF28666E" />
                 <StackPanel x:Name="payrollPanel" Visibility="Collapsed">
                     <Button x:Name="payrollEmployeeSalaryBtn" Content="Employee Salary" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="payrollEmployeeSalaryBtn_Click" />
                     <Button x:Name="payrollSalaryRecordsBtn" Content="Salary Records" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="payrollSalaryRecordsBtn_Click" />
                 </StackPanel>
                 <Button x:Name="CustomermanageBtn" Content="Customer Manage" Height="50" AutomationProperties.Name="dashboardBTN" HorizontalContentAlignment="Left" Padding="20,1,1,1" Foreground="White" Background="#FF1A4645" FontFamily="Segoe UI Variable Display" FontSize="15" FontWeight="Bold" BorderThickness="0,0,0,0" Click="CustomerManageBtn_Click"/>
+                <Rectangle Height="2" Fill="#FF28666E" />
                 <StackPanel x:Name="customerManagePanel" Visibility="Collapsed">
                     <Button x:Name="addCustomersBtn" Content="Add Customer" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="addCustomersBtn_Click"/>
                     <Button x:Name="customerTableBtn" Content="Customer Tables" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="customerTableBtn_Click"/>

@@ -28,6 +28,7 @@
                     <RowDefinition Height="100"/>
 
                 </Grid.RowDefinitions>
+                <Label Content="Daily Employee Attendance" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="15" FontWeight="Bold"/>
                 <WrapPanel Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,15">
                    
                     <TextBox Width="250" Height="25"/>
@@ -39,63 +40,17 @@
                     </ComboBox>
                     
                 </WrapPanel>
-                
+
                 <StackPanel Grid.Row="1" Background="WhiteSmoke">
+                    <DataGrid Height="625" d:ItemsSource="{d:SampleData ItemCount=5}"/>
 
-                    <WrapPanel Height="50" Width="700" Background="#FF78828A" Margin="0
-                               ,20,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Width="90"></TextBlock>
-                        <Label x:Name="EmployeeLabel5" Content="Harold John Naquila" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="10,11,0,0"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <Label x:Name="RoleLabel5" Content="Cashier" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5,11,10,0"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <TextBox Text="8:00am" Margin="0,11,10,0" VerticalContentAlignment="Center"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <TextBox Text="5:00pm" Margin="0,11,10,0" VerticalContentAlignment="Center"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <TextBox Text="01/01/2025" Margin="0,11,10,0" VerticalContentAlignment="Center"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <Button x:Name="confirmBtn5" Content="Confirm" Margin="0,11,10,0" Padding="5,0,5,0" Background="#FF00E800"></Button>
-                        <TextBlock Width="100"></TextBlock>
-                    </WrapPanel>
 
-                    <WrapPanel Height="50" Width="700" Background="#FF78828A" Margin="0
-                               ,20,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Width="90"></TextBlock>
-                        <Label x:Name="EmployeeLabel1" Content="Harold John Naquila" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="10,11,0,0"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <Label x:Name="RoleLabel1" Content="Cashier" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5,11,10,0"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <TextBox Text="8:00am" Margin="0,11,10,0" VerticalContentAlignment="Center"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <TextBox Text="5:00pm" Margin="0,11,10,0" VerticalContentAlignment="Center"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <TextBox Text="01/01/2025" Margin="0,11,10,0" VerticalContentAlignment="Center"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <Button x:Name="confirmBtn1" Content="Confirm" Margin="0,11,10,0" Padding="5,0,5,0" Background="#FF00E800"></Button>
-                        <TextBlock Width="100"></TextBlock>
-                    </WrapPanel>
-
-                    <WrapPanel Height="50" Width="700" Background="#FF78828A" Margin="0
-                               ,20,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Width="90"></TextBlock>
-                        <Label x:Name="EmployeeLabel2" Content="Harold John Naquila" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="10,11,0,0"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <Label x:Name="RoleLabel2" Content="Cashier" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5,11,10,0"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <TextBox Text="8:00am" Margin="0,11,10,0" VerticalContentAlignment="Center"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <TextBox Text="5:00pm" Margin="0,11,10,0" VerticalContentAlignment="Center"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <TextBox Text="01/01/2025" Margin="0,11,10,0" VerticalContentAlignment="Center"/>
-                        <TextBlock Width="20"></TextBlock>
-                        <Button x:Name="confirmBtn2" Content="Confirm" Margin="0,11,10,0" Padding="5,0,5,0" Background="#FF00E800"></Button>
-                        <TextBlock Width="100"></TextBlock>
-                    </WrapPanel>
                 </StackPanel>
+                
             </Grid>
 
         </Grid>
+        
 
 
     </Grid>

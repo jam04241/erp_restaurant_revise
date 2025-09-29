@@ -2,7 +2,8 @@
 using System;
 using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
+//using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
@@ -11,9 +12,13 @@ namespace erpRestaurantRevise
 {
     public partial class MainWindow : Window
     {
+
+        private connDB db = new connDB();
+
         public MainWindow()
         {
             InitializeComponent();
+           
         }
 
         // 🔹 Hash password with SHA256 (same as stored in DB)
@@ -28,11 +33,11 @@ namespace erpRestaurantRevise
         // 🔹 Validate login from DB
         private bool Login(string email, string password)
         {
-            string connectionString = ConfigurationManager
-                                        .ConnectionStrings["MyDbConnection"]
-                                        .ConnectionString;
+            //string connectionString = ConfigurationManager
+            //                            .ConnectionStrings["MyDbConnection"]
+            //                            .ConnectionString;
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
 

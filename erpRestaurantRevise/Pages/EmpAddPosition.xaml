@@ -1,0 +1,55 @@
+﻿<Page x:Class="erpRestaurantRevise.Pages.EmpAddPosition"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:erpRestaurantRevise.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="900"
+      Title="EmpAddPosition">
+
+    <Grid Background="#FF051821">
+        <StackPanel Margin="0,104,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="676">
+
+            <WrapPanel>
+                <Label Content="Position Name" Width="120" Foreground="White"/>
+                <TextBlock Width="20"/>
+                <Label Content="Base Salary" Width="120" Foreground="White"/>
+                <TextBlock Width="20"/>
+                <Label Content="Position Name" Width="120" Foreground="White"/>
+            </WrapPanel>
+
+            <WrapPanel>
+                <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" Height="25"/>
+                <TextBlock Width="20"/>
+                <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" Height="25"/>
+                <TextBlock Width="20"/>
+                <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" Height="25"/>
+            </WrapPanel>
+
+            <TextBlock Height="20"/>
+
+            <WrapPanel>
+                <Label Content="Overtime Rate" Width="120" Foreground="White"/>
+                <TextBlock Width="20"/>
+            </WrapPanel>
+
+            <WrapPanel>
+                <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" Height="25"/>
+                <TextBlock Width="20"/>
+            </WrapPanel>
+
+            <TextBlock Height="20"/>
+
+            <WrapPanel HorizontalAlignment="Right">
+                <Button Content="Create" Foreground="Black" Background="#FF79D620" Width="100" Height="24" BorderThickness="0,0,0,0"/>
+
+            </WrapPanel>
+
+        </StackPanel>
+        <StackPanel Height="500" Margin="112,296,112,104">
+            <DataGrid Height="500" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+
+        </StackPanel>
+    </Grid>
+</Page>

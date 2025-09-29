@@ -28,13 +28,15 @@
 
                 </ComboBox>
                 <TextBlock Width="300"/>
-                <Button Width="120" Content="Create Attendance">
+                <!-- <Button Width="120" Content="Create Attendance"/> -->
 
-                </Button>
+
 
             </WrapPanel>
-            <StackPanel Width="750">
-                <DataGrid Height="100" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+            <StackPanel Width="750" Height="500">
+                <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Height="500"/>
+
+
 
             </StackPanel>
 

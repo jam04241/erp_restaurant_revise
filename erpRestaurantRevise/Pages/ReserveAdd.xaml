@@ -21,7 +21,7 @@
             </Grid.ColumnDefinitions>
             <Label Content="Add Customer Reservation" HorizontalAlignment="Left" Margin="46,41,0,0" VerticalAlignment="Top" Width="259" Foreground="White" FontSize="18" HorizontalContentAlignment="Center" FontFamily="Sitka Small" FontStyle="Italic" FontWeight="Bold"/>
             <Label Content="First Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="46,128,363,440" FontFamily="Sitka Small"/>
-            <Button Content="Submit" Margin="76,508,66,54" Background="#FFCA0C0C" Foreground="White" Grid.Column="1" FontFamily="Sitka Small" />
+            <Button x:Name="submitBtn" Content="Submit" Margin="76,508,66,54" Background="#FFCA0C0C" Foreground="White" Grid.Column="1" FontFamily="Sitka Small" Click="submitBtn_Click" />
             <TextBox x:Name="firstnameField" Height="30" Width="220" Margin="46,158,273,410"/>
             <Label Content="Middle Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="300,128,109,440" FontFamily="Sitka Small"/>
             <TextBox x:Name="firstnameField_Copy" Height="30" Width="220" Margin="300,158,19,410"/>

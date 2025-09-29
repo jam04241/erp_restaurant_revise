@@ -204,6 +204,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="connDB.cs" />
     <Compile Include="Landing_page\Mainpage.xaml.cs">
       <DependentUpon>Mainpage.xaml</DependentUpon>
     </Compile>
@@ -219,9 +220,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\EmpAddPosition.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\EmpAttendanceRecord.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\EmpAttendanceReports.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\EmpCreateAttendance.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -271,8 +280,14 @@
     <Compile Include="Pages\EmpAdd.xaml.cs">
       <DependentUpon>EmpAdd.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\EmpAddPosition.xaml.cs">
+      <DependentUpon>EmpAddPosition.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\EmpAttendanceRecord.xaml.cs">
       <DependentUpon>EmpAttendanceRecord.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\EmpAttendanceReports.xaml.cs">
+      <DependentUpon>EmpAttendanceReports.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\EmpCreateAttendance.xaml.cs">
       <DependentUpon>EmpCreateAttendance.xaml</DependentUpon>

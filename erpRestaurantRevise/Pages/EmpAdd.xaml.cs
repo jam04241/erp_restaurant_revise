@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using erpRestaurantRevise;
+
 
 namespace practice.Pages
 {
     public partial class EmpAdd : Page
     {
-        private string connectionString =
-            System.Configuration.ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString;
+        private connDB db = new connDB();
 
         public EmpAdd()
         {
@@ -23,7 +24,7 @@ namespace practice.Pages
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlConnection con = db.GetConnection())
                 {
                     con.Open();
                     string query = "SELECT positionID, position FROM EmployeePosition";
@@ -71,7 +72,7 @@ namespace practice.Pages
                     passwordHash = sha256.ComputeHash(Encoding.UTF8.GetBytes(defaultPassword));
                 }
 
-                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlConnection con = db.GetConnection())
                 {
                     con.Open();
 

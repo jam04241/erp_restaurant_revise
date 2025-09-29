@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using erpRestaurantRevise;
 
 namespace practice.Pages
 {
     public partial class EmpRecord : Page
     {
-        private string connectionString =
-            System.Configuration.ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString;
+        private connDB db = new connDB();
 
         private List<EmployeeRecord> allEmployees = new List<EmployeeRecord>();
 
@@ -27,7 +27,7 @@ namespace practice.Pages
             {
                 allEmployees.Clear();
 
-                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlConnection con = db.GetConnection())
                 {
                     con.Open();
                     string query = @"SELECT e.employeeID, e.firstName, e.middleName, e.lastName, e.sex,
@@ -68,7 +68,7 @@ namespace practice.Pages
             var positions = new List<string>();
             try
             {
-                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlConnection con = db.GetConnection())
                 {
                     con.Open();
                     string query = "SELECT position FROM EmployeePosition";
@@ -129,7 +129,7 @@ namespace practice.Pages
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlConnection con = db.GetConnection())
                 {
                     con.Open();
                     string query = @"UPDATE Employee 
@@ -162,7 +162,7 @@ namespace practice.Pages
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlConnection con = db.GetConnection())
                 {
                     con.Open();
                     string query = "DELETE FROM Employee WHERE employeeID = @ID";

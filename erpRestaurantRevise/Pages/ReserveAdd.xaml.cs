@@ -1,5 +1,7 @@
-﻿using System;
+﻿using erpRestaurantRevise;
+using System;
 using System.Collections.Generic;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,11 +22,28 @@ namespace practice.Pages
     /// </summary>
     public partial class ReserveAdd : Page
     {
+        private connDB db = new connDB();
+
         public ReserveAdd()
         {
             InitializeComponent();
 
-          
+        }
+
+        private void submitBtn_Click(object sender, RoutedEventArgs e)
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                try
+                {
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+
+            }
         }
     }
 }

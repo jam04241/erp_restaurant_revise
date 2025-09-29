@@ -13,21 +13,20 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Height="900" Width="900">
-            <Grid Margin="76,197,495,478">
-                <Image Source="/Assets/chartsample.jpg" HorizontalAlignment="Left" Height="177" VerticalAlignment="Top" Width="329" RenderTransformOrigin="0.506,0.584" Stretch="Fill"/>
-                <Label Content="Sales" HorizontalAlignment="Left" Margin="143,191,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15"/>
+            <Grid Margin="42,99,621,576">
+                <Button Content="Employee" HorizontalAlignment="Center" Margin="0,185,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15" Background="{x:Null}" BorderBrush="{x:Null}"/>
             </Grid>
-            <Grid Margin="502,197,69,478">
-                <Image Source="/Assets/chartsample.jpg" HorizontalAlignment="Left" Height="177" VerticalAlignment="Top" Width="329" RenderTransformOrigin="0.506,0.584" Stretch="Fill"/>
-                <Label Content="Sales" HorizontalAlignment="Left" Margin="143,191,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15"/>
+            <Grid Margin="336,99,328,576">
+                <Button Content="Reservation" HorizontalAlignment="Center" Margin="0,185,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15" BorderBrush="{x:Null}" Background="{x:Null}"/>
             </Grid>
-            <Grid Margin="76,450,495,216">
-                <Image Source="/Assets/chartsample.jpg" HorizontalAlignment="Left" Height="177" VerticalAlignment="Top" Width="329" RenderTransformOrigin="0.506,0.584" Stretch="Fill"/>
-                <Label Content="Sales" HorizontalAlignment="Left" Margin="143,191,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15"/>
+            <Grid Margin="588,90,65,576">
+                <Button Content="Attendance" HorizontalAlignment="Center" Margin="0,194,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15" Background="{x:Null}" BorderBrush="{x:Null}"/>
             </Grid>
-            <Grid Margin="502,450,69,216">
-                <Image Source="/Assets/chartsample.jpg" HorizontalAlignment="Left" Height="177" VerticalAlignment="Top" Width="329" RenderTransformOrigin="0.506,0.584" Stretch="Fill"/>
-                <Label Content="Sales" HorizontalAlignment="Left" Margin="143,191,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15"/>
+            <Grid Margin="62,352,569,314">
+                <Button Content="Payroll Annual Salary" HorizontalAlignment="Left" Margin="59,194,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15" Background="{x:Null}" BorderBrush="{x:Null}"/>
+            </Grid>
+            <Grid Margin="336,352,295,314">
+                <Button x:Name="positionTableBtn" Content="Position Table" HorizontalAlignment="Left" Margin="59,194,0,0" VerticalAlignment="Top" FontSize="15" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="positionTableBtn_Click"/>
             </Grid>
         </Grid>
     </Grid>
