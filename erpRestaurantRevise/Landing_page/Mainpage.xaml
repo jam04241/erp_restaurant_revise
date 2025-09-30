@@ -56,7 +56,7 @@
                 <Button x:Name="AttendanceBtn" Content="Attendance" Height="50" AutomationProperties.Name="dashboardBTN" HorizontalContentAlignment="Left" Padding="20,1,1,1" Foreground="White" Background="#FF1A4645" FontFamily="Segoe UI Variable Display" FontSize="15" FontWeight="Bold" BorderThickness="0,0,0,0" Click="AttendanceBtn_Click"/>
                 <Rectangle Height="2" Fill="#FF28666E" />
                 <!--  Subclass for reservationBTN -->
-                <StackPanel x:Name="attendancePanel" Visibility="Collapsed">
+                <StackPanel x:Name="attendancePanel" Visibility="Visible">
                     <Button x:Name="createAttendanceBtn" Content="Daily Attendance" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="createAttendanceBtn_Click" />
                     <Button x:Name="attendanceRecordsBtn" Content="Attendance Records" Height="50" AutomationProperties.Name="dashboardBTN" Padding="40,1,1,1" HorizontalContentAlignment="Left" Background="#FF1A3C45" Foreground="White" FontFamily="Segoe UI Variable Display" FontSize="15" BorderThickness="0,0,0,0" Click="attendanceRecordsBtn_Click" />
                 </StackPanel>

@@ -7,41 +7,66 @@
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="900"
       Title="EmpAttendanceRecord">
-
-    <Grid Background='#FF051821'>
+    <Grid Background="#FF051821">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="700"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="840"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="1">
-            <Label Content="Employee Attendance Records" Width="750" Foreground="White" FontSize="20"/>
-            <TextBlock Height="50"/>
 
-            <WrapPanel Height="50" Width="750" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="700"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
 
-                <TextBox Width="200" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <TextBlock Width="30"/>
-                <ComboBox Width="100" SelectedIndex="0">
-                    <ComboBoxItem Content="Newest"/>
-                    <ComboBoxItem Content="Oldest"/>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="625"/>
+                    <RowDefinition Height="100"/>
+                </Grid.RowDefinitions>
+                <Label Content="Employee Attendance Records" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="15" FontWeight="Bold"/>
+                <WrapPanel Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,15">
 
-                </ComboBox>
-                <TextBlock Width="300"/>
-                <!-- <Button Width="120" Content="Create Attendance"/> -->
+                    <TextBox Width="250" Height="25"/>
+                    <TextBlock Width="20"></TextBlock>
+                    <ComboBox Width="90">
+                        <ComboBoxItem Content="Newest"/>
+                        <ComboBoxItem Content="Oldest"/>
+                    </ComboBox>
 
+                </WrapPanel>
 
+                <StackPanel Grid.Row="1" Background="WhiteSmoke">
+                    <DataGrid x:Name="attendanceDataGrid"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        IsReadOnly="True"  RowHeight="36"
+                        ItemsSource="{Binding}" Height="500">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="EmployeeID" IsReadOnly="True" Binding="{Binding employeeID}" Width="90"/>
+                            <DataGridTextColumn Header="FullName" IsReadOnly="True" Binding="{Binding FullName}" Width="2*"/>
+                            <DataGridTextColumn Header="Time In (HH:mm)" Binding="{Binding timeIn}" Width="120" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Time Out (HH:mm)" Binding="{Binding timeOut}" Width="120" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Hours Worked" IsReadOnly="True" Binding="{Binding hourWorked}" Width="100"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding status}" Width="*" IsReadOnly="True"/>
 
-            </WrapPanel>
-            <StackPanel Width="750" Height="500">
-                <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Height="500"/>
-
-
-
-            </StackPanel>
-
-        </StackPanel>
-
+                            <DataGridTemplateColumn Header="Action" Width="110">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Button Content="Edit" Padding="10,2" Click="EditRow_Click"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                        
+                    </DataGrid>
+                </StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
-    </Page>
-
+</Page>

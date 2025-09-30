@@ -24,12 +24,12 @@ namespace practice.Pages
         {
             try
             {
-                using (SqlConnection con = db.GetConnection())
+                using (SqlConnection conn = db.GetConnection())
                 {
-                    con.Open();
+                    conn.Open();
                     string query = "SELECT positionID, position FROM EmployeePosition";
 
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         var positions = new List<Position>();
@@ -72,15 +72,15 @@ namespace practice.Pages
                     passwordHash = sha256.ComputeHash(Encoding.UTF8.GetBytes(defaultPassword));
                 }
 
-                using (SqlConnection con = db.GetConnection())
+                using (SqlConnection conn = db.GetConnection())
                 {
-                    con.Open();
+                    conn.Open();
 
                     string query = @"INSERT INTO Employee
                             (firstName, middleName, lastName, contact, status, sex, cityProvince, barangay, street, email, positionID, passwordHash)
                              VALUES (@firstName, @middleName, @lastName, @contactNo, @status, @sex, @cityProvince, @barangay, @street, @email, @positionID, @passwordHash)";
 
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@firstName", firstnameField.Text.Trim());
                         cmd.Parameters.AddWithValue("@middleName", middlenameField.Text.Trim());
