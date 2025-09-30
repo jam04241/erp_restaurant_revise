@@ -1,36 +1,37 @@
-﻿using System;
+﻿using erpRestaurantRevise;
+using erpRestaurantRevise.Pages;
+using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel; // Add this
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Microsoft.Data.SqlClient;
-using erpRestaurantRevise;
+
 namespace practice.Pages
 {
-    public partial class EmpAttendanceRecord : Page
-    {
-        private connDB db = new connDB();
+        public partial class EmpAttendanceRecord : Page
+        {
+            private connDB db = new connDB();
+            
+        private AttendanceRecord selectedRecord = null;
+
+
 
         // 1. Data Model Class (Matches the columns returned by the JOIN query)
-        public class AttendanceRecord
-        {
-            public int employeeID { get; set; }
-            public string FullName { get; set; }
-            public TimeSpan timeIn { get; set; }
-            public TimeSpan timeOut { get; set; }
-            public TimeSpan hourWorked { get; set; }
-            public string status { get; set; }
 
-            // We need a unique key from the attendance table for WHERE clause in UPDATE
-            // We'll select it in the query but not display it in the DataGrid for simplicity.
-            public int attendanceID { get; set; }
-        }
 
-        public EmpAttendanceRecord()
-        {
-            InitializeComponent();
-            LoadAttendanceData();
+        // Declare attendanceData here
+        private ObservableCollection<AttendanceRecord> attendanceData = new ObservableCollection<AttendanceRecord>();
+
+            public EmpAttendanceRecord()
+            {
+                InitializeComponent();
+
+                attendanceRecordDataGrid.ItemsSource = attendanceData;
+
+                LoadAttendanceData();
         }
 
         // 2. Data Loading Method (Uses the revised JOIN query)
@@ -38,102 +39,156 @@ namespace practice.Pages
         {
             try
             {
-                // SQL query to join Attendance and Employee tables and combine names
-                string selectQuery = @"
-                    SELECT TOP (1000)
-                        A.[attendanceID], -- Hidden but needed for update
-                        A.[employeeID],
-                        CONCAT(E.[firstName], ' ', E.[middleName], ' ', E.[lastName]) AS [FullName],
-                        A.[timeIn],
-                        A.[timeOut],
-                        A.[hourWorked],
-                        A.[status]
-                    FROM
-                        [erp_restaurant].[dbo].[Attendance] AS A
-                    INNER JOIN
-                        [erp_restaurant].[dbo].[Employee] AS E
-                        ON A.[employeeID] = E.[employeeID]
-                    ORDER BY
-                        A.[dateToday] DESC, A.[timeIn] DESC;";
+                attendanceData.Clear(); // Clears old rows
 
-                using (SqlConnection connection = db.GetConnection())
+                using (SqlConnection conn = db.GetConnection())
                 {
-                    connection.Open();
-                    SqlCommand command = new SqlCommand(selectQuery, connection);
-                    SqlDataReader reader = command.ExecuteReader();
+                    conn.Open();
 
-                    var records = new List<AttendanceRecord>();
-                    while (reader.Read())
+                    string selectQuery = @"
+            SELECT
+                A.employeeID,
+                CONCAT_WS(' ', E.firstName, E.middleName, E.lastName) AS FullName, 
+                A.timeIn,
+                A.timeOut,
+                A.hourWorked,
+                A.status,
+                A.dateToday
+            FROM
+                Attendance A
+            INNER JOIN
+                erp_restaurant.dbo.Employee AS E
+                ON A.employeeID = E.employeeID
+            ORDER BY
+                A.dateToday DESC, 
+                A.timeIn DESC;";
+
+                    using (SqlCommand cmd = new SqlCommand(selectQuery, conn))
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        // Helper function to safely read DATETIME and return a TimeSpan
-                        Func<int, TimeSpan> GetTimeSpanFromDb = (index) =>
+                        while (reader.Read())
                         {
-                            if (reader.IsDBNull(index))
+                            AttendanceRecord row = new AttendanceRecord
                             {
-                                return TimeSpan.Zero;
-                            }
-                            // 🚨 CORRECTION: Read as DateTime and use the TimeOfDay property 🚨
-                            return reader.GetDateTime(index).TimeOfDay;
-                        };
+                                employeeID = reader.IsDBNull(reader.GetOrdinal("employeeID")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("employeeID")),
+                                fullName = reader.GetString(reader.GetOrdinal("FullName")),
+                                timeIn = reader.IsDBNull(reader.GetOrdinal("timeIn")) ? (TimeSpan?)null : reader.GetTimeSpan(reader.GetOrdinal("timeIn")),
+                                timeOut = reader.IsDBNull(reader.GetOrdinal("timeOut")) ? (TimeSpan?)null : reader.GetTimeSpan(reader.GetOrdinal("timeOut")),
+                                hourWorked = reader.IsDBNull(reader.GetOrdinal("hourWorked")) ? (decimal?)null : reader.GetDecimal(reader.GetOrdinal("hourWorked")),
+                                status = reader.GetString(reader.GetOrdinal("status")),
+                            };
+                            attendanceData.Add(row); // This automatically updates the DataGrid
+                        }
 
-                        records.Add(new AttendanceRecord
-                        {
-                            attendanceID = reader.GetInt32(0),
-                            employeeID = reader.GetInt32(1),
-                            FullName = reader.GetString(2).Trim(),
-
-                            // Use the corrected reader method (index 3, 4, 5)
-                            timeIn = GetTimeSpanFromDb(3),
-                            timeOut = GetTimeSpanFromDb(4),
-                            hourWorked = GetTimeSpanFromDb(5),
-
-                            status = reader.IsDBNull(6) ? "Absent" : reader.GetString(6)
-                        });
                     }
-
-                    attendanceDataGrid.ItemsSource = records;
                 }
             }
             catch (Exception ex)
             {
-                // This messagebox will now show the SPECIFIC error if the above fix doesn't work.
-                MessageBox.Show($"Failed to load attendance data: {ex.Message}", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error loading data: {ex.Message}");
             }
         }
 
+        // MODAL FOR EDIT ATTENDANCE
+        private AttendanceRecord ShowEditAttendanceDialog(AttendanceRecord record)
+        {
+            // Create the modal window
+            Window editWindow = new Window
+            {
+                Title = "Edit Attendance",
+                Width = 300,
+                Height = 200,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                ResizeMode = ResizeMode.NoResize
+            };
+
+            StackPanel panel = new StackPanel { Margin = new Thickness(10) };
+
+            // Time In / Time Out TextBoxes
+            TextBox timeInBox = new TextBox
+            {
+                Text = record.timeIn?.ToString() ?? "",
+                Margin = new Thickness(0, 5, 0, 5)
+            };
+
+            TextBox timeOutBox = new TextBox
+            {
+                Text = record.timeOut?.ToString() ?? "",
+                Margin = new Thickness(0, 5, 0, 5)
+            };
+
+            // Add labels + textboxes to panel
+            panel.Children.Add(new TextBlock { Text = "Time In (HH:mm:ss):" });
+            panel.Children.Add(timeInBox);
+            panel.Children.Add(new TextBlock { Text = "Time Out (HH:mm:ss):" });
+            panel.Children.Add(timeOutBox);
+
+            // Save button
+            Button saveButton = new Button
+            {
+                Content = "Save",
+                Width = 80,
+                Margin = new Thickness(0, 10, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Right,
+                IsDefault = true
+            };
+
+            saveButton.Click += (s, e) =>
+            {
+                // Optional: validate format
+                if (!TimeSpan.TryParse(timeInBox.Text, out TimeSpan _))
+                {
+                    MessageBox.Show("Invalid Time In format.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (!TimeSpan.TryParse(timeOutBox.Text, out TimeSpan _))
+                {
+                    MessageBox.Show("Invalid Time Out format.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                editWindow.DialogResult = true;
+                editWindow.Close();
+            };
+
+            panel.Children.Add(saveButton);
+            editWindow.Content = panel;
+
+            // Show modal
+            if (editWindow.ShowDialog() == true)
+            {
+                // Return a new AttendanceRecord with updated values
+                record.timeIn = TimeSpan.Parse(timeInBox.Text);
+                record.timeOut = TimeSpan.Parse(timeOutBox.Text);
+                return record;
+            }
+
+            return null;
+        }
+
         // 3. Edit Button Click Handler: Enables editing on the row and changes the button to "Save"
+
         private void EditRow_Click(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
             if (btn == null) return;
 
-            // Find the row container
             DataGridRow row = FindVisualParent<DataGridRow>(btn);
             if (row == null) return;
 
-            // Set the row to be in editing mode
-            // We'll rely on the DataGrid's general editing logic when CommitEdit is called.
+            AttendanceRecord record = row.Item as AttendanceRecord;
+            if (record == null) return;
 
-            // To make the TimeIn/TimeOut/Status columns specifically editable, 
-            // we override the DataGrid's IsReadOnly=True state by setting the column's IsReadOnly property to False.
+            AttendanceRecord updated = ShowEditAttendanceDialog(record);
+            if (updated != null)
+            {
+                // Update DB
+                UpdateAttendanceRecord(updated);
 
-            // Index 2 is Time In, Index 3 is Time Out, Index 4 is Status 
-            // NOTE: The indices MUST match the XAML DataGrid.Columns order (0=EmpID, 1=FullName, 2=TimeIn, 3=TimeOut, 4=HourWorked, 5=Status, 6=Action)
-
-            // We only want TimeIn, TimeOut, and Status to be editable (indices 2, 3, 5)
-            attendanceDataGrid.Columns[2].IsReadOnly = false; // Time In
-            attendanceDataGrid.Columns[3].IsReadOnly = false; // Time Out
-            attendanceDataGrid.Columns[5].IsReadOnly = false; // Status
-
-            // Force the row into editing mode and select the first editable cell (Time In)
-            attendanceDataGrid.CurrentCell = new DataGridCellInfo(row.Item, attendanceDataGrid.Columns[2]);
-            attendanceDataGrid.BeginEdit();
-
-
-            // Change the button text/action
-            btn.Content = "Save";
-            btn.Click -= EditRow_Click;
-            btn.Click += SaveRow_Click;
+                // Refresh DataGrid
+                attendanceRecordDataGrid.Items.Refresh();
+            }
         }
 
         // 4. Save Button Click Handler: Commits changes and updates the database
@@ -146,10 +201,10 @@ namespace practice.Pages
             if (row == null) return;
 
             // The correct method to commit all edits in WPF DataGrid
-            if (attendanceDataGrid.CommitEdit())
+            if (attendanceRecordDataGrid.CommitEdit())
             {
                 // Stop editing the current row
-                attendanceDataGrid.CurrentItem = null;
+                attendanceRecordDataGrid.CurrentItem = null;
 
                 // Get the modified item
                 AttendanceRecord record = row.Item as AttendanceRecord;
@@ -160,9 +215,9 @@ namespace practice.Pages
             }
 
             // After saving, revert the columns back to read-only
-            attendanceDataGrid.Columns[2].IsReadOnly = true; // Time In
-            attendanceDataGrid.Columns[3].IsReadOnly = true; // Time Out
-            attendanceDataGrid.Columns[5].IsReadOnly = true; // Status
+            attendanceRecordDataGrid.Columns[2].IsReadOnly = true; // Time In
+            attendanceRecordDataGrid.Columns[3].IsReadOnly = true; // Time Out
+            attendanceRecordDataGrid.Columns[5].IsReadOnly = true; // Status
 
             // Change the button back to "Edit"
             btn.Content = "Edit";
@@ -179,7 +234,7 @@ namespace practice.Pages
                 SET [timeIn] = @TimeIn,
                     [timeOut] = @TimeOut,
                     [status] = @Status
-                WHERE [attendanceID] = @AttendanceID";
+                WHERE [employeeID] = @employeeID";
 
             try
             {
@@ -192,7 +247,7 @@ namespace practice.Pages
                         command.Parameters.AddWithValue("@TimeIn", record.timeIn);
                         command.Parameters.AddWithValue("@TimeOut", record.timeOut);
                         command.Parameters.AddWithValue("@Status", record.status);
-                        command.Parameters.AddWithValue("@AttendanceID", record.attendanceID);
+                        //command.Parameters.AddWithValue("@AttendanceID", record.attendanceID);
 
                         int rowsAffected = command.ExecuteNonQuery();
                         if (rowsAffected > 0)
@@ -228,5 +283,6 @@ namespace practice.Pages
             }
             return parent as T;
         }
+
     }
 }

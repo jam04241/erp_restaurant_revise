@@ -284,6 +284,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pages\AttendanceRecord.cs" />
     <Compile Include="Pages\AttendanceRow.cs" />
     <Compile Include="Pages\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>

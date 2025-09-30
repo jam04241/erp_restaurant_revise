@@ -36,7 +36,7 @@
 
             </WrapPanel>
             <StackPanel Width="750" Height="500">
-                <DataGrid x:Name="attendanceDataGrid"
+                <DataGrid x:Name="dailyAttendanceDataGrid"
                   Grid.Row="1"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
@@ -49,6 +49,7 @@
                         <DataGridTextColumn Header="Position" Binding="{Binding PositionName}" IsReadOnly="True" Width="*"/>
                         <DataGridTextColumn Header="Time In (HH:mm)" Binding="{Binding TimeIn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:hh\\:mm}}" Width="120" x:Name="timeInBox"/>
                         <DataGridTextColumn Header="Time Out (HH:mm)" Binding="{Binding TimeOut, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:hh\\:mm}}" Width="120" x:Name="timeOutBox"/>
+
                         <DataGridTemplateColumn Header="Action" Width="110">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

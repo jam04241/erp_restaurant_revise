@@ -40,33 +40,34 @@
                 </WrapPanel>
 
                 <StackPanel Grid.Row="1" Background="WhiteSmoke">
-                    <DataGrid x:Name="attendanceDataGrid"
-                        AutoGenerateColumns="False"
-                        CanUserAddRows="False"
-                        IsReadOnly="True"  RowHeight="36"
-                        ItemsSource="{Binding}" Height="500">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="EmployeeID" IsReadOnly="True" Binding="{Binding employeeID}" Width="90"/>
-                            <DataGridTextColumn Header="FullName" IsReadOnly="True" Binding="{Binding FullName}" Width="2*"/>
-                            <DataGridTextColumn Header="Time In (HH:mm)" Binding="{Binding timeIn}" Width="120" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Time Out (HH:mm)" Binding="{Binding timeOut}" Width="120" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Hours Worked" IsReadOnly="True" Binding="{Binding hourWorked}" Width="100"/>
-                            <DataGridTextColumn Header="Status" Binding="{Binding status}" Width="*" IsReadOnly="True"/>
+                        <DataGrid x:Name="attendanceRecordDataGrid"
+                            CanUserAddRows="False"
+                            AutoGenerateColumns="False"
+                            IsReadOnly="True" RowHeight="36"
+                            ItemsSource="{Binding}" Height="500">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="EmployeeID" IsReadOnly="True" Binding="{Binding employeeID}" Width="90"/>
+                                <DataGridTextColumn Header="FullName" IsReadOnly="True" Binding="{Binding fullName}" Width="2*"/>
+                                <DataGridTextColumn Header="Time In (HH:mm)" Binding="{Binding timeIn}" Width="120" IsReadOnly="False"/>
+                                <DataGridTextColumn Header="Time Out (HH:mm)" Binding="{Binding timeOut}" Width="120" IsReadOnly="False"/>
+                                <DataGridTextColumn Header="Hours Worked" IsReadOnly="True" Binding="{Binding hourWorked}" Width="100"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding status}" Width="*" IsReadOnly="False"/>
 
                             <DataGridTemplateColumn Header="Action" Width="110">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <Button Content="Edit" Padding="10,2" Click="EditRow_Click"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                        
-                    </DataGrid>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Button Content="Edit" Padding="10,2" Click="EditRow_Click"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+
+                        </DataGrid>
                 </StackPanel>
             </Grid>
+
         </Grid>
     </Grid>
 </Page>

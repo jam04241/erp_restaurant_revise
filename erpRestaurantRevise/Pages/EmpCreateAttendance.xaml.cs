@@ -20,7 +20,7 @@ namespace practice.Pages
             InitializeComponent();
             LoadEmployees();
             LoadPositions();
-            attendanceDataGrid.ItemsSource = attendanceRows;
+            dailyAttendanceDataGrid.ItemsSource = attendanceRows;
         }
 
         private void LoadEmployees()
@@ -103,7 +103,7 @@ namespace practice.Pages
 
         private void SubmitRow_Click(object sender, RoutedEventArgs e)
         {
-            if (attendanceDataGrid.SelectedItem is AttendanceRow row)
+            if (dailyAttendanceDataGrid.SelectedItem is AttendanceRow row)
             {
                 var result = MessageBox.Show(
                     $"Are you sure you want to submit attendance for {row.FullName}?",
@@ -168,7 +168,7 @@ namespace practice.Pages
                     row.TimeOut = TimeSpan.Zero;
 
                     // Refresh DataGrid so cleared values appear
-                    attendanceDataGrid.Items.Refresh();
+                   dailyAttendanceDataGrid.Items.Refresh();
                 }
                 catch (Exception ex)
                 {
