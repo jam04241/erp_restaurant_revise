@@ -1,25 +1,13 @@
 ﻿using erpRestaurantRevise;
-using System;
-using System.Collections.Generic;
+using erpRestaurantRevise.Models;
+using erpRestaurantRevise.Services;
 using Microsoft.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace practice.Pages
 {
-    /// <summary>
-    /// Interaction logic for ReserveAdd.xaml
-    /// </summary>
     public partial class ReserveAdd : Page
     {
         private connDB db = new connDB();
@@ -27,22 +15,72 @@ namespace practice.Pages
         public ReserveAdd()
         {
             InitializeComponent();
-
         }
 
         private void submitBtn_Click(object sender, RoutedEventArgs e)
         {
-            using (SqlConnection conn = db.GetConnection())
+            // Basic validation
+            if (string.IsNullOrWhiteSpace(firstnameField.Text) ||
+                string.IsNullOrWhiteSpace(middlenameField.Text) ||
+                string.IsNullOrWhiteSpace(lastnameField.Text) ||
+                string.IsNullOrWhiteSpace(emailField.Text) ||
+                string.IsNullOrWhiteSpace(contactField.Text) ||
+                string.IsNullOrWhiteSpace(dateField.Text) ||
+                string.IsNullOrWhiteSpace(timeField.Text) ||
+                string.IsNullOrWhiteSpace(guestField.Text))
             {
-                try
-                {
+                MessageBox.Show("Please fill in all required fields.");
+                return;
+            }
 
-                }
-                catch (Exception ex)
+            try
+            {
+                // Create customer object
+                Customer customer = new Customer
                 {
-                    MessageBox.Show("Error: " + ex.Message);
-                }
+                    FirstName = firstnameField.Text.Trim(),
+                    MiddleName = middlenameField.Text.Trim(),
+                    LastName = lastnameField.Text.Trim(),
+                    Email = emailField.Text.Trim(),
+                    Contact = contactField.Text.Trim()
+                };
 
+                // Create reservation object
+                Reservation reservation = new Reservation
+                {
+                    EmployeeID = CurrentSession.EmployeeID, // use logged-in employee
+                    DateReserve = DateTime.Parse(dateField.Text.Trim()),
+                    TimeReserve = TimeSpan.Parse(timeField.Text.Trim()),
+                    Status = "Pending",
+                    Table = null // table assignment will be done in ReserveManage
+                };
+
+                // Save to database
+                ReservationService.AddReservation(customer, reservation);
+
+                MessageBox.Show("Customer and reservation added successfully!");
+
+                // Clear form
+                firstnameField.Clear();
+                middlenameField.Clear();
+                lastnameField.Clear();
+                emailField.Clear();
+                contactField.Clear();
+                dateField.Clear();
+                timeField.Clear();
+                guestField.Clear();
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Invalid date or time format.");
+            }
+            catch (SqlException sqlEx)
+            {
+                MessageBox.Show("Database error: " + sqlEx.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
     }

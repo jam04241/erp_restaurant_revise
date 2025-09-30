@@ -308,3 +308,7 @@ J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\tisting\erpRestaurantRevise\obj\Debug\Pages\EmpAttendanceReports.baml
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\tisting\erpRestaurantRevise\obj\Debug\Pages\EmpAddPosition.g.cs
 J:\admin\Documents\Andrei_Property\College\3rd Year\1st Sem\1st term\IT13L(2818)\tisting\erpRestaurantRevise\obj\Debug\Pages\EmpAddPosition.baml
+C:\Users\Admin\Source\Repos\erp_restaurant_revise\erpRestaurantRevise\obj\Debug\Pages\EmpAddPosition.g.cs
+C:\Users\Admin\Source\Repos\erp_restaurant_revise\erpRestaurantRevise\obj\Debug\Pages\EmpAttendanceReports.g.cs
+C:\Users\Admin\Source\Repos\erp_restaurant_revise\erpRestaurantRevise\obj\Debug\Pages\EmpAddPosition.baml
+C:\Users\Admin\Source\Repos\erp_restaurant_revise\erpRestaurantRevise\obj\Debug\Pages\EmpAttendanceReports.baml

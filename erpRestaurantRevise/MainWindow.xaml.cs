@@ -1,9 +1,7 @@
-﻿using practice.Landing_Page;
-using System;
-using System.Configuration;
-using System.Data;
+﻿using erpRestaurantRevise.Models;
 using Microsoft.Data.SqlClient;
-//using System.Data.SqlClient;
+using practice.Landing_Page;
+using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
@@ -12,16 +10,13 @@ namespace erpRestaurantRevise
 {
     public partial class MainWindow : Window
     {
-
         private connDB db = new connDB();
 
         public MainWindow()
         {
             InitializeComponent();
-           
         }
 
-        // 🔹 Hash password with SHA256 (same as stored in DB)
         private byte[] HashPassword(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
@@ -30,35 +25,42 @@ namespace erpRestaurantRevise
             }
         }
 
-        // 🔹 Validate login from DB
         private bool Login(string email, string password)
         {
-            //string connectionString = ConfigurationManager
-            //                            .ConnectionStrings["MyDbConnection"]
-            //                            .ConnectionString;
-
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
 
                 string query = @"
-                    SELECT COUNT(*) 
-                    FROM Employee 
+                    SELECT employeeID, firstName, lastName
+                    FROM Employee
                     WHERE email = @Email 
                       AND passwordHash = @PasswordHash";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.Add("@Email", SqlDbType.NVarChar).Value = email;
-                    cmd.Parameters.Add("@PasswordHash", SqlDbType.VarBinary, 32).Value = HashPassword(password);
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.Add("@PasswordHash", System.Data.SqlDbType.VarBinary, 32).Value = HashPassword(password);
 
-                    int count = (int)cmd.ExecuteScalar();
-                    return count > 0;
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            // Store employee info in session
+                            CurrentSession.EmployeeID = Convert.ToInt32(reader["employeeID"]);
+                            CurrentSession.EmployeeName = reader["firstName"].ToString() + " " + reader["lastName"].ToString();
+                            CurrentSession.Email = email;
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
                 }
             }
         }
 
-        // 🔹 Login button click
         private void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
             string email = usernameField.Text.Trim();
@@ -70,11 +72,10 @@ namespace erpRestaurantRevise
                                 MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            else
-            {
-                MessageBox.Show("Login successful!", "Success",
-                                MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+
+            MessageBox.Show($"Login successful! Welcome {CurrentSession.EmployeeName}", "Success",
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+
             Mainpage main = new Mainpage();
             main.Show();
             this.Close();

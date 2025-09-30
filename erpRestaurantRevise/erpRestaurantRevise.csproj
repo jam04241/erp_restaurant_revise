@@ -192,6 +192,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Session.cs" />
+    <Compile Include="Services\ReservationService.cs" />
     <Page Include="Landing_page\Mainpage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -274,6 +276,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\ReservationModels.cs" />
     <Compile Include="Pages\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
