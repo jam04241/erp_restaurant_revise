@@ -32,7 +32,7 @@
 
                     <TextBox Width="250" Height="25"/>
                     <TextBlock Width="20"></TextBlock>
-                    <ComboBox Width="90">
+                    <ComboBox Width="90" SelectedIndex="0">
                         <ComboBoxItem Content="Newest"/>
                         <ComboBoxItem Content="Oldest"/>
                     </ComboBox>
@@ -42,22 +42,25 @@
                 <StackPanel Grid.Row="1" Background="WhiteSmoke">
                         <DataGrid x:Name="attendanceRecordDataGrid"
                             CanUserAddRows="False"
+                            CanUserResizeColumns="False"
+                            CanUserReorderColumns="False"
                             AutoGenerateColumns="False"
                             IsReadOnly="True" RowHeight="36"
                             ItemsSource="{Binding}" Height="500">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="EmployeeID" IsReadOnly="True" Binding="{Binding employeeID}" Width="90"/>
-                                <DataGridTextColumn Header="FullName" IsReadOnly="True" Binding="{Binding fullName}" Width="2*"/>
-                                <DataGridTextColumn Header="Time In (HH:mm)" Binding="{Binding timeIn}" Width="120" IsReadOnly="False"/>
-                                <DataGridTextColumn Header="Time Out (HH:mm)" Binding="{Binding timeOut}" Width="120" IsReadOnly="False"/>
-                                <DataGridTextColumn Header="Hours Worked" IsReadOnly="True" Binding="{Binding hourWorked}" Width="100"/>
-                                <DataGridTextColumn Header="Status" Binding="{Binding status}" Width="*" IsReadOnly="False"/>
+                                <DataGridTextColumn Header="AttendanceID" Binding="{Binding attendanceID}" Visibility="Collapsed"/>
+                                <DataGridTextColumn Header="EmployeeID" IsReadOnly="True" Binding="{Binding employeeID}" Width="Auto"/>
+                                <DataGridTextColumn Header="FullName" IsReadOnly="True" Binding="{Binding fullName}" Width="Auto"/>
+                                <DataGridTextColumn Header="Time In (HH:mm)" Binding="{Binding timeIn}" Width="Auto" IsReadOnly="False"/>
+                                <DataGridTextColumn Header="Time Out (HH:mm)" Binding="{Binding timeOut}" Width="Auto" IsReadOnly="False"/>
+                                <DataGridTextColumn Header="Hours Worked" IsReadOnly="True" Binding="{Binding hourWorked}" Width="Auto"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding status}" Width="Auto" IsReadOnly="False"/>
 
-                            <DataGridTemplateColumn Header="Action" Width="110">
+                            <DataGridTemplateColumn Header="Action" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <Button Content="Edit" Padding="10,2" Click="EditRow_Click"/>
+                                                <Button Content="Edit" Padding="10,2" Click="EditRow_Click" Width="50" Height="20" Background="#FFECD01B"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>

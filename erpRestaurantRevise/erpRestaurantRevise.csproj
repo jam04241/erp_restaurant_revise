@@ -313,6 +313,7 @@
     <Compile Include="Pages\EmpRecord.xaml.cs">
       <DependentUpon>EmpRecord.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\PositionModel.cs" />
     <Compile Include="Pages\ReservationList.xaml.cs">
       <DependentUpon>ReservationList.xaml</DependentUpon>
     </Compile>

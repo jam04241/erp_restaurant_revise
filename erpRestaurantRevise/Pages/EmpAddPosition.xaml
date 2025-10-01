@@ -9,22 +9,22 @@
       Title="EmpAddPosition">
 
     <Grid Background="#FF051821">
-        <StackPanel Margin="0,104,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="676">
+        <StackPanel Margin="0,113,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="676">
 
             <WrapPanel>
                 <Label Content="Position Name" Width="120" Foreground="White"/>
                 <TextBlock Width="20"/>
                 <Label Content="Base Salary" Width="120" Foreground="White"/>
                 <TextBlock Width="20"/>
-                <Label Content="Position Name" Width="120" Foreground="White"/>
+                <Label Content="Hourly Rate" Width="120" Foreground="White"/>
             </WrapPanel>
 
             <WrapPanel>
-                <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" Height="25"/>
+                <TextBox x:Name="txtPositionName" TextWrapping="Wrap" Width="120" Height="25"/>
                 <TextBlock Width="20"/>
-                <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" Height="25"/>
+                <TextBox x:Name="txtBaseSalary" TextWrapping="Wrap" Width="120" Height="25"/>
                 <TextBlock Width="20"/>
-                <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" Height="25"/>
+                <TextBox x:Name="txtHourlyRate" TextWrapping="Wrap" Width="120" Height="25"/>
             </WrapPanel>
 
             <TextBlock Height="20"/>
@@ -35,21 +35,57 @@
             </WrapPanel>
 
             <WrapPanel>
-                <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" Height="25"/>
+                <TextBox x:Name="txtOvertime" TextWrapping="Wrap" Width="120" Height="25"/>
                 <TextBlock Width="20"/>
             </WrapPanel>
 
             <TextBlock Height="20"/>
 
             <WrapPanel HorizontalAlignment="Right">
-                <Button Content="Create" Foreground="Black" Background="#FF79D620" Width="100" Height="24" BorderThickness="0,0,0,0"/>
-
+                <Button x:Name="CreateBtn" Content="Create" Foreground="Black" 
+            Background="#FF79D620" Width="100" Height="24" BorderThickness="0"
+            Click="CreateBtn_Click"/>
             </WrapPanel>
+
 
         </StackPanel>
         <StackPanel Height="500" Margin="112,296,112,104">
-            <DataGrid Height="500" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+            <DataGrid x:Name="positionDataGrid"
+          AutoGenerateColumns="False"
+          CanUserAddRows="False"
+          IsReadOnly="True"
+          RowHeight="36"
+          HeadersVisibility="Column"
+          GridLinesVisibility="All"
+          >
+
+                <DataGrid.Columns>
+                    <!-- Hidden ID -->
+                    <DataGridTextColumn Header="ID" Binding="{Binding PositionID}" Visibility="Collapsed"/>
+
+                    <DataGridTextColumn Header="Position" Binding="{Binding Position}" Width="*"/>
+                    <DataGridTextColumn Header="Base Salary" Binding="{Binding BaseSalary}" Width="*"/>
+                    <DataGridTextColumn Header="Hourly Rate" Binding="{Binding HourlyRate}" Width="*"/>
+                    <DataGridTextColumn Header="Overtime Rate" Binding="{Binding Overtime}" Width="*"/>
+
+                    <!-- Actions -->
+                    <DataGridTemplateColumn Header="Actions" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="Edit" Margin="2" Padding="6,2"
+                                Click="EditPosition_Click"/>
+                                    <Button Content="Delete" Margin="2" Padding="6,2"
+                                Click="DeletePosition_Click"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
 
         </StackPanel>
+        <Label Content="Employee Add Position" HorizontalAlignment="Left" Margin="112,40,0,0" VerticalAlignment="Top" Width="207" FontSize="18" FontWeight="Bold" Foreground="White"/>
     </Grid>
 </Page>

@@ -103,6 +103,10 @@ namespace practice.Pages
 
         private void SubmitRow_Click(object sender, RoutedEventArgs e)
         {
+            // ✅ Commit any in-progress edits first
+            dailyAttendanceDataGrid.CommitEdit(DataGridEditingUnit.Row, true);
+            dailyAttendanceDataGrid.CommitEdit();
+
             if (dailyAttendanceDataGrid.SelectedItem is AttendanceRow row)
             {
                 var result = MessageBox.Show(
@@ -113,7 +117,6 @@ namespace practice.Pages
 
                 if (result != MessageBoxResult.Yes)
                     return;
-                    
 
                 try
                 {
@@ -122,39 +125,38 @@ namespace practice.Pages
                         conn.Open();
 
                         // Default status
-                        string attendanceStatus = "PResent";
+                        string attendanceStatus = "absent"; // ⚠ must match DB constraint ('absent','late','leave','present')
 
-                        //if (row.TimeIn.HasValue)
-                        //{
-                        //    attendanceStatus = row.TimeIn.Value <= new TimeSpan(8, 0, 0) ? "On Time" : "Late";
-                        //}
-                        //else
-                        //{
-                        //    attendanceStatus = "Absent";
-                        //}
+                        if (row.TimeIn.HasValue)
+                        {
+                            attendanceStatus = row.TimeIn.Value <= new TimeSpan(8, 0, 0) ? "present" : "late";
+                        }
+                        else
+                        {
+                            attendanceStatus = "absent";
+                        }
 
+                        // ✅ Hours worked calculation
+                        decimal? hoursWorked = null;
+                        if (row.TimeIn.HasValue && row.TimeOut.HasValue)
+                        {
+                            TimeSpan worked = row.TimeOut.Value - row.TimeIn.Value;
+                            hoursWorked = (decimal)worked.TotalHours;
+                        }
 
                         string query = @"
-                    INSERT INTO Attendance (employeeID, dateToday, timeIn, timeOut, status)
-                    VALUES (@employeeID, @dateToday, @timeIn, @timeOut, @status)";
+                    INSERT INTO Attendance (employeeID, dateToday, timeIn, timeOut, hourWorked, status)
+                    VALUES (@employeeID, @dateToday, @timeIn, @timeOut, @hourWorked, @status)";
 
                         using (SqlCommand cmd = new SqlCommand(query, conn))
                         {
                             cmd.Parameters.AddWithValue("@employeeID", row.EmployeeID);
                             cmd.Parameters.AddWithValue("@dateToday", DateTime.Today);
 
-                            // TimeIn can be NULL
-                            if (!row.TimeIn.HasValue)
-                                cmd.Parameters.AddWithValue("@timeIn", DBNull.Value);
-                            else
-                                cmd.Parameters.AddWithValue("@timeIn", row.TimeIn.Value);
+                            cmd.Parameters.AddWithValue("@timeIn", row.TimeIn.HasValue ? (object)row.TimeIn.Value : DBNull.Value);
+                            cmd.Parameters.AddWithValue("@timeOut", row.TimeOut.HasValue ? (object)row.TimeOut.Value : DBNull.Value);
 
-                            // TimeOut can be NULL
-                            if (!row.TimeOut.HasValue)
-                                cmd.Parameters.AddWithValue("@timeOut", DBNull.Value);
-                            else
-                                cmd.Parameters.AddWithValue("@timeOut", row.TimeOut.Value);
-
+                            cmd.Parameters.AddWithValue("@hourWorked", hoursWorked.HasValue ? (object)hoursWorked.Value : DBNull.Value);
                             cmd.Parameters.AddWithValue("@status", attendanceStatus);
 
                             cmd.ExecuteNonQuery();
@@ -164,11 +166,12 @@ namespace practice.Pages
                     MessageBox.Show($"✅ Attendance submitted for {row.FullName}");
 
                     // ✅ Clear fields after successful save
-                    row.TimeIn = TimeSpan.Zero;
-                    row.TimeOut = TimeSpan.Zero;
+                    row.TimeIn = null;
+                    row.TimeOut = null;
 
-                    // Refresh DataGrid so cleared values appear
-                   dailyAttendanceDataGrid.Items.Refresh();
+                    // ✅ Refresh AFTER committing edit
+                    dailyAttendanceDataGrid.CommitEdit(DataGridEditingUnit.Row, true);
+                    dailyAttendanceDataGrid.Items.Refresh();
                 }
                 catch (Exception ex)
                 {
@@ -176,6 +179,7 @@ namespace practice.Pages
                 }
             }
         }
+
 
 
         private void searchEmployeeBtn_Click(object sender, RoutedEventArgs e)

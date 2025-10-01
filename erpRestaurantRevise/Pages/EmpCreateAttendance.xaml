@@ -40,21 +40,24 @@
                   Grid.Row="1"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
+                  CanUserResizeColumns="False"
+                  CanUserReorderColumns="False"
                   IsReadOnly="False"
                   RowHeight="36"
                   ItemsSource="{Binding}" Height="500">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="EmployeeID" Binding="{Binding EmployeeID}" IsReadOnly="True" Width="90"/>
+                        <DataGridTextColumn Header="AttendanceID" Binding="{Binding EmployeeID}" IsReadOnly="True" Width="Auto" Visibility="Collapsed"/>
+                        <DataGridTextColumn Header="EmployeeID" Binding="{Binding EmployeeID}" IsReadOnly="True" Width="Auto"/>
                         <DataGridTextColumn Header="FullName" Binding="{Binding FullName}" IsReadOnly="True" Width="*"/>
-                        <DataGridTextColumn Header="Position" Binding="{Binding PositionName}" IsReadOnly="True" Width="*"/>
-                        <DataGridTextColumn Header="Time In (HH:mm)" Binding="{Binding TimeIn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:hh\\:mm}}" Width="120" x:Name="timeInBox"/>
-                        <DataGridTextColumn Header="Time Out (HH:mm)" Binding="{Binding TimeOut, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:hh\\:mm}}" Width="120" x:Name="timeOutBox"/>
+                        <DataGridTextColumn Header="Position" Binding="{Binding PositionName}" IsReadOnly="True" Width="Auto"/>
+                        <DataGridTextColumn Header="Time In (HH:mm)" Binding="{Binding TimeIn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:hh\\:mm}}" Width="Auto" x:Name="timeInBox"/>
+                        <DataGridTextColumn Header="Time Out (HH:mm)" Binding="{Binding TimeOut, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:hh\\:mm}}" Width="Auto" x:Name="timeOutBox"/>
 
-                        <DataGridTemplateColumn Header="Action" Width="110">
+                        <DataGridTemplateColumn Header="Action" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Content="Submit" Padding="6,2" Click="SubmitRow_Click"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Button Content="Submit" Padding="6,2" Click="SubmitRow_Click" Width="50" Height="20" Background="#FF57BD14"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

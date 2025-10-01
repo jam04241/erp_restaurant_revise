@@ -15,7 +15,7 @@ namespace practice.Pages
         {
             private connDB db = new connDB();
             
-        private AttendanceRecord selectedRecord = null;
+            private AttendanceRecord selectedRecord = null;
 
 
 
@@ -47,6 +47,7 @@ namespace practice.Pages
 
                     string selectQuery = @"
             SELECT
+                A.attendanceID, 
                 A.employeeID,
                 CONCAT_WS(' ', E.firstName, E.middleName, E.lastName) AS FullName, 
                 A.timeIn,
@@ -70,6 +71,7 @@ namespace practice.Pages
                         {
                             AttendanceRecord row = new AttendanceRecord
                             {
+                                attendanceID = reader.GetInt32(reader.GetOrdinal("attendanceID")),
                                 employeeID = reader.IsDBNull(reader.GetOrdinal("employeeID")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("employeeID")),
                                 fullName = reader.GetString(reader.GetOrdinal("FullName")),
                                 timeIn = reader.IsDBNull(reader.GetOrdinal("timeIn")) ? (TimeSpan?)null : reader.GetTimeSpan(reader.GetOrdinal("timeIn")),
@@ -191,87 +193,75 @@ namespace practice.Pages
             }
         }
 
-        // 4. Save Button Click Handler: Commits changes and updates the database
-        private void SaveRow_Click(object sender, RoutedEventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn == null) return;
-
-            DataGridRow row = FindVisualParent<DataGridRow>(btn);
-            if (row == null) return;
-
-            // The correct method to commit all edits in WPF DataGrid
-            if (attendanceRecordDataGrid.CommitEdit())
-            {
-                // Stop editing the current row
-                attendanceRecordDataGrid.CurrentItem = null;
-
-                // Get the modified item
-                AttendanceRecord record = row.Item as AttendanceRecord;
-                if (record == null) return;
-
-                // Call a method to update the database
-                UpdateAttendanceRecord(record);
-            }
-
-            // After saving, revert the columns back to read-only
-            attendanceRecordDataGrid.Columns[2].IsReadOnly = true; // Time In
-            attendanceRecordDataGrid.Columns[3].IsReadOnly = true; // Time Out
-            attendanceRecordDataGrid.Columns[5].IsReadOnly = true; // Status
-
-            // Change the button back to "Edit"
-            btn.Content = "Edit";
-            btn.Click -= SaveRow_Click;
-            btn.Click += EditRow_Click;
-        }
-
         // 5. Helper method to update the database
         private void UpdateAttendanceRecord(AttendanceRecord record)
         {
-            // Note: We use attendanceID in the WHERE clause as it is the unique identifier for the attendance record.
-            string updateQuery = @"
-                UPDATE [erp_restaurant].[dbo].[Attendance]
-                SET [timeIn] = @TimeIn,
-                    [timeOut] = @TimeOut,
-                    [status] = @Status
-                WHERE [employeeID] = @employeeID";
-
             try
             {
-                using (SqlConnection connection = db.GetConnection())
+                using (SqlConnection conn = db.GetConnection())
                 {
-                    connection.Open();
-                    using (SqlCommand command = new SqlCommand(updateQuery, connection))
+                    conn.Open();
+
+                    string updateQuery = @"
+                UPDATE Attendance
+                SET timeIn = @timeIn,
+                    timeOut = @timeOut,
+                    hourWorked = @hourWorked,
+                    status = @status
+                WHERE 
+                    attendanceID = @attendanceID";  // to update today's record only
+
+                    using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
                     {
-                        // Ensure data types are handled correctly (TimeSpan maps to SQL TIME/DATETIME)
-                        command.Parameters.AddWithValue("@TimeIn", record.timeIn);
-                        command.Parameters.AddWithValue("@TimeOut", record.timeOut);
-                        command.Parameters.AddWithValue("@Status", record.status);
-                        //command.Parameters.AddWithValue("@AttendanceID", record.attendanceID);
+                        cmd.Parameters.AddWithValue("@attendanceID", record.attendanceID);
 
-                        int rowsAffected = command.ExecuteNonQuery();
-                        if (rowsAffected > 0)
-                        {
-                            // Recalculate HourWorked (This is a complex business logic step, 
-                            // typically done server-side or after a successful update.)
-                            // For simplicity, we assume HourWorked is recalculated and stored by another process 
-                            // or that the current display is sufficient.
-
-                            // A real-world application would recalculate HourWorked here or refresh the grid.
-                            MessageBox.Show("Record updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                        }
+                        // Times
+                        if (record.timeIn.HasValue)
+                            cmd.Parameters.AddWithValue("@timeIn", record.timeIn.Value);
                         else
+                            cmd.Parameters.AddWithValue("@timeIn", DBNull.Value);
+
+                        if (record.timeOut.HasValue)
+                            cmd.Parameters.AddWithValue("@timeOut", record.timeOut.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@timeOut", DBNull.Value);
+
+                        // Hours worked calculation
+                        if (record.timeIn.HasValue && record.timeOut.HasValue)
                         {
-                            MessageBox.Show("No records were updated (ID not found).", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            TimeSpan worked = record.timeOut.Value - record.timeIn.Value;
+                            record.hourWorked = (decimal)worked.TotalHours;
                         }
+
+                        cmd.Parameters.AddWithValue("@hourWorked", record.hourWorked ?? (object)DBNull.Value);
+
+                        // ✅ Automatic status logic
+                        string status = "absent"; // default
+
+                        if (record.timeIn.HasValue)
+                        {
+                            if (record.timeIn.Value <= new TimeSpan(8, 1, 0))
+                                status = "present";  // on time (DB only allows 'present')
+                            else
+                                status = "late";     // after 8:01 AM
+                        }
+
+                        cmd.Parameters.AddWithValue("@status", status);
+
+                        cmd.ExecuteNonQuery();
                     }
                 }
+
+                MessageBox.Show("✅ Attendance updated successfully!");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to update attendance record: {ex.Message}", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"❌ Failed to update attendance record: {ex.Message}", "Database Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+
 
         // Generic helper to find a parent element in the visual tree (required for button-in-DataGrid)
         private static T FindVisualParent<T>(DependencyObject child) where T : DependencyObject
