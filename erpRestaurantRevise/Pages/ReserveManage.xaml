@@ -9,68 +9,56 @@
       Title="ReserveManage">
 
     <Grid Background="#FF051821">
+        <!-- Search -->
         <TextBox HorizontalAlignment="Left" Margin="74,128,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="209" Height="24"/>
-        <StackPanel Background="#FF1A4645" Margin="74,169,370,293">
-            <Rectangle Height="20"/>
-            <StackPanel Background="#FF328C86" Height="100" Width="350" HorizontalAlignment="Center">
-                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="White" Background="#FFCA0B0B" Content="Cancel"/>
-            </StackPanel>
-            <Rectangle Height="50"/>
-            <StackPanel Background="#FF328C86" Height="100" Width="350" HorizontalAlignment="Center">
-                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="White" Background="#FFCA0B0B" Content="Cancel"/>
-            </StackPanel>
-            <Rectangle Height="50"/>
-            <StackPanel Background="#FF328C86" Height="100" Width="350" HorizontalAlignment="Center">
-                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="White" Background="#FFCA0B0B" Content="Cancel"/>
-            </StackPanel>
-            <Rectangle Height="20"/>
-        </StackPanel>
+
+        <!-- Available Tables Panel -->
         <Grid Width="300" Margin="558,169,42,615" Background="#FF1A4645">
-            <Label Content="20/50" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="50" Width="144" Height="82"/>
-
+            <Label Content="Available Tables" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontSize="18" Margin="0,10,0,0"/>
+            <Label x:Name="AvailableTablesLabel" Content="20/50" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="50" Width="144" Height="82"/>
         </Grid>
-        <Grid Width="300" Margin="558,357,42,293" Background="#FF1A4645">
-            <WrapPanel Height="41" Width="268" Margin="16,74,16,135" Background="#FF328C86">
-                <TextBlock Width="20"/>
-                <Label Content="Harold Lubot" FontSize="14" Foreground="White" Margin="0,5,0,0" />
-                <TextBlock Width="20"/>
-                <Button Background="#FF7DD22C" Content="Confirm Reservation" Margin="0,5,0,0"/>
-            </WrapPanel>
-            <WrapPanel Height="41" Width="268" Margin="16,19,16,190" Background="#FF328C86">
-                <TextBlock Width="20"/>
-                <Label Content="Harold Lubot" FontSize="14" Foreground="White" Margin="0,5,0,0" />
-                <TextBlock Width="20"/>
-                <Button Background="#FF7DD22C" Content="Confirm Reservation" Margin="0,5,0,0"/>
-            </WrapPanel>
-            <WrapPanel Height="41" Width="268" Margin="16,132,16,77" Background="#FF328C86">
-                <TextBlock Width="20"/>
-                <Label Content="Harold Lubot" FontSize="14" Foreground="White" Margin="0,5,0,0" />
-                <TextBlock Width="20"/>
-                <Button Background="#FF7DD22C" Content="Confirm Reservation" Margin="0,5,0,0"/>
-            </WrapPanel>
-            <WrapPanel Height="41" Width="268" Margin="16,189,16,20" Background="#FF328C86">
-                <TextBlock Width="20"/>
-                <Label Content="Harold Lubot" FontSize="14" Foreground="White" Margin="0,5,0,0" />
-                <TextBlock Width="20"/>
-                <Button Background="#FF7DD22C" Content="Confirm Reservation" Margin="0,5,0,0"/>
-            </WrapPanel>
 
-        </Grid>
-        <Label Content="Available tables with Chair" HorizontalAlignment="Left" Margin="558,111,0,0" VerticalAlignment="Top" Foreground="White" FontSize="18" Width="223"/>
-        <Label Content="Upcoming Reservation" HorizontalAlignment="Left" Margin="557,301,0,0" VerticalAlignment="Top" Foreground="White" FontSize="18" Width="190"/>
-        <StackPanel Margin="74,715,36,49" Background="#FF1A4645">
-            <DataGrid Height="100" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="20,15,20,15"/>
-
+        <!-- Pending Reservations -->
+        <StackPanel Margin="558,357,42,293" Background="#FF1A4645">
+            <Label Content="Pending Reservations" Foreground="White" FontSize="18" Margin="10"/>
+            <ItemsControl x:Name="PendingReservationsList">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel Height="41" Width="268" Margin="16,5,16,0" Background="#FF328C86">
+                            <TextBlock Width="20"/>
+                            <Label Content="{Binding CustomerName}" FontSize="14" Foreground="White" VerticalAlignment="Center"/>
+                            <TextBlock Width="20"/>
+                            <Button Content="Confirm Reservation" Background="#FF7DD22C" Margin="0,0,0,0"
+                                    Tag="{Binding}" Click="ConfirmReservation_Click"/>
+                        </WrapPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
-        <ComboBox Margin="336,652,468,224" SelectedIndex="0">
-            <ComboBoxItem Content="Newest"/>
-            <ComboBoxItem Content="Oldest"/>
-        </ComboBox>
-        <TextBox HorizontalAlignment="Left" Margin="74,652,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="230" Height="24"/>
-        <Button Content="Add Table" HorizontalAlignment="Left" Margin="434,128,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.114,0.125" Height="24" Width="96" Background="#FF7DD22C" Foreground="Black"/>
-        <ComboBox Margin="310,128,494,748" SelectedIndex="0">
-            <ComboBoxItem Content="Newest"/>
-            <ComboBoxItem Content="Oldest"/>
-        </ComboBox>
+
+        <!-- Confirmed Reservations -->
+        <StackPanel Margin="74,357,370,293" Background="#FF1A4645">
+            <Label Content="Confirmed Reservations" Foreground="White" FontSize="18" Margin="10"/>
+            <DataGrid x:Name="ConfirmedReservationsList" AutoGenerateColumns="False" Height="400" Margin="10" HeadersVisibility="Column" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Customer" Binding="{Binding CustomerName}" Width="*"/>
+                    <DataGridTextColumn Header="Table" Binding="{Binding Table.TableNumber}" Width="*"/>
+                    <DataGridTextColumn Header="Date" Binding="{Binding ReservationDate}" Width="*"/>
+                    <DataGridTextColumn Header="Time" Binding="{Binding TimeReserve}" Width="*"/>
+                    <DataGridTemplateColumn Header="Actions" Width="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="Edit" Width="60" Height="25" Background="#FF1E90FF" Foreground="White" FontWeight="Bold"
+                                            Tag="{Binding}" Click="EditReservation_Click"/>
+                                    <Button Content="Cancel" Width="60" Height="25" Background="#FFCA0B0B" Foreground="White" FontWeight="Bold"
+                                            Tag="{Binding}" Click="CancelReservation_Click"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
     </Grid>
 </Page>

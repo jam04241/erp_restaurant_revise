@@ -102,7 +102,8 @@ namespace practice.Pages
                 if (updatedEmployee != null)
                 {
                     UpdateEmployeeFull(updatedEmployee);
-                    LoadEmployees(); // ✅ Refresh with search/sort applied
+                    LoadEmployees(); 
+                    MessageBox.Show("Record Updated Successfully");
                 }
             }
         }
@@ -249,7 +250,7 @@ namespace practice.Pages
                 };
             }
 
-            return null; 
+            return null;
         }
 
         // -- Search + Sort --

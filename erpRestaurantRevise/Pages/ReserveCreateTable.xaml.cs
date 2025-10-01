@@ -81,10 +81,11 @@ namespace practice.Pages
                 TableChair updatedTable = ShowEditTableDialog(selectedTable);
                 if (updatedTable != null)
                 {
-                    try
+                    try 
                     {
                         ReservationService.UpdateTable(selectedTable.TableID, updatedTable);
                         TablesDataGrid.Items.Refresh();
+                        MessageBox.Show("Record Updated Successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     catch (SqlException sqlEx)
                     {

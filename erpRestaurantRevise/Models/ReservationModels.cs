@@ -15,9 +15,9 @@ namespace erpRestaurantRevise.Models
     public class TableChair
     {
         public int TableID { get; set; }
-        public int TableNumber { get; set; }        
-        public int TableQuantity { get; set; }     
-        public int ChairQuantity { get; set; }      
+        public int TableNumber { get; set; }
+        public int TableQuantity { get; set; }
+        public int ChairQuantity { get; set; }
         public string Location { get; set; }
     }
 
@@ -30,5 +30,12 @@ namespace erpRestaurantRevise.Models
         public DateTime DateReserve { get; set; }
         public TimeSpan TimeReserve { get; set; }
         public string Status { get; set; }
+
+        // Helper properties for UI binding
+        public string CustomerName => Customer != null ? $"{Customer.FirstName} {Customer.LastName}" : "";
+        public int? TableID => Table?.TableID;
+        public string ReservationDate => DateReserve.ToString("yyyy-MM-dd");
+
+       
     }
 }
