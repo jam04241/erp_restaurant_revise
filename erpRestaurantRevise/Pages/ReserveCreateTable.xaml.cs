@@ -21,7 +21,7 @@ namespace practice.Pages
             TablesDataGrid.ItemsSource = ReservationService.Tables;
         }
 
-        // Create new table
+        // Create new table (add to in-memory collection only)
         private void CreateTableButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -59,8 +59,10 @@ namespace practice.Pages
                     Location = location
                 };
 
-                ReservationService.AddTable(table);
-                MessageBox.Show("Table added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Add to in-memory collection
+                ReservationService.Tables.Add(table);
+                TablesDataGrid.Items.Refresh();
+                MessageBox.Show("Table added to memory!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 TableNoTextBox.Clear();
                 LocationTextBox.Clear();
@@ -73,7 +75,7 @@ namespace practice.Pages
             }
         }
 
-        // Edit selected row using modal-style dialog
+        // Edit selected row (in-memory only)
         private void EditRowButton_Click(object sender, RoutedEventArgs e)
         {
             if (TablesDataGrid.SelectedItem is TableChair selectedTable)
@@ -81,21 +83,19 @@ namespace practice.Pages
                 TableChair updatedTable = ShowEditTableDialog(selectedTable);
                 if (updatedTable != null)
                 {
-                    try 
-                    {
-                        ReservationService.UpdateTable(selectedTable.TableID, updatedTable);
-                        TablesDataGrid.Items.Refresh();
-                        MessageBox.Show("Record Updated Successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    catch (SqlException sqlEx)
-                    {
-                        MessageBox.Show("Database error: " + sqlEx.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    // Update in-memory collection
+                    selectedTable.TableNumber = updatedTable.TableNumber;
+                    selectedTable.TableQuantity = updatedTable.TableQuantity;
+                    selectedTable.ChairQuantity = updatedTable.ChairQuantity;
+                    selectedTable.Location = updatedTable.Location;
+
+                    TablesDataGrid.Items.Refresh();
+                    MessageBox.Show("Record Updated in memory!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
         }
 
-        // Delete selected row
+        // Delete selected row (in-memory only)
         private void DeleteRowButton_Click(object sender, RoutedEventArgs e)
         {
             if (TablesDataGrid.SelectedItem is TableChair selectedTable)
@@ -104,15 +104,8 @@ namespace practice.Pages
                                              "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
-                    try
-                    {
-                        ReservationService.DeleteTable(selectedTable.TableID);
-                        TablesDataGrid.Items.Refresh();
-                    }
-                    catch (SqlException sqlEx)
-                    {
-                        MessageBox.Show("Database error: " + sqlEx.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    ReservationService.Tables.Remove(selectedTable);
+                    TablesDataGrid.Items.Refresh();
                 }
             }
         }
@@ -146,7 +139,6 @@ namespace practice.Pages
             panel.Children.Add(tableQtyBox);
             panel.Children.Add(new TextBlock { Text = "Chair Quantity:" });
             panel.Children.Add(chairQtyBox);
-            
 
             // Save button
             Button saveButton = new Button

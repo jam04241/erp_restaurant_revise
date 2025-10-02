@@ -24,12 +24,14 @@
             <ItemsControl x:Name="PendingReservationsList">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <WrapPanel Height="41" Width="268" Margin="16,5,16,0" Background="#FF328C86">
-                            <TextBlock Width="20"/>
-                            <Label Content="{Binding CustomerName}" FontSize="14" Foreground="White" VerticalAlignment="Center"/>
-                            <TextBlock Width="20"/>
-                            <Button Content="Confirm Reservation" Background="#FF7DD22C" Margin="0,0,0,0"
-                                    Tag="{Binding}" Click="ConfirmReservation_Click"/>
+                        <WrapPanel Height="41" Width="300" Margin="16,5,16,0" Background="#FF328C86">
+                            <TextBlock Width="10"/>
+                            <Label Content="{Binding Customer.FirstName}" FontSize="14" Foreground="White" VerticalAlignment="Center"/>
+                            <TextBlock Width="10"/>
+                            <Button Content="Confirm" Background="#FF7DD22C" Margin="0,0,0,0"
+                        Tag="{Binding}" Click="ConfirmReservation_Click"/>
+                            <Button Content="Cancel" Background="#FFCA0B0B" Foreground="White" Margin="5,0,0,0"
+                        Tag="{Binding}" Click="CancelPendingReservation_Click"/>
                         </WrapPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -37,22 +39,23 @@
         </StackPanel>
 
         <!-- Confirmed Reservations -->
-        <StackPanel Margin="74,357,370,293" Background="#FF1A4645">
+        <StackPanel x:Name="ConfirmedReservationsList" Margin="74,357,370,293" Background="#FF1A4645">
             <Label Content="Confirmed Reservations" Foreground="White" FontSize="18" Margin="10"/>
-            <DataGrid x:Name="ConfirmedReservationsList" AutoGenerateColumns="False" Height="400" Margin="10" HeadersVisibility="Column" IsReadOnly="True">
+            <DataGrid x:Name="ConfirmedReservationsGrid" AutoGenerateColumns="False" Height="400" Margin="10" HeadersVisibility="Column" IsReadOnly="True" 
+                      RowHeight="35" CanUserResizeColumns="True" ColumnWidth="*" HorizontalScrollBarVisibility="Auto">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Customer" Binding="{Binding CustomerName}" Width="*"/>
-                    <DataGridTextColumn Header="Table" Binding="{Binding Table.TableNumber}" Width="*"/>
-                    <DataGridTextColumn Header="Date" Binding="{Binding ReservationDate}" Width="*"/>
-                    <DataGridTextColumn Header="Time" Binding="{Binding TimeReserve}" Width="*"/>
-                    <DataGridTemplateColumn Header="Actions" Width="150">
+                    <DataGridTextColumn Header="Customer" Binding="{Binding CustomerName}" Width="80"/>
+                    <DataGridTextColumn Header="Table" Binding="{Binding Table.TableNumber}" Width="80"/>
+                    <DataGridTextColumn Header="Date" Binding="{Binding ReservationDate}" Width="80"/>
+                    <DataGridTextColumn Header="Time" Binding="{Binding TimeReserve}" Width="80"/>
+                    <DataGridTemplateColumn Header="Actions" Width="200">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Button Content="Edit" Width="60" Height="25" Background="#FF1E90FF" Foreground="White" FontWeight="Bold"
+                                    <Button Content="Edit" Width="70" Height="25" Background="#FF1E90FF" Foreground="White" FontWeight="Bold"
                                             Tag="{Binding}" Click="EditReservation_Click"/>
-                                    <Button Content="Cancel" Width="60" Height="25" Background="#FFCA0B0B" Foreground="White" FontWeight="Bold"
-                                            Tag="{Binding}" Click="CancelReservation_Click"/>
+                                    <Button Content="Done" Width="70" Height="25" Background="Green" Foreground="White" FontWeight="Bold"
+                                            Tag="{Binding}" Click="DoneReservation_Click"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

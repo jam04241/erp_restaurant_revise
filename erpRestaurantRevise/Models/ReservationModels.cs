@@ -29,12 +29,13 @@ namespace erpRestaurantRevise.Models
         public int EmployeeID { get; set; }
         public DateTime DateReserve { get; set; }
         public TimeSpan TimeReserve { get; set; }
+        public int NumberOfGuests { get; set; }  // NEW
         public string Status { get; set; }
 
         // Helper properties for UI binding
         public string CustomerName => Customer != null ? $"{Customer.FirstName} {Customer.LastName}" : "";
         public int? TableID => Table?.TableID;
-        public string ReservationDate => DateReserve.ToString("yyyy-MM-dd");
+        public string ReservationDate => DateReserve.ToString("dd-MM-yyyy");
 
        
     }
