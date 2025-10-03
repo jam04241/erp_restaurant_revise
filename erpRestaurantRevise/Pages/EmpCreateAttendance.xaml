@@ -30,7 +30,7 @@
                 </Grid.RowDefinitions>
                 <Label Content="Daily Employee Attendance" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="15" FontWeight="Bold"/>
                 <WrapPanel Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,15">
-                   
+
                     <TextBox Width="250" Height="25"/>
                     <TextBlock Width="20"></TextBlock>
                     <ComboBox Width="90">
@@ -38,19 +38,54 @@
                         <ComboBoxItem Content="Oldest"/>
 
                     </ComboBox>
-                    
+
                 </WrapPanel>
 
                 <StackPanel Grid.Row="1" Background="WhiteSmoke">
-                    <DataGrid Height="625" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+                    <DataGrid x:Name="attendanceRecordDataGrid" Height="625" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Employee ID" Binding="{Binding EmployeeID}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" IsReadOnly="True"/>
+
+                            <DataGridTemplateColumn Header="Time In">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox 
+                Text="{Binding TimeIn, Mode=TwoWay, StringFormat={}{0:hh\\:mm}, TargetNullValue=00:00, FallbackValue=00:00}" 
+                Width="100"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Time Out">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox 
+                Text="{Binding TimeOut, Mode=TwoWay, StringFormat={}{0:hh\\:mm}, TargetNullValue=00:00, FallbackValue=00:00}" 
+                Width="100"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+
+                            <DataGridTemplateColumn Header="Action">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Submit" Click="SubmitAttendance_Click" Tag="{Binding}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
 
 
                 </StackPanel>
-                
+
             </Grid>
 
         </Grid>
-        
+
 
 
     </Grid>

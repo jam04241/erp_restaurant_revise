@@ -264,6 +264,7 @@ namespace practice.Pages
             var filtered = allEmployees.Where(emp =>
                 emp.FirstName.ToLower().Contains(searchText) ||
                 emp.LastName.ToLower().Contains(searchText) ||
+                emp.MiddleName.ToLower().Contains(searchText) ||
                 emp.Contact.ToLower().Contains(searchText) ||
                 emp.PositionName.ToLower().Contains(searchText) ||
                 emp.Sex.ToLower().Contains(searchText)
