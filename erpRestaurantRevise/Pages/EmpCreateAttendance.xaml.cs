@@ -8,6 +8,12 @@ using System.Windows.Controls;
 
 namespace practice.Pages
 {
+    // Session manager for tracking logged-in employee
+    public static class SessionManager
+    {
+        public static int LoggedInEmployeeID { get; set; }
+    }
+
     public partial class EmpCreateAttendance : Page
     {
         private connDB db = new connDB();
@@ -27,106 +33,165 @@ namespace practice.Pages
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
+
                 string query = @"
-                    SELECT employeeID, firstName, middleName, lastName
-                    FROM Employee";
+                    SELECT e.employeeID,
+                           e.firstName,
+                           e.middleName,
+                           e.lastName,
+                           a.timeIn,
+                           a.timeOut,
+                           a.status,
+                           a.hourWorked
+                    FROM Employee e
+                    LEFT JOIN Attendance a
+                        ON e.employeeID = a.employeeID
+                       AND a.dateToday = CAST(GETDATE() AS date)
+                    ORDER BY e.lastName, e.firstName;";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        attendanceList.Add(new DailyAttendanceRecord
+                        int empId = reader.GetInt32(0);
+                        if (empId == SessionManager.LoggedInEmployeeID)
+                            continue; // Exclude logged-in employee
+
+                        var record = new DailyAttendanceRecord
                         {
-                            EmployeeID = reader.GetInt32(0),
+                            EmployeeID = empId,
                             FullName = $"{reader.GetString(1)} {reader.GetString(2)} {reader.GetString(3)}",
-                            TimeIn = null,
-                            TimeOut = null,
-                            Status = "Absent"
-                        });
+                            TimeIn = reader.IsDBNull(4) ? (TimeSpan?)null : reader.GetTimeSpan(4),
+                            TimeOut = reader.IsDBNull(5) ? (TimeSpan?)null : reader.GetTimeSpan(5),
+                            Status = reader.IsDBNull(6) ? null : reader.GetString(6),
+                            HourWorked = reader.IsDBNull(7) ? 0 : reader.GetDecimal(7)
+                        };
+                        attendanceList.Add(record);
                     }
                 }
             }
         }
 
-
-
-        private void SubmitAttendance_Click(object sender, RoutedEventArgs e)
+        private void TimeIn_Click(object sender, RoutedEventArgs e)
         {
-            Button btn = sender as Button;
-            if (btn?.Tag is DailyAttendanceRecord record)
+            if (sender is Button btn && btn.Tag is DailyAttendanceRecord record)
             {
-                // Safely get TimeIn/TimeOut (default to 00:00)
-                string timeInDisplay = record.TimeIn.HasValue
-                    ? record.TimeIn.Value.ToString("HH:mm")
-                    : "00:00";
-
-                string timeOutDisplay = record.TimeOut.HasValue
-                    ? record.TimeOut.Value.ToString("HH:mm")
-                    : "00:00";
-
-                // Ask for confirmation
-                MessageBoxResult confirm = MessageBox.Show(
-                    $"Submit attendance for {record.FullName}?\n\n" +
-                    $"Time In: {timeInDisplay}\n" +
-                    $"Time Out: {timeOutDisplay}",
-                    "Confirm Submission",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question);
-
-                if (confirm != MessageBoxResult.Yes)
+                // Prevent multiple time-ins
+                if (!record.CanTimeIn)
+                {
+                    MessageBox.Show("Employee has already timed in for today.", "Warning", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
-
-                // Compute Status
-                if (!record.TimeIn.HasValue || record.TimeIn.Value == TimeSpan.Zero)
-                {
-                    record.Status = "Absent";
-                }
-                else if (record.TimeIn.Value > new TimeSpan(8, 0, 0)) // later than 8:00
-                {
-                    record.Status = "Late";
-                }
-                else
-                {
-                    record.Status = "On Time";
                 }
 
-                // Save to DB
                 using (SqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
+
                     string query = @"
-                INSERT INTO Attendance (employeeID, dateToday, timeIn, timeOut, status, hourWorked)
-                VALUES (@empID, @dateToday, @timeIn, @timeOut, @status, @hourWorked)";
+                        MERGE Attendance AS target
+                        USING (SELECT @empId AS employeeID, CAST(GETDATE() AS date) AS dateToday) AS source
+                        ON target.employeeID = source.employeeID AND target.dateToday = source.dateToday
+                        WHEN MATCHED THEN 
+                            UPDATE SET timeIn = @timeIn, status = 'Present'
+                        WHEN NOT MATCHED THEN
+                            INSERT (employeeID, dateToday, timeIn, status)
+                            VALUES (@empId, CAST(GETDATE() AS date), @timeIn, 'Present');";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@empID", record.EmployeeID);
-                        cmd.Parameters.AddWithValue("@dateToday", DateTime.Today);
-
-                        // If null, store 00:00 instead of DBNull
-                        cmd.Parameters.AddWithValue("@timeIn", (object)record.TimeIn ?? TimeSpan.Zero);
-                        cmd.Parameters.AddWithValue("@timeOut", (object)record.TimeOut ?? TimeSpan.Zero);
-
-                        cmd.Parameters.AddWithValue("@status", record.Status);
-
-                        double hoursWorked = 0;
-                        if (record.TimeIn.HasValue && record.TimeOut.HasValue &&
-                            record.TimeIn.Value != TimeSpan.Zero &&
-                            record.TimeOut.Value != TimeSpan.Zero)
-                        {
-                            hoursWorked = (record.TimeOut.Value - record.TimeIn.Value).TotalHours;
-                        }
-                        cmd.Parameters.AddWithValue("@hourWorked", hoursWorked);
-
+                        cmd.Parameters.AddWithValue("@empId", record.EmployeeID);
+                        cmd.Parameters.AddWithValue("@timeIn", DateTime.Now.TimeOfDay);
                         cmd.ExecuteNonQuery();
                     }
                 }
 
-                MessageBox.Show($"Attendance submitted for {record.FullName} ({record.Status})");
+                record.TimeIn = DateTime.Now.TimeOfDay;
+                record.Status = "Present";
             }
         }
 
+        private void TimeOut_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is DailyAttendanceRecord record)
+            {
+                using (SqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
 
+                    TimeSpan? timeIn = null;
+                    string fetchQuery = @"
+                        SELECT timeIn 
+                        FROM Attendance 
+                        WHERE employeeID = @empId AND dateToday = CAST(GETDATE() AS date);";
+
+                    using (SqlCommand fetchCmd = new SqlCommand(fetchQuery, conn))
+                    {
+                        fetchCmd.Parameters.AddWithValue("@empId", record.EmployeeID);
+                        object result = fetchCmd.ExecuteScalar();
+                        if (result != DBNull.Value && result != null)
+                            timeIn = (TimeSpan)result;
+                    }
+
+                    if (timeIn.HasValue)
+                    {
+                        TimeSpan timeOut = DateTime.Now.TimeOfDay;
+                        double hoursWorked = Math.Round((timeOut - timeIn.Value).TotalHours, 2);
+
+                        string updateQuery = @"
+                            UPDATE Attendance
+                            SET timeOut = @timeOut, hourWorked = @hoursWorked
+                            WHERE employeeID = @empId AND dateToday = CAST(GETDATE() AS date);";
+
+                        using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@empId", record.EmployeeID);
+                            cmd.Parameters.AddWithValue("@timeOut", timeOut);
+                            cmd.Parameters.AddWithValue("@hoursWorked", (decimal)hoursWorked);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        record.TimeOut = timeOut;
+                        record.HourWorked = (decimal)hoursWorked;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Cannot time out without a valid time in.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+            }
+        }
+
+        private void Absent_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is DailyAttendanceRecord record)
+            {
+                using (SqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+
+                    string query = @"
+                        MERGE Attendance AS target
+                        USING (SELECT @empId AS employeeID, CAST(GETDATE() AS date) AS dateToday) AS source
+                        ON target.employeeID = source.employeeID AND target.dateToday = source.dateToday
+                        WHEN MATCHED THEN 
+                            UPDATE SET status = 'Absent', timeIn = NULL, timeOut = NULL, hourWorked = 0
+                        WHEN NOT MATCHED THEN
+                            INSERT (employeeID, dateToday, status, hourWorked)
+                            VALUES (@empId, CAST(GETDATE() AS date), 'Absent', 0);";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@empId", record.EmployeeID);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                record.Status = "Absent";
+                record.TimeIn = null;
+                record.TimeOut = null;
+                record.HourWorked = 0;
+            }
+        }
     }
 }

@@ -34,7 +34,25 @@
 
             </WrapPanel>
             <StackPanel Width="750" Height="500">
-                <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Height="500"/>
+                <DataGrid x:Name="AttendanceDataGrid"
+                          AutoGenerateColumns="False"
+                          Height="500"
+                          Width="750"
+                          Background="White"
+                          GridLinesVisibility="All"
+                          HeadersVisibility="Column"
+                          IsReadOnly="True">    
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Employee ID" Binding="{Binding EmployeeID}" Width="100"/>
+                        <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="150"/>
+                        <DataGridTextColumn Header="Time In" Binding="{Binding TimeIn}" Width="100"/>
+                        <DataGridTextColumn Header="Time Out" Binding="{Binding TimeOut}" Width="100"/>
+                        <DataGridTextColumn Header="Hours Worked" Binding="{Binding HourWorked}" Width="100"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
 
 
 
