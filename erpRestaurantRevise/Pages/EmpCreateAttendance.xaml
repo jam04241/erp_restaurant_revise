@@ -26,32 +26,45 @@
                     <RowDefinition Height="100"/>
                     <RowDefinition Height="625"/>
                     <RowDefinition Height="100"/>
-
                 </Grid.RowDefinitions>
                 <Label Content="Daily Employee Attendance" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="15" FontWeight="Bold"/>
                 <WrapPanel Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,15">
-                   
                     <TextBox Width="250" Height="25"/>
                     <TextBlock Width="20"></TextBlock>
                     <ComboBox Width="90">
                         <ComboBoxItem Content="Newest"/>
                         <ComboBoxItem Content="Oldest"/>
-
                     </ComboBox>
-                    
                 </WrapPanel>
-
                 <StackPanel Grid.Row="1" Background="WhiteSmoke">
-                    <DataGrid Height="625" d:ItemsSource="{d:SampleData ItemCount=5}"/>
-
-
+                    <DataGrid x:Name="attendanceRecordDataGrid" Height="625" AutoGenerateColumns="False" ItemsSource="{Binding attendanceList}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Employee ID" Binding="{Binding EmployeeID}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Time In" Binding="{Binding TimeIn, StringFormat={}{0:hh\\:mm}}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Time Out" Binding="{Binding TimeOut, StringFormat={}{0:hh\\:mm}}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Hours Worked" Binding="{Binding HourWorked}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" IsReadOnly="True"/>
+                            <DataGridTemplateColumn Header="Action">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Button Content="Time In" Width="70" Margin="2"
+                                                    Tag="{Binding}" Click="TimeIn_Click"
+                                                    IsEnabled="{Binding CanTimeIn}"/>
+                                            <Button Content="Time Out" Width="70" Margin="2"
+                                                    Tag="{Binding}" Click="TimeOut_Click"/>
+                                            <Button Content="Absent" Width="70" Margin="2"
+                                                    Background="Red" Foreground="White"
+                                                    Tag="{Binding}" Click="Absent_Click"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </StackPanel>
-                
             </Grid>
-
         </Grid>
-        
-
-
     </Grid>
 </Page>
