@@ -194,6 +194,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\AttendanceRecord.cs" />
     <Compile Include="Models\DailyAttendanceRecord.cs" />
+    <Compile Include="Models\PayrollRecord.cs" />
     <Compile Include="Models\PositionModel.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Services\ReservationService.cs" />

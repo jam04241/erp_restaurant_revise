@@ -69,10 +69,24 @@ namespace erpRestaurantRevise.Models
             }
         }
 
+        private DateTime? _dateToday;
+        public DateTime? DateToday
+        {
+            get => _dateToday;
+            set
+            {
+                if (_dateToday != value)
+                {
+                    _dateToday = value;
+                    OnPropertyChanged(nameof(DateToday));
+                }
+            }
+        }
+
         public bool CanTimeIn => !TimeIn.HasValue && Status != "Absent";
         public bool CanTimeOut => TimeIn.HasValue && !TimeOut.HasValue && Status != "Absent";
 
-        public event PropertyChangedEventHandler PropertyChanged;   
+        public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
