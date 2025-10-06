@@ -8,6 +8,14 @@ using System.Linq;
 
 namespace erpRestaurantRevise.Services
 {
+    public enum ReservationStatus
+    {
+        Pending,
+        Confirmed,
+        Cancelled,
+        Done
+    }
+
     public static class ReservationService
     {
         private static string connectionString = ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString;
@@ -65,77 +73,6 @@ namespace erpRestaurantRevise.Services
             }
         }
 
-        public static void AddTable(TableChair table)
-        {
-            if (table == null)
-                throw new ArgumentNullException(nameof(table));
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                var insertQuery = @"
-                    INSERT INTO TableChair (tableNumber, tableQuantity, chairQuantity, location)
-                    VALUES (@tableNumber, @tableQuantity, @chairQuantity, @location);
-                    SELECT SCOPE_IDENTITY();";
-                SqlCommand cmd = new SqlCommand(insertQuery, conn);
-                cmd.Parameters.AddWithValue("@tableNumber", table.TableNumber);
-                cmd.Parameters.AddWithValue("@tableQuantity", table.TableQuantity);
-                cmd.Parameters.AddWithValue("@chairQuantity", table.ChairQuantity);
-                cmd.Parameters.AddWithValue("@location", table.Location);
-
-                table.TableID = Convert.ToInt32(cmd.ExecuteScalar());
-                Tables.Add(table);
-            }
-        }
-
-        public static void UpdateTable(int tableID, TableChair updatedTable)
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                var query = @"
-                    UPDATE TableChair
-                    SET TableNumber=@tableNumber,
-                        TableQuantity=@tableQuantity,
-                        ChairQuantity=@chairQuantity,
-                        Location=@location
-                    WHERE TableID=@tableID";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@tableID", tableID);
-                cmd.Parameters.AddWithValue("@tableNumber", updatedTable.TableNumber);
-                cmd.Parameters.AddWithValue("@tableQuantity", updatedTable.TableQuantity);
-                cmd.Parameters.AddWithValue("@chairQuantity", updatedTable.ChairQuantity);
-                cmd.Parameters.AddWithValue("@location", updatedTable.Location);
-                cmd.ExecuteNonQuery();
-            }
-
-            // Update in-memory collection
-            var existing = Tables.FirstOrDefault(t => t.TableID == tableID);
-            if (existing != null)
-            {
-                existing.TableNumber = updatedTable.TableNumber;
-                existing.TableQuantity = updatedTable.TableQuantity;
-                existing.ChairQuantity = updatedTable.ChairQuantity;
-                existing.Location = updatedTable.Location;
-            }
-        }
-
-        public static void DeleteTable(int tableID)
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                var query = "DELETE FROM TableChair WHERE TableID=@tableID";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@tableID", tableID);
-                cmd.ExecuteNonQuery();
-            }
-
-            var table = Tables.FirstOrDefault(t => t.TableID == tableID);
-            if (table != null)
-                Tables.Remove(table);
-        }
-
         // ---------------- Load Reservations ----------------
         public static void LoadReservations()
         {
@@ -144,12 +81,12 @@ namespace erpRestaurantRevise.Services
             {
                 conn.Open();
                 var query = @"
-                    SELECT r.reservationID, r.customerID, r.tableID, r.employeeID, r.dateReserve, r.timeReserve, r.status,
-                           c.firstName, c.middleName, c.lastName, c.email, c.contact,
-                           t.tableNumber, t.tableQuantity, t.chairQuantity, t.location
-                    FROM Reservation r
-                    INNER JOIN Customer c ON r.customerID = c.customerID
-                    LEFT JOIN TableChair t ON r.tableID = t.tableID";
+                            SELECT r.reservationID, r.customerID, r.tableID, r.employeeID, r.dateReserve, r.timeReserve, r.status, r.numberOfGuests,
+                                   c.firstName, c.middleName, c.lastName, c.email, c.contact,
+                                   t.tableNumber, t.tableQuantity, t.chairQuantity, t.location
+                            FROM Reservation r
+                            INNER JOIN Customer c ON r.customerID = c.customerID
+                            LEFT JOIN TableChair t ON r.tableID = t.tableID";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -161,6 +98,7 @@ namespace erpRestaurantRevise.Services
                         EmployeeID = Convert.ToInt32(reader["employeeID"]),
                         DateReserve = Convert.ToDateTime(reader["dateReserve"]),
                         TimeReserve = (TimeSpan)reader["timeReserve"],
+                        NumberOfGuests = reader["numberOfGuests"] != DBNull.Value ? Convert.ToInt32(reader["numberOfGuests"]) : 1,
                         Status = reader["status"].ToString(),
                         Customer = new Customer
                         {
@@ -172,21 +110,21 @@ namespace erpRestaurantRevise.Services
                             Contact = reader["contact"].ToString()
                         },
                         Table = reader["tableID"] != DBNull.Value
-                                ? new TableChair
-                                {
-                                    TableID = Convert.ToInt32(reader["tableID"]),
-                                    TableNumber = Convert.ToInt32(reader["tableNumber"]),
-                                    TableQuantity = Convert.ToInt32(reader["tableQuantity"]),
-                                    ChairQuantity = Convert.ToInt32(reader["chairQuantity"]),
-                                    Location = reader["location"].ToString()
-                                }
-                                : null
+                            ? new TableChair
+                            {
+                                TableID = Convert.ToInt32(reader["tableID"]),
+                                TableNumber = Convert.ToInt32(reader["tableNumber"]),
+                                TableQuantity = Convert.ToInt32(reader["tableQuantity"]),
+                                ChairQuantity = Convert.ToInt32(reader["chairQuantity"]),
+                                Location = reader["location"].ToString()
+                            }
+                            : null
                     });
                 }
             }
         }
 
-        // ---------------- Add Customer + Reservation ----------------
+        // ---------------- Add Reservation ----------------
         public static void AddReservation(Customer customer, Reservation reservation)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -206,10 +144,10 @@ namespace erpRestaurantRevise.Services
                 int customerId = Convert.ToInt32(cmd.ExecuteScalar());
                 customer.CustomerID = customerId;
 
-                // Insert Reservation
-                var insertReservation = @"INSERT INTO Reservation (customerID, tableID, employeeID, dateReserve, timeReserve, status)
-                                          VALUES (@customerID,@tableID,@employeeID,@dateReserve,@timeReserve,@status);
-                                          SELECT SCOPE_IDENTITY();";
+                var insertReservation = @"INSERT INTO Reservation 
+                          (customerID, tableID, employeeID, dateReserve, timeReserve, status, numberOfGuests)
+                          VALUES (@customerID, @tableID, @employeeID, @dateReserve, @timeReserve, @status, @numberOfGuests);
+                          SELECT SCOPE_IDENTITY();";
                 SqlCommand cmd2 = new SqlCommand(insertReservation, conn);
                 cmd2.Parameters.AddWithValue("@customerID", customerId);
                 cmd2.Parameters.AddWithValue("@tableID", reservation.Table?.TableID ?? (object)DBNull.Value);
@@ -217,6 +155,7 @@ namespace erpRestaurantRevise.Services
                 cmd2.Parameters.AddWithValue("@dateReserve", reservation.DateReserve);
                 cmd2.Parameters.AddWithValue("@timeReserve", reservation.TimeReserve);
                 cmd2.Parameters.AddWithValue("@status", reservation.Status);
+                cmd2.Parameters.AddWithValue("@numberOfGuests", reservation.NumberOfGuests);
 
                 reservation.ReservationID = Convert.ToInt32(cmd2.ExecuteScalar());
                 reservation.Customer = customer;
@@ -227,7 +166,7 @@ namespace erpRestaurantRevise.Services
         }
 
         // ---------------- Confirm Reservation ----------------
-        public static void ConfirmReservation(int reservationID, int tableID, string status)
+        public static void ConfirmReservationSimple(int reservationID, int tableID, string status)
         {
             var reservation = Reservations.FirstOrDefault(r => r.ReservationID == reservationID);
             if (reservation != null)
@@ -255,38 +194,85 @@ namespace erpRestaurantRevise.Services
             }
         }
 
-        // ---------------- Delete Reservation ----------------
-        public static void DeleteReservation(int reservationID)
+        // ---------------- Cancel Reservation ----------------
+        public static void CancelReservationWithReason(int reservationID, string reason)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                string query = "DELETE FROM Reservation WHERE reservationID=@id";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@id", reservationID);
-                cmd.ExecuteNonQuery();
-            }
-
             var reservation = Reservations.FirstOrDefault(r => r.ReservationID == reservationID);
             if (reservation != null)
-                Reservations.Remove(reservation);
+            {
+                reservation.Status = "Cancelled";
+                reservation.Table = null; // Free the table
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = @"UPDATE Reservation 
+                             SET tableID = NULL, status = 'Cancelled', cancelReason = @reason
+                             WHERE reservationID = @id";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@id", reservationID);
+                    cmd.Parameters.AddWithValue("@reason", string.IsNullOrEmpty(reason) ? "No reason provided" : reason);
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
-        // ---------------- Get Pending/Upcoming ----------------
+        // ---------------- Mark Reservation Done ----------------
+        public static void MarkReservationDone(int reservationID)
+        {
+            var reservation = Reservations.FirstOrDefault(r => r.ReservationID == reservationID);
+            if (reservation != null)
+            {
+                int? tableId = reservation.Table?.TableID;
+
+                reservation.Status = ReservationStatus.Done.ToString();
+                reservation.Table = null;
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "UPDATE Reservation SET status=@status, tableID=NULL WHERE reservationID=@id";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@status", ReservationStatus.Done.ToString());
+                    cmd.Parameters.AddWithValue("@id", reservationID);
+                    cmd.ExecuteNonQuery();
+
+                    // free table explicitly (optional, handled by GetAvailableTables)
+                    if (tableId.HasValue)
+                    {
+                        string updateTable = "UPDATE TableChair SET tableQuantity = tableQuantity WHERE tableID=@tableID";
+                        SqlCommand cmd2 = new SqlCommand(updateTable, conn);
+                        cmd2.Parameters.AddWithValue("@tableID", tableId.Value);
+                        cmd2.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        // ---------------- Get Reservations ----------------
         public static List<Reservation> GetPendingReservations()
         {
-            return Reservations.Where(r => r.Table == null).ToList();
+            return Reservations.Where(r => r.Status == ReservationStatus.Pending.ToString()).ToList();
         }
 
         public static List<Reservation> GetUpcomingReservations()
         {
-            return Reservations.Where(r => r.Table != null).ToList();
+            return Reservations.Where(r => r.Status == ReservationStatus.Confirmed.ToString()).ToList();
+        }
+
+        public static List<Reservation> GetDoneReservations()
+        {
+            return Reservations.Where(r => r.Status == ReservationStatus.Done.ToString()).ToList();
         }
 
         // ---------------- Get Available Tables ----------------
         public static List<TableChair> GetAvailableTables()
         {
-            var assignedTableIds = Reservations.Where(r => r.Table != null).Select(r => r.Table.TableID).ToList();
+            var assignedTableIds = Reservations
+                .Where(r => r.Table != null && r.Status == ReservationStatus.Confirmed.ToString())
+                .Select(r => r.Table.TableID)
+                .ToList();
+
             return Tables.Where(t => !assignedTableIds.Contains(t.TableID)).ToList();
         }
     }

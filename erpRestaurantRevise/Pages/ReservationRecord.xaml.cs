@@ -1,28 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using erpRestaurantRevise.Models;
+using erpRestaurantRevise.Services;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace practice.Pages
 {
-    /// <summary>
-    /// Interaction logic for ReservationRecord.xaml
-    /// </summary>
     public partial class ReservationRecord : Page
     {
         public ReservationRecord()
         {
             InitializeComponent();
+            LoadRecords();
+        }
+
+        private void LoadRecords()
+        {
+            // Ensure reservations are loaded from DB first
+            ReservationService.LoadReservations();
+
+            var doneCancelled = ReservationService.Reservations
+                .Where(r => r.Status == "Done" || r.Status == "Cancelled")
+                .Select(r => new
+                {
+                    CustomerFullName = $"{r.Customer.FirstName} {r.Customer.MiddleName} {r.Customer.LastName}",
+                    r.DateReserve,
+                    r.TimeReserve,
+                    TableNumber = r.Table != null ? r.Table.TableNumber.ToString() : "N/A",
+                    r.NumberOfGuests,
+                    r.Status
+                })
+                .ToList();
+
+            RecordsDataGrid.ItemsSource = doneCancelled;
+        }
+
+        // Color-code rows
+        private void RecordsDataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            dynamic rowData = e.Row.Item;
+            string status = rowData?.Status;
+
+            if (status == "Done")
+                e.Row.Background = new SolidColorBrush(Colors.DarkGreen);
+            else if (status == "Cancelled")
+                e.Row.Background = new SolidColorBrush(Colors.DarkRed);
+
+            e.Row.Foreground = new SolidColorBrush(Colors.White);
         }
     }
 }

@@ -96,7 +96,7 @@ namespace practice.Landing_Page
 
         private void attendanceRecordsBtn_Click(object sender, RoutedEventArgs e)
         {
-            Navigate_Panel.Navigate(new EmpAttendanceRecord());
+            Navigate_Panel.Navigate(new EmpAttendanceReports());
         }
 
         private void customerReservationBtn_Click(object sender, RoutedEventArgs e)

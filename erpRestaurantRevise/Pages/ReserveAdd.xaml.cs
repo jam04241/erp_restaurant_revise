@@ -35,6 +35,13 @@ namespace practice.Pages
 
             try
             {
+                // Parse number of guests
+                if (!int.TryParse(guestField.Text.Trim(), out int numberOfGuests) || numberOfGuests <= 0)
+                {
+                    MessageBox.Show("Please enter a valid number of guests.");
+                    return;
+                }
+
                 // Create customer object
                 Customer customer = new Customer
                 {
@@ -52,7 +59,8 @@ namespace practice.Pages
                     DateReserve = DateTime.Parse(dateField.Text.Trim()),
                     TimeReserve = TimeSpan.Parse(timeField.Text.Trim()),
                     Status = "Pending",
-                    Table = null // table assignment will be done in ReserveManage
+                    Table = null, // table assignment will be done in ReserveManage
+                    NumberOfGuests = numberOfGuests // <-- NEW
                 };
 
                 // Save to database
