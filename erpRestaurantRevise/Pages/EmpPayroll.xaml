@@ -18,25 +18,15 @@
             <Label Content="Employee Payroll" HorizontalAlignment="Left" Margin="88,10,0,0" VerticalAlignment="Top"
                    Foreground="White" FontSize="18" FontWeight="Bold"/>
 
-            <!-- Employee selection -->
-            <ComboBox x:Name="employeeComboBox"
-          HorizontalAlignment="Left"
-          Margin="88,50,0,0"
-          VerticalAlignment="Top"
-          Width="230"
-          Height="28"
-          DisplayMemberPath="FullName"
-          SelectedValuePath="EmployeeID"/>
-
             <!-- Date pickers -->
-            <DatePicker x:Name="startDatePicker" HorizontalAlignment="Left" Margin="340,50,0,0"
+            <DatePicker x:Name="startDatePicker" HorizontalAlignment="Left" Margin="88,50,0,0"
                         VerticalAlignment="Top" Width="150" />
-            <DatePicker x:Name="endDatePicker" HorizontalAlignment="Left" Margin="510,50,0,0"
+            <DatePicker x:Name="endDatePicker" HorizontalAlignment="Left" Margin="258,50,0,0"
                         VerticalAlignment="Top" Width="150" />
 
             <!-- Generate button -->
-            <Button Content="Generate Payroll" HorizontalAlignment="Left" Margin="680,50,0,0" VerticalAlignment="Top"
-                    Width="150" Height="28" Background="#FF7DD22C" Foreground="White"
+            <Button Content="Generate Payroll for All Employees" HorizontalAlignment="Left" Margin="428,50,0,0" VerticalAlignment="Top"
+                    Width="200" Height="28" Background="#FF7DD22C" Foreground="White"
                     Click="GeneratePayroll_Click"/>
 
             <!-- Payroll Details -->
