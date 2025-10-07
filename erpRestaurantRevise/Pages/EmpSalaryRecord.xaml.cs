@@ -18,9 +18,6 @@ namespace practice.Pages
         public EmpSalaryRecord()
         {
             InitializeComponent();
-            PayrollRecords = new ObservableCollection<PayrollRecord>();
-            DataContext = this;
-            LoadAllPayrollRecords();
         }
 
         private void LoadAllPayrollRecords()
@@ -28,19 +25,32 @@ namespace practice.Pages
             try
             {
                 string query = @"
-                    SELECT 
-                        p.PayrollID,
-                        p.EmployeeID,
-                        e.firstName + ' ' + COALESCE(e.middleName + ' ', '') + e.lastName as EmployeeName,
-                        p.TotalHours,
-                        p.BasicPay,
-                        p.OvertimePay,
-                        p.Deductions,
-                        p.NetPay,
-                        p.DateIssued
-                    FROM Payroll p
-                    INNER JOIN Employee e ON p.EmployeeID = e.EmployeeID
-                    ORDER BY p.DateIssued DESC, p.PayrollID DESC";
+            SELECT 
+                p.PayrollID,
+                p.EmployeeID,
+                e.firstName + ' ' + COALESCE(e.middleName + ' ', '') + e.lastName as EmployeeName,
+                ISNULL(SUM(a.hourWorked), 0) as TotalHours,
+                p.BasicPay,
+                p.OvertimePay,
+                p.Deductions,
+                p.NetPay,
+                p.dateIssue
+            FROM Payroll p
+            INNER JOIN Employee e ON p.EmployeeID = e.EmployeeID
+            LEFT JOIN Attendance a ON p.EmployeeID = a.employeeID 
+                AND a.dateToday BETWEEN p.payPeriodStart AND p.payPeriodEnd
+            GROUP BY 
+                p.PayrollID,
+                p.EmployeeID,
+                e.firstName,
+                e.middleName,
+                e.lastName,
+                p.BasicPay,
+                p.OvertimePay,
+                p.Deductions,
+                p.NetPay,
+                p.dateIssue
+            ORDER BY p.dateIssue DESC, p.PayrollID DESC";
 
                 DataTable dt = db.GetData(query);
                 PayrollRecords.Clear();
@@ -57,13 +67,12 @@ namespace practice.Pages
                         OvertimePay = Convert.ToDecimal(row["OvertimePay"]),
                         Deduction = Convert.ToDecimal(row["Deductions"]),
                         NetPay = Convert.ToDecimal(row["NetPay"]),
-                        DateIssued = Convert.ToDateTime(row["DateIssued"])
+                        DateIssued = Convert.ToDateTime(row["dateIssue"])
                     };
 
                     PayrollRecords.Add(record);
                 }
 
-                // Force refresh
                 payrollDataGrid.Items.Refresh();
             }
             catch (Exception ex)
@@ -83,7 +92,6 @@ namespace practice.Pages
 
             if (string.IsNullOrWhiteSpace(searchText) || searchText == "Name / Employee no.")
             {
-                // Show all records
                 LoadAllPayrollRecords();
                 return;
             }
@@ -91,47 +99,40 @@ namespace practice.Pages
             try
             {
                 string query = @"
-                    SELECT 
-                        p.PayrollID,
-                        p.EmployeeID,
-                        e.firstName + ' ' + COALESCE(e.middleName + ' ', '') + e.lastName as EmployeeName,
-                        p.TotalHours,
-                        p.BasicPay,
-                        p.OvertimePay,
-                        p.Deductions,
-                        p.NetPay,
-                        p.DateIssued
-                    FROM Payroll p
-                    INNER JOIN Employee e ON p.EmployeeID = e.EmployeeID
-                    WHERE e.firstName LIKE @SearchText OR 
-                          e.lastName LIKE @SearchText OR 
-                          e.firstName + ' ' + e.lastName LIKE @SearchText OR
-                          CAST(p.EmployeeID AS VARCHAR(10)) LIKE @SearchText OR
-                          CAST(p.PayrollID AS VARCHAR(10)) LIKE @SearchText
-                    ORDER BY p.DateIssued DESC, p.PayrollID DESC";
+            SELECT 
+                p.PayrollID,
+                p.EmployeeID,
+                e.firstName + ' ' + COALESCE(e.middleName + ' ', '') + e.lastName as EmployeeName,
+                ISNULL(SUM(a.hourWorked), 0) as TotalHours,
+                p.BasicPay,
+                p.OvertimePay,
+                p.Deductions,
+                p.NetPay,
+                p.dateIssue
+            FROM Payroll p
+            INNER JOIN Employee e ON p.EmployeeID = e.EmployeeID
+            LEFT JOIN Attendance a ON p.EmployeeID = a.employeeID 
+                AND a.dateToday BETWEEN p.payPeriodStart AND p.payPeriodEnd
+            WHERE e.firstName LIKE @SearchText OR 
+                  e.lastName LIKE @SearchText OR 
+                  e.firstName + ' ' + e.lastName LIKE @SearchText OR
+                  CAST(p.EmployeeID AS VARCHAR(10)) LIKE @SearchText OR
+                  CAST(p.PayrollID AS VARCHAR(10)) LIKE @SearchText
+            GROUP BY 
+                p.PayrollID,
+                p.EmployeeID,
+                e.firstName,
+                e.middleName,
+                e.lastName,
+                p.BasicPay,
+                p.OvertimePay,
+                p.Deductions,
+                p.NetPay,
+                p.dateIssue
+            ORDER BY p.dateIssue DESC, p.PayrollID DESC";
 
                 DataTable dt = db.GetData(query, new SqlParameter("@SearchText", "%" + searchText + "%"));
-                PayrollRecords.Clear();
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    var record = new PayrollRecord
-                    {
-                        PayrollID = Convert.ToInt32(row["PayrollID"]),
-                        EmployeeID = Convert.ToInt32(row["EmployeeID"]),
-                        EmployeeName = row["EmployeeName"].ToString(),
-                        TotalHours = Convert.ToDouble(row["TotalHours"]),
-                        BasicPay = Convert.ToDecimal(row["BasicPay"]),
-                        OvertimePay = Convert.ToDecimal(row["OvertimePay"]),
-                        Deduction = Convert.ToDecimal(row["Deductions"]),
-                        NetPay = Convert.ToDecimal(row["NetPay"]),
-                        DateIssued = Convert.ToDateTime(row["DateIssued"])
-                    };
-
-                    PayrollRecords.Add(record);
-                }
-
-                payrollDataGrid.Items.Refresh();
+                // ... rest of your search code
             }
             catch (Exception ex)
             {
