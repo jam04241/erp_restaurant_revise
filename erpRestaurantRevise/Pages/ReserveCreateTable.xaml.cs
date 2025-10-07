@@ -12,13 +12,15 @@ namespace practice.Pages
     /// </summary>
     public partial class ReserveCreateTable : Page
     {
-        public ReserveCreateTable()
+        private Frame _navigate_Panel;
+        public ReserveCreateTable(Frame navigate_Panel)
         {
             InitializeComponent();
 
             // Load existing tables into DataGrid
             ReservationService.LoadTables();
             TablesDataGrid.ItemsSource = ReservationService.Tables;
+            _navigate_Panel = navigate_Panel;
         }
 
         // Create new table (add to in-memory collection only)
@@ -167,6 +169,11 @@ namespace practice.Pages
             }
 
             return null;
+        }
+
+        private void backBtn_Click(object sender, RoutedEventArgs e)
+        {
+            _navigate_Panel.Navigate(new ReserveManage(this._navigate_Panel));
         }
     }
 }

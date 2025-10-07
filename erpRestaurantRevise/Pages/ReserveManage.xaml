@@ -10,7 +10,7 @@
 
     <Grid Background="#FF051821">
         <!-- Search -->
-        <TextBox HorizontalAlignment="Left" Margin="74,128,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="209" Height="24"/>
+        <TextBox HorizontalAlignment="Left" Margin="74,117,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="209" Height="33" Background="White"/>
 
         <!-- Available Tables Panel -->
         <Grid Width="300" Margin="558,169,42,615" Background="#FF1A4645">
@@ -19,7 +19,7 @@
         </Grid>
 
         <!-- Pending Reservations -->
-        <StackPanel Margin="558,357,42,293" Background="#FF1A4645">
+        <StackPanel Margin="558,309,42,341" Background="#FF1A4645">
             <Label Content="Pending Reservations" Foreground="White" FontSize="18" Margin="10"/>
             <ItemsControl x:Name="PendingReservationsList">
                 <ItemsControl.ItemTemplate>
@@ -39,10 +39,10 @@
         </StackPanel>
 
         <!-- Confirmed Reservations -->
-        <StackPanel x:Name="ConfirmedReservationsList" Margin="74,357,370,293" Background="#FF1A4645">
+        <StackPanel x:Name="ConfirmedReservationsList" Margin="74,169,370,338" Background="#FF1A4645">
             <Label Content="Confirmed Reservations" Foreground="White" FontSize="18" Margin="10"/>
-            <DataGrid x:Name="ConfirmedReservationsGrid" AutoGenerateColumns="False" Height="400" Margin="10" HeadersVisibility="Column" IsReadOnly="True" 
-                      RowHeight="35" CanUserResizeColumns="True" ColumnWidth="*" HorizontalScrollBarVisibility="Auto">
+            <DataGrid x:Name="ConfirmedReservationsGrid" AutoGenerateColumns="False" Height="322" HeadersVisibility="Column" IsReadOnly="True" 
+                      RowHeight="35" CanUserResizeColumns="True" ColumnWidth="*" HorizontalScrollBarVisibility="Auto" Margin="20,0,20,0">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Customer" Binding="{Binding CustomerName}" Width="80"/>
                     <DataGridTextColumn Header="Table" Binding="{Binding Table.TableNumber}" Width="80"/>
@@ -63,5 +63,8 @@
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
+        <Button x:Name="addCustomerBtn" Content="Add Customer" HorizontalAlignment="Left" Margin="558,117,0,0" VerticalAlignment="Top" Height="33" Width="150" Foreground="White" Background="#FF17B70A" FontSize="16" Click="addCustomerBtn_Click"/>
+        <Button x:Name="addTableBtn" Content="Create Tables" HorizontalAlignment="Left" Margin="724,117,0,0" VerticalAlignment="Top" Height="33" Width="139" Foreground="White" Background="#FF17B70A" FontSize="16" Click="addTableBtn_Click"/>
+        <Button x:Name="searchBtn" Content="Search" HorizontalAlignment="Left" Margin="302,117,0,0" VerticalAlignment="Top" Height="33" Width="90" Foreground="White" Background="#FF1A4645" FontSize="16" Click="addCustomerBtn_Click"/>
     </Grid>
 </Page>

@@ -18,6 +18,9 @@ namespace practice.Pages
         public EmpSalaryRecord()
         {
             InitializeComponent();
+            PayrollRecords = new ObservableCollection<PayrollRecord>();
+            DataContext = this;
+            LoadAllPayrollRecords();
         }
 
         private void LoadAllPayrollRecords()
@@ -25,32 +28,22 @@ namespace practice.Pages
             try
             {
                 string query = @"
-            SELECT 
-                p.PayrollID,
-                p.EmployeeID,
-                e.firstName + ' ' + COALESCE(e.middleName + ' ', '') + e.lastName as EmployeeName,
-                ISNULL(SUM(a.hourWorked), 0) as TotalHours,
-                p.BasicPay,
-                p.OvertimePay,
-                p.Deductions,
-                p.NetPay,
-                p.dateIssue
-            FROM Payroll p
-            INNER JOIN Employee e ON p.EmployeeID = e.EmployeeID
-            LEFT JOIN Attendance a ON p.EmployeeID = a.employeeID 
-                AND a.dateToday BETWEEN p.payPeriodStart AND p.payPeriodEnd
-            GROUP BY 
-                p.PayrollID,
-                p.EmployeeID,
-                e.firstName,
-                e.middleName,
-                e.lastName,
-                p.BasicPay,
-                p.OvertimePay,
-                p.Deductions,
-                p.NetPay,
-                p.dateIssue
-            ORDER BY p.dateIssue DESC, p.PayrollID DESC";
+                SELECT 
+                    p.PayrollID,
+                    p.EmployeeID,
+                    e.firstName + ' ' + COALESCE(e.middleName + ' ', '') + e.lastName as EmployeeName,
+                    (SELECT ISNULL(SUM(hourWorked), 0) 
+                     FROM Attendance 
+                     WHERE employeeID = p.EmployeeID 
+                     AND dateToday BETWEEN p.payPeriodStart AND p.payPeriodEnd) as TotalHours,
+                    p.BasicPay,
+                    p.OvertimePay,
+                    p.Deductions,
+                    p.NetPay,
+                    p.dateIssue
+                FROM Payroll p
+                INNER JOIN Employee e ON p.EmployeeID = e.EmployeeID
+                ORDER BY p.dateIssue DESC, p.PayrollID DESC";
 
                 DataTable dt = db.GetData(query);
                 PayrollRecords.Clear();
@@ -139,7 +132,6 @@ namespace practice.Pages
                 MessageBox.Show("Error searching payroll records: " + ex.Message);
             }
         }
-
         // Add Enter key support for search
         private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
         {

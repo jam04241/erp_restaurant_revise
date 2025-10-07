@@ -1,4 +1,5 @@
 ﻿using erpRestaurantRevise.Models;
+using erpRestaurantRevise.Pages;
 using erpRestaurantRevise.Services;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
@@ -12,9 +13,12 @@ namespace practice.Pages
     {
         // Add this field to the ReserveManage class to fix CS0103
         private static readonly string connectionString = "MyDbConnection";
-        public ReserveManage()
+
+        private Frame _navigate_Panel;
+        public ReserveManage(Frame navigate_Panel)
         {
             InitializeComponent();
+            _navigate_Panel = navigate_Panel;
 
             // Load all necessary data from database
             ReservationService.LoadTables();
@@ -255,6 +259,16 @@ namespace practice.Pages
             // Implement cancellation logic here, or call ReservationService.CancelReservationWithReason
             ReservationService.CancelReservationWithReason(reservation.ReservationID, "Cancelled from Confirmed list");
             LoadData(); // Refresh the lists
+        }
+
+        private void addCustomerBtn_Click(object sender, RoutedEventArgs e)
+        {
+            _navigate_Panel.Navigate(new ReserveAdd(this._navigate_Panel));
+        }
+
+        private void addTableBtn_Click(object sender, RoutedEventArgs e)
+        {
+            _navigate_Panel.Navigate(new ReserveCreateTable(this._navigate_Panel));
         }
     }
 }

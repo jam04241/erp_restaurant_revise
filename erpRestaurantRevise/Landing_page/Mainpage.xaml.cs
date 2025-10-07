@@ -101,7 +101,7 @@ namespace practice.Landing_Page
 
         private void customerReservationBtn_Click(object sender, RoutedEventArgs e)
         {
-            Navigate_Panel.Navigate(new ReserveManage());
+            Navigate_Panel.Navigate(new ReserveManage(Navigate_Panel));
         }
 
         private void empmanagedBtn_Click(object sender, RoutedEventArgs e)
@@ -111,12 +111,11 @@ namespace practice.Landing_Page
 
         private void customerTableBtn_Click(object sender, RoutedEventArgs e)
         {
-            Navigate_Panel.Navigate(new ReserveCreateTable());
+           
         }
 
         private void addCustomersBtn_Click(object sender, RoutedEventArgs e)
         {
-            Navigate_Panel.Navigate(new ReserveAdd());
         }
 
         private void reservationListBtn_Click(object sender, RoutedEventArgs e)

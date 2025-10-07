@@ -40,6 +40,7 @@
             <Label Content="No. of Guest/s" FontSize="15" Foreground="White" Margin="10,384,121,184" Grid.Column="1" FontFamily="Sitka Small" FontWeight="Bold"/>
 
         </Grid>
+        <Button x:Name="backBtn" Content="Back" HorizontalAlignment="Left" Margin="50,50,0,0" VerticalAlignment="Top" Height="23" Width="74" Click="backBtn_Click" Background="#FFE4DD2B" FontWeight="Bold" FontSize="14"/>
 
 
     </Grid>
