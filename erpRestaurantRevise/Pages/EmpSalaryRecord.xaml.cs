@@ -1,34 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using erpRestaurantRevise;
+using erpRestaurantRevise.Models;
+using Microsoft.Data.SqlClient;
+using System;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace practice.Pages
 {
-    /// <summary>
-    /// Interaction logic for EmpManage.xaml
-    /// </summary>
     public partial class EmpSalaryRecord : Page
     {
+        private connDB db = new connDB();
+        public ObservableCollection<PayrollRecord> PayrollRecords { get; set; }
+
         public EmpSalaryRecord()
         {
             InitializeComponent();
-<<<<<<< Updated upstream
-=======
-            PayrollRecords = new ObservableCollection<PayrollRecord>();
-            DataContext = this;
-            LoadAllPayrollRecords();
-
         }
 
         private void LoadAllPayrollRecords()
@@ -176,7 +165,6 @@ namespace practice.Pages
             {
                 searchTextBox.Text = "Name / Employee no.";
             }
->>>>>>> Stashed changes
         }
     }
 }
