@@ -18,195 +18,257 @@ namespace practice.Pages
         public EmpPayroll()
         {
             InitializeComponent();
-            LoadEmployees();
             payrollDataGrid.ItemsSource = payrollList;
-        }
-
-        // Custom class to store EmployeeID + FullName in ComboBox
-        private class EmployeeComboItem
-        {
-            public int EmployeeID { get; set; }
-            public string FullName { get; set; }
-            public override string ToString() => FullName;
-        }
-
-        private void LoadEmployees()
-        {
-            try
-            {
-                string query = "SELECT EmployeeID, firstName, middleName, lastName FROM Employee";
-                DataTable dt = db.GetData(query);
-
-                employeeComboBox.ItemsSource = null;
-
-                var employeeList = new List<EmployeeComboItem>();
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    string fullName = $"{row["firstName"]} {row["middleName"]} {row["lastName"]}"
-                                        .Replace("  ", " ").Trim();
-
-                    employeeList.Add(new EmployeeComboItem
-                    {
-                        EmployeeID = Convert.ToInt32(row["EmployeeID"]),
-                        FullName = fullName
-                    });
-                }
-
-                employeeComboBox.ItemsSource = employeeList;
-
-                if (employeeComboBox.Items.Count > 0)
-                    employeeComboBox.SelectedIndex = 0;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading employees: " + ex.Message);
-            }
         }
 
         private void GeneratePayroll_Click(object sender, RoutedEventArgs e)
         {
-            if (employeeComboBox.SelectedItem == null || !startDatePicker.SelectedDate.HasValue || !endDatePicker.SelectedDate.HasValue)
+            if (!startDatePicker.SelectedDate.HasValue || !endDatePicker.SelectedDate.HasValue)
             {
-                MessageBox.Show("Please select an employee and date range.");
+                MessageBox.Show("Please select a date range.");
                 return;
             }
 
-            var selectedItem = (EmployeeComboItem)employeeComboBox.SelectedItem;
-            int employeeId = selectedItem.EmployeeID;
-            string employeeName = selectedItem.FullName;
             DateTime startDate = startDatePicker.SelectedDate.Value;
             DateTime endDate = endDatePicker.SelectedDate.Value;
 
             try
             {
-                // 1️⃣ Compute total work hours AND calculate overtime (hours over 8 per day)
-                string attendanceQuery = @"
-            SELECT 
-                ISNULL(SUM(
-                    CASE 
-                        WHEN hourWorked IS NOT NULL THEN hourWorked
-                        WHEN timeIn IS NOT NULL AND timeOut IS NOT NULL THEN DATEDIFF(MINUTE, timeIn, timeOut)/60.0
-                        ELSE 0
-                    END
-                ), 0) AS TotalHours,
-                ISNULL(SUM(
-                    CASE 
-                        WHEN hourWorked IS NOT NULL THEN 
-                            CASE WHEN hourWorked > 8 THEN hourWorked - 8 ELSE 0 END
-                        WHEN timeIn IS NOT NULL AND timeOut IS NOT NULL THEN 
-                            CASE WHEN DATEDIFF(MINUTE, timeIn, timeOut)/60.0 > 8 THEN DATEDIFF(MINUTE, timeIn, timeOut)/60.0 - 8 ELSE 0 END
-                        ELSE 0
-                    END
-                ), 0) AS TotalOvertime
-            FROM Attendance
-            WHERE EmployeeID = @EmployeeID
-            AND dateToday BETWEEN @StartDate AND @EndDate";
+                // 1️⃣ Check if payroll already exists for this date range
+                string checkPayrollQuery = @"
+            SELECT COUNT(*) as PayrollCount 
+            FROM Payroll 
+            WHERE PayPeriodStart = @StartDate AND PayPeriodEnd = @EndDate";
 
-                DataTable attendanceData = new DataTable();
+                DataTable checkData = new DataTable();
                 using (SqlConnection conn = db.GetConnection())
-                using (SqlCommand cmd = new SqlCommand(attendanceQuery, conn))
+                using (SqlCommand cmd = new SqlCommand(checkPayrollQuery, conn))
                 {
-                    cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
                     cmd.Parameters.AddWithValue("@StartDate", startDate);
                     cmd.Parameters.AddWithValue("@EndDate", endDate);
                     conn.Open();
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        attendanceData.Load(reader);
+                        checkData.Load(reader);
                     }
                 }
 
-                double totalHours = 0;
-                double overtimeHours = 0;
-
-                if (attendanceData.Rows.Count > 0)
+                if (checkData.Rows.Count > 0 && Convert.ToInt32(checkData.Rows[0]["PayrollCount"]) > 0)
                 {
-                    totalHours = Convert.ToDouble(attendanceData.Rows[0]["TotalHours"]);
-                    overtimeHours = Convert.ToDouble(attendanceData.Rows[0]["TotalOvertime"]);
+                    MessageBox.Show($"Payroll for the date range {startDate:yyyy-MM-dd} to {endDate:yyyy-MM-dd} has already been generated.");
+                    return;
                 }
 
-                // 2️⃣ Get EmployeePosition rates - REMOVED deduction
-                string positionQuery = @"
-            SELECT ep.hourlyRate, ep.overtime
-            FROM Employee e
-            INNER JOIN EmployeePosition ep ON e.positionID = ep.positionID
-            WHERE e.EmployeeID = @EmployeeID";
-
-                DataTable posData = new DataTable();
+                // 2️⃣ Get all employees
+                string employeesQuery = "SELECT EmployeeID, firstName, middleName, lastName FROM Employee";
+                DataTable employeesData = new DataTable();
                 using (SqlConnection conn = db.GetConnection())
-                using (SqlCommand cmd = new SqlCommand(positionQuery, conn))
+                using (SqlCommand cmd = new SqlCommand(employeesQuery, conn))
                 {
-                    cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
                     conn.Open();
-
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        posData.Load(reader);
+                        employeesData.Load(reader);
                     }
                 }
 
-                if (posData.Rows.Count == 0)
+                if (employeesData.Rows.Count == 0)
                 {
-                    MessageBox.Show("Employee position not found or not assigned.");
+                    MessageBox.Show("No employees found in the system.");
                     return;
                 }
 
-                if (posData.Rows[0]["hourlyRate"] == DBNull.Value)
+                int processedEmployees = 0;
+                int successfulPayrolls = 0;
+
+                // Clear existing payroll list
+                payrollList.Clear();
+
+                // 3️⃣ Process payroll for each employee
+                foreach (DataRow employeeRow in employeesData.Rows)
                 {
-                    MessageBox.Show("Hourly rate is not set for this employee's position.");
-                    return;
+                    processedEmployees++;
+                    int employeeId = Convert.ToInt32(employeeRow["EmployeeID"]);
+                    string fullName = $"{employeeRow["firstName"]} {employeeRow["middleName"]} {employeeRow["lastName"]}".Replace("  ", " ").Trim();
+
+                    try
+                    {
+                        // Compute total work hours, overtime, AND late minutes
+                        string attendanceQuery = @"
+                    SELECT 
+                        ISNULL(SUM(
+                            CASE 
+                                WHEN hourWorked IS NOT NULL THEN hourWorked
+                                WHEN timeIn IS NOT NULL AND timeOut IS NOT NULL THEN DATEDIFF(MINUTE, timeIn, timeOut)/60.0
+                                ELSE 0
+                            END
+                        ), 0) AS TotalHours,
+                        ISNULL(SUM(
+                            CASE 
+                                WHEN hourWorked IS NOT NULL THEN 
+                                    CASE WHEN hourWorked > 8 THEN hourWorked - 8 ELSE 0 END
+                                WHEN timeIn IS NOT NULL AND timeOut IS NOT NULL THEN 
+                                    CASE WHEN DATEDIFF(MINUTE, timeIn, timeOut)/60.0 > 8 THEN DATEDIFF(MINUTE, timeIn, timeOut)/60.0 - 8 ELSE 0 END
+                                ELSE 0
+                            END
+                        ), 0) AS TotalOvertime,
+                        ISNULL(SUM(
+                            CASE 
+                                WHEN status = 'Late' AND timeIn IS NOT NULL THEN 
+                                    DATEDIFF(MINUTE, '08:00', CAST(timeIn AS TIME))
+                                ELSE 0
+                            END
+                        ), 0) AS TotalLateMinutes
+                    FROM Attendance
+                    WHERE EmployeeID = @EmployeeID
+                    AND dateToday BETWEEN @StartDate AND @EndDate";
+
+                        DataTable attendanceData = new DataTable();
+                        using (SqlConnection conn = db.GetConnection())
+                        using (SqlCommand cmd = new SqlCommand(attendanceQuery, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
+                            cmd.Parameters.AddWithValue("@StartDate", startDate);
+                            cmd.Parameters.AddWithValue("@EndDate", endDate);
+                            conn.Open();
+
+                            using (SqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                attendanceData.Load(reader);
+                            }
+                        }
+
+                        double totalHours = 0;
+                        double overtimeHours = 0;
+                        int totalLateMinutes = 0;
+
+                        if (attendanceData.Rows.Count > 0)
+                        {
+                            totalHours = Convert.ToDouble(attendanceData.Rows[0]["TotalHours"]);
+                            overtimeHours = Convert.ToDouble(attendanceData.Rows[0]["TotalOvertime"]);
+                            totalLateMinutes = Convert.ToInt32(attendanceData.Rows[0]["TotalLateMinutes"]);
+                        }
+
+                        // Get EmployeePosition rates
+                        string positionQuery = @"
+                    SELECT ep.hourlyRate, ep.overtime
+                    FROM Employee e
+                    INNER JOIN EmployeePosition ep ON e.positionID = ep.positionID
+                    WHERE e.EmployeeID = @EmployeeID";
+
+                        DataTable posData = new DataTable();
+                        using (SqlConnection conn = db.GetConnection())
+                        using (SqlCommand cmd = new SqlCommand(positionQuery, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
+                            conn.Open();
+
+                            using (SqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                posData.Load(reader);
+                            }
+                        }
+
+                        if (posData.Rows.Count == 0)
+                        {
+                            // Skip employees without position assignment
+                            continue;
+                        }
+
+                        if (posData.Rows[0]["hourlyRate"] == DBNull.Value)
+                        {
+                            // Skip employees without hourly rate
+                            continue;
+                        }
+
+                        decimal hourlyRate = Convert.ToDecimal(posData.Rows[0]["hourlyRate"]);
+                        decimal overtimeRate = Convert.ToDecimal(posData.Rows[0]["overtime"]);
+
+                        // Calculate expected hours based on work days in date range
+                        decimal expectedHours = 0;
+                        for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                        {
+                            if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
+                            {
+                                expectedHours += 8; // 8 hours per work day
+                            }
+                        }
+
+                        // Calculate payroll
+                        decimal regularHours = Math.Min(Convert.ToDecimal(totalHours), expectedHours);
+                        decimal actualOvertimeHours = Convert.ToDecimal(overtimeHours);
+
+                        decimal basicPay = regularHours * hourlyRate;
+                        decimal overtimePay = actualOvertimeHours * overtimeRate;
+
+                        // Calculate deduction for hours NOT worked (if total hours < expected hours)
+                        decimal hoursShort = expectedHours - Convert.ToDecimal(totalHours);
+                        decimal shortageDeduction = hoursShort > 0 ? hoursShort * hourlyRate : 0;
+
+                        // Calculate late deduction based on minutes late
+                        decimal minuteRate = hourlyRate / 60; // Hourly rate per minute
+                        decimal lateDeduction = minuteRate * totalLateMinutes;
+
+                        // Total deduction = shortage + late
+                        decimal totalDeduction = shortageDeduction + lateDeduction;
+
+                        decimal netPay = (basicPay + overtimePay) - totalDeduction;
+                        DateTime dateIssued = DateTime.Now;
+
+                        // Insert into Payroll table
+                        string insertQuery = @"
+                    INSERT INTO Payroll (EmployeeID, PayPeriodStart, PayPeriodEnd, BasicPay, OvertimePay, Deductions, NetPay, DateIssue)
+                    VALUES (@EmployeeID, @PayPeriodStart, @PayPeriodEnd, @BasicPay, @OvertimePay, @Deductions, @NetPay, @DateIssue);
+                    SELECT CAST(SCOPE_IDENTITY() AS INT);";
+
+                        int newPayrollID = 0;
+                        using (SqlConnection conn = db.GetConnection())
+                        using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
+                            cmd.Parameters.AddWithValue("@PayPeriodStart", startDate);
+                            cmd.Parameters.AddWithValue("@PayPeriodEnd", endDate);
+                            cmd.Parameters.AddWithValue("@BasicPay", basicPay);
+                            cmd.Parameters.AddWithValue("@OvertimePay", overtimePay);
+                            cmd.Parameters.AddWithValue("@Deductions", totalDeduction);
+                            cmd.Parameters.AddWithValue("@NetPay", netPay);
+                            cmd.Parameters.AddWithValue("@DateIssue", dateIssued);
+
+                            conn.Open();
+                            newPayrollID = (int)cmd.ExecuteScalar();
+                        }
+
+                        // Add to DataGrid
+                        payrollList.Add(new PayrollRecord
+                        {
+                            PayrollID = newPayrollID,
+                            EmployeeID = employeeId,
+                            EmployeeName = fullName,
+                            TotalHours = totalHours,
+                            BasicPay = basicPay,
+                            OvertimePay = overtimePay,
+                            Deduction = totalDeduction,
+                            NetPay = netPay,
+                            DateIssued = dateIssued
+                        });
+
+                        successfulPayrolls++;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log error but continue with other employees
+                        Console.WriteLine($"Error processing payroll for employee {employeeId}: {ex.Message}");
+                    }
                 }
 
-                decimal hourlyRate = Convert.ToDecimal(posData.Rows[0]["hourlyRate"]);
-                decimal overtimeRate = Convert.ToDecimal(posData.Rows[0]["overtime"]);
-                decimal deduction = 0; // Set deduction to 0 since it's not in the table
+                // Refresh the DataGrid
+                payrollDataGrid.Items.Refresh();
 
-                // 3️⃣ Calculate payroll
-                decimal basicPay = Convert.ToDecimal(totalHours) * hourlyRate;
-                decimal overtimePay = Convert.ToDecimal(overtimeHours) * overtimeRate;
-                decimal netPay = (basicPay + overtimePay) - deduction;
-                DateTime dateIssued = DateTime.Now;
-
-                // 4️⃣ Insert into Payroll table
-                string insertQuery = @"
-            INSERT INTO Payroll (EmployeeID, PayPeriodStart, PayPeriodEnd, BasicPay, OvertimePay, Deductions, NetPay, DateIssue)
-            VALUES (@EmployeeID, @PayPeriodStart, @PayPeriodEnd, @BasicPay, @OvertimePay, @Deductions, @NetPay, @DateIssue);
-            SELECT CAST(SCOPE_IDENTITY() AS INT);";
-
-                int newPayrollID = 0;
-                using (SqlConnection conn = db.GetConnection())
-                using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
-                {
-                    cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
-                    cmd.Parameters.AddWithValue("@PayPeriodStart", startDate);
-                    cmd.Parameters.AddWithValue("@PayPeriodEnd", endDate);
-                    cmd.Parameters.AddWithValue("@BasicPay", basicPay);
-                    cmd.Parameters.AddWithValue("@OvertimePay", overtimePay);
-                    cmd.Parameters.AddWithValue("@Deductions", deduction);
-                    cmd.Parameters.AddWithValue("@NetPay", netPay);
-                    cmd.Parameters.AddWithValue("@DateIssue", dateIssued);
-
-                    conn.Open();
-                    newPayrollID = (int)cmd.ExecuteScalar();
-                }
-
-                // 5️⃣ Add to DataGrid
-                payrollList.Add(new PayrollRecord
-                {
-                    PayrollID = newPayrollID,
-                    EmployeeID = employeeId,
-                    EmployeeName = employeeName,
-                    TotalHours = totalHours,
-                    BasicPay = basicPay,
-                    OvertimePay = overtimePay,
-                    Deduction = deduction,
-                    NetPay = netPay,
-                    DateIssued = dateIssued
-                });
-
-                MessageBox.Show("Payroll generated and saved successfully!");
+                MessageBox.Show($"Payroll generation completed!\n" +
+                               $"Processed: {processedEmployees} employees\n" +
+                               $"Successful: {successfulPayrolls} payrolls generated\n" +
+                               $"Date Range: {startDate:yyyy-MM-dd} to {endDate:yyyy-MM-dd}");
             }
             catch (Exception ex)
             {

@@ -16,11 +16,32 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="1" Width="800" Height="800">
             <StackPanel Margin="50,146,47,54" Height="600" Width="700">
-                <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Height="600"/>
+                <DataGrid x:Name="payrollDataGrid" Height="600" AutoGenerateColumns="False"
+                          ItemsSource="{Binding PayrollRecords}"
+                          Foreground="Black" Background="White" AlternatingRowBackground="#FFE5E5E5">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Payroll ID" Binding="{Binding PayrollID}" Width="80"/>
+                        <DataGridTextColumn Header="Employee ID" Binding="{Binding EmployeeID}" Width="80"/>
+                        <DataGridTextColumn Header="Employee Name" Binding="{Binding EmployeeName}" Width="150"/>
+                        <DataGridTextColumn Header="Total Hours" Binding="{Binding TotalHours, StringFormat=N1}" Width="80"/>
+                        <DataGridTextColumn Header="Basic Pay" Binding="{Binding BasicPay, StringFormat=N2}" Width="100"/>
+                        <DataGridTextColumn Header="Overtime Pay" Binding="{Binding OvertimePay, StringFormat=N2}" Width="100"/>
+                        <DataGridTextColumn Header="Deductions" Binding="{Binding Deduction, StringFormat=N2}" Width="100"/>
+                        <DataGridTextColumn Header="Net Pay" Binding="{Binding NetPay, StringFormat=N2}" Width="100"/>
+                        <DataGridTextColumn Header="Date Issued" Binding="{Binding DateIssued, StringFormat=yyyy-MM-dd}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
-            <TextBox HorizontalAlignment="Left" Margin="370,100,0,0" TextWrapping="Wrap" Text="Name / Employee no." VerticalAlignment="Top" Width="230" Height="24"/>
-            <Button Content="Search" HorizontalAlignment="Left" Margin="614,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.114,0.125" Height="24" Width="96" Background="#FF7DD22C" Foreground="White"/>
-            <Label Content="Payroll Records" HorizontalAlignment="Left" Margin="52,46,0,0" VerticalAlignment="Top" Foreground="White" FontSize="18"/>
+            <TextBox x:Name="searchTextBox" HorizontalAlignment="Left" Margin="370,100,0,0" TextWrapping="Wrap" 
+                     Text="Name / Employee no." VerticalAlignment="Top" Width="230" Height="24"
+                     KeyDown="SearchTextBox_KeyDown"
+                     GotFocus="SearchTextBox_GotFocus"
+                     LostFocus="SearchTextBox_LostFocus"/>
+            <Button Content="Search" HorizontalAlignment="Left" Margin="614,100,0,0" VerticalAlignment="Top" 
+                    RenderTransformOrigin="-0.114,0.125" Height="24" Width="96" Background="#FF7DD22C" 
+                    Foreground="White" Click="SearchButton_Click"/>
+            <Label Content="Payroll Records" HorizontalAlignment="Left" Margin="52,46,0,0" VerticalAlignment="Top" 
+                   Foreground="White" FontSize="18"/>
         </Grid>
     </Grid>
 </Page>
