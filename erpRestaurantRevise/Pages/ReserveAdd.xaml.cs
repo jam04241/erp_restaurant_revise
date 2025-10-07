@@ -11,10 +11,12 @@ namespace practice.Pages
     public partial class ReserveAdd : Page
     {
         private connDB db = new connDB();
-
-        public ReserveAdd()
+        private Frame _navigate_Panel;
+        public ReserveAdd(Frame navigate_Panel)
         {
             InitializeComponent();
+
+            _navigate_Panel = navigate_Panel;
         }
 
         private void submitBtn_Click(object sender, RoutedEventArgs e)
@@ -90,6 +92,11 @@ namespace practice.Pages
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
+        }
+
+        private void backBtn_Click(object sender, RoutedEventArgs e)
+        {
+            _navigate_Panel.Navigate(new ReserveManage(this._navigate_Panel));
         }
     }
 }

@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.RowSpan="2">
-            <Label Content="Create Table" Margin="70,78,0,0" VerticalAlignment="Top" Foreground="White" FontSize="18" FontFamily="Arial" HorizontalAlignment="Left" FontWeight="Bold" />
+            <Label Content="Create Table" Margin="70,144,0,0" VerticalAlignment="Top" Foreground="White" FontSize="18" FontFamily="Arial" HorizontalAlignment="Left" FontWeight="Bold" />
 
             <Label Content="Table No" Margin="70,198,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="Arial" HorizontalAlignment="Left" />
             <Label Content="Station" HorizontalAlignment="Left" Margin="231,198,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="Arial" />
@@ -53,6 +53,7 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+            <Button x:Name="backBtn" Content="Back" HorizontalAlignment="Left" Margin="70,67,0,0" VerticalAlignment="Top" Height="23" Width="74" Click="backBtn_Click" Background="#FFE4DD2B" FontWeight="Bold" FontSize="14"/>
         </Grid>
     </Grid>
 </Page>
