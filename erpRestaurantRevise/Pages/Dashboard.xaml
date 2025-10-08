@@ -3,31 +3,256 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:oxy="http://oxyplot.org/wpf"
       xmlns:local="clr-namespace:practice.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="900"
       Title="Dashboard">
 
     <Grid Background="#FF051821" MaxHeight="900" MaxWidth="900">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Height="900" Width="900">
-            <Grid Margin="42,99,621,576">
-                <Button Content="Employee" HorizontalAlignment="Center" Margin="0,185,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15" Background="{x:Null}" BorderBrush="{x:Null}"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Header -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- KPI Cards -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Navigation Buttons -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Charts Section -->
+                    <RowDefinition Height="*"/>
+                    <!-- Bottom Padding -->
+                </Grid.RowDefinitions>
+
+                <!-- HEADER -->
+                <Grid Grid.Row="0" Margin="20,10,20,10">
+                    <TextBlock Text="RESTAURANT DASHBOARD" 
+                               FontSize="28" 
+                               FontWeight="Bold" 
+                               Foreground="White" 
+                               HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="txtCurrentDate" 
+                               Text="Thursday, October 09, 2025" 
+                               FontSize="14" 
+                               Foreground="#FFAAAAAA" 
+                               HorizontalAlignment="Right" 
+                               VerticalAlignment="Center"/>
+                </Grid>
+
+                <!-- KPI CARDS SECTION -->
+                <Grid Grid.Row="1" Margin="20,10,20,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Card 1: Total Employees -->
+                    <Border Grid.Column="0" Background="#FF0A2236" CornerRadius="10" Margin="5" Padding="15">
+                        <StackPanel>
+                            <TextBlock Text="👥 EMPLOYEES" Foreground="#FF4A9EFF" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock x:Name="txtTotalEmployees" Text="0" Foreground="White" FontSize="32" FontWeight="Bold" Margin="0,5,0,0"/>
+                            <TextBlock x:Name="txtActiveEmployees" Text="Active: 0" Foreground="#FFAAAAAA" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Card 2: Today's Attendance -->
+                    <Border Grid.Column="1" Background="#FF0A2236" CornerRadius="10" Margin="5" Padding="15">
+                        <StackPanel>
+                            <TextBlock Text="📅 ATTENDANCE TODAY" Foreground="#FF4AFF88" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock x:Name="txtAttendanceRate" Text="0%" Foreground="White" FontSize="32" FontWeight="Bold" Margin="0,5,0,0"/>
+                            <TextBlock x:Name="txtPresentToday" Text="Present: 0/0" Foreground="#FFAAAAAA" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Card 3: Monthly Payroll -->
+                    <Border Grid.Column="2" Background="#FF0A2236" CornerRadius="10" Margin="5" Padding="15">
+                        <StackPanel>
+                            <TextBlock Text="💰 MONTHLY PAYROLL" Foreground="#FFFFAA4A" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock x:Name="txtMonthlyPayroll" Text="₱0.00" Foreground="White" FontSize="32" FontWeight="Bold" Margin="0,5,0,0"/>
+                            <TextBlock x:Name="txtPayrollStatus" Text="This Month" Foreground="#FFAAAAAA" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Card 4: Today's Reservations -->
+                    <Border Grid.Column="3" Background="#FF0A2236" CornerRadius="10" Margin="5" Padding="15">
+                        <StackPanel>
+                            <TextBlock Text="🍽️ RESERVATIONS TODAY" Foreground="#FFFF4A9E" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock x:Name="txtTodayReservations" Text="0" Foreground="White" FontSize="32" FontWeight="Bold" Margin="0,5,0,0"/>
+                            <TextBlock x:Name="txtUpcomingReservations" Text="Upcoming: 0" Foreground="#FFAAAAAA" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- POSITION ANALYTICS & ADD BUTTON -->
+                <Grid Grid.Row="2" Margin="20,10,20,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Position Details Table -->
+                    <Border Grid.Column="0" Background="#FF0A2236" CornerRadius="10" Margin="5" Padding="15">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="💼 EMPLOYEE POSITIONS SALARY BREAKDOWN" 
+                                       Foreground="White" 
+                                       FontSize="14" 
+                                       FontWeight="Bold" 
+                                       Margin="0,0,0,10"/>
+
+                            <DataGrid Grid.Row="1" 
+                                      x:Name="dgPositions"
+                                      AutoGenerateColumns="False"
+                                      IsReadOnly="True"
+                                      Background="Transparent"
+                                      Foreground="White"
+                                      BorderBrush="Transparent"
+                                      GridLinesVisibility="None"
+                                      HeadersVisibility="Column"
+                                      CanUserReorderColumns="False"
+                                      CanUserResizeColumns="True"
+                                      CanUserSortColumns="True"
+                                      SelectionMode="Single"
+                                      AlternatingRowBackground="#FF0D2D44"
+                                      RowBackground="Transparent">
+
+                                <DataGrid.ColumnHeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Background" Value="#FF163A5F"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="Padding" Value="10,5"/>
+                                        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                        <Setter Property="BorderBrush" Value="#FF1E4976"/>
+                                    </Style>
+                                </DataGrid.ColumnHeaderStyle>
+
+                                <DataGrid.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                        <Setter Property="Padding" Value="10,5"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Style>
+                                </DataGrid.CellStyle>
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Position" Binding="{Binding Position}" Width="*" />
+                                    <DataGridTextColumn Header="Base Salary" Binding="{Binding BaseSalary, StringFormat=₱{0:N2}}" Width="*" />
+                                    <DataGridTextColumn Header="Hourly Rate" Binding="{Binding HourlyRate, StringFormat=₱{0:N2}}" Width="*" />
+                                    <DataGridTextColumn Header="Overtime Rate" Binding="{Binding Overtime, StringFormat=₱{0:N2}}" Width="*" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
+
+                    <!-- Add Position Button -->
+                    <Border Grid.Column="1" Background="#FF0A2236" CornerRadius="10" Margin="5" Padding="15">
+                        <Button x:Name="positionTableBtn" 
+                                Content="➕ Add Position" 
+                                VerticalAlignment="Center" 
+                                HorizontalAlignment="Stretch"
+                                FontSize="14" 
+                                FontWeight="Bold"
+                                Background="#FF1E5A8E" 
+                                BorderBrush="#FF2A7BBF"
+                                BorderThickness="2"
+                                Foreground="White" 
+                                Cursor="Hand"
+                                Click="positionTableBtn_Click"
+                                Padding="15,10">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        CornerRadius="8">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#FF2A7BBF"/>
+                                                        <Setter Property="BorderBrush" Value="#FF3A8BCF"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Border>
+                </Grid>
+
+                <!-- CHARTS SECTION -->
+                <Grid Grid.Row="3" Margin="20,10,20,20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="280"/>
+                        <RowDefinition Height="280"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Attendance Chart -->
+                    <Border Grid.Row="0" Grid.Column="0" Background="#FF0A2236" CornerRadius="10" Margin="5" Padding="15">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="WEEKLY ATTENDANCE" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
+                            <oxy:PlotView Grid.Row="1" x:Name="AttendanceChart" Background="Transparent"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Reservation Status Chart -->
+                    <Border Grid.Row="0" Grid.Column="1" Background="#FF0A2236" CornerRadius="10" Margin="5" Padding="15">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="RESERVATION STATUS" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
+                            <oxy:PlotView Grid.Row="1" x:Name="ReservationChart" Background="Transparent"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Payroll Trends Chart -->
+                    <Border Grid.Row="1" Grid.Column="0" Background="#FF0A2236" CornerRadius="10" Margin="5" Padding="15">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="PAYROLL TRENDS (6 MONTHS)" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
+                            <oxy:PlotView Grid.Row="1" x:Name="PayrollChart" Background="Transparent"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Position Salary Chart -->
+                    <Border Grid.Row="1" Grid.Column="1" Background="#FF0A2236" CornerRadius="10" Margin="5" Padding="15">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="SALARY BY POSITION" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
+                            <oxy:PlotView Grid.Row="1" x:Name="PositionSalaryChart" Background="Transparent"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+
             </Grid>
-            <Grid Margin="336,99,328,576">
-                <Button Content="Reservation" HorizontalAlignment="Center" Margin="0,185,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15" BorderBrush="{x:Null}" Background="{x:Null}"/>
-            </Grid>
-            <Grid Margin="588,90,65,576">
-                <Button Content="Attendance" HorizontalAlignment="Center" Margin="0,194,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15" Background="{x:Null}" BorderBrush="{x:Null}"/>
-            </Grid>
-            <Grid Margin="62,352,569,314">
-                <Button Content="Payroll Annual Salary" HorizontalAlignment="Left" Margin="59,194,0,0" VerticalAlignment="Top" Foreground="White" FontSize="15" Background="{x:Null}" BorderBrush="{x:Null}"/>
-            </Grid>
-            <Grid Margin="336,352,295,314">
-                <Button x:Name="positionTableBtn" Content="Position Table" HorizontalAlignment="Left" Margin="59,194,0,0" VerticalAlignment="Top" FontSize="15" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="positionTableBtn_Click"/>
-            </Grid>
-        </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>

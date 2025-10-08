@@ -6,36 +6,171 @@
       xmlns:local="clr-namespace:practice.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="900"
-      Title="ReservationRecord">
+      Title="Reservation Records">
 
     <Grid Background="#FF051821">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
 
-        <!-- Page Title -->
-        <Label Content="Reservation Records" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" 
-               Foreground="White" FontSize="24" FontWeight="Bold"/>
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <Grid>
+                <TextBlock Text="RESERVATION RECORDS" Foreground="White" FontSize="20" 
+                           FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontFamily="Sitka Small"/>
+            </Grid>
+        </Border>
 
-        <!-- Scrollable DataGrid -->
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="20,10">
-            <DataGrid x:Name="RecordsDataGrid" AutoGenerateColumns="False" 
-                      HeadersVisibility="Column" IsReadOnly="True"
-                      RowHeight="40" FontSize="14"
-                      GridLinesVisibility="Horizontal" CanUserResizeColumns="True"
-                      MinWidth="800"
-                      LoadingRow="RecordsDataGrid_LoadingRow">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Customer" Binding="{Binding CustomerFullName}" Width="150" />
-                    <DataGridTextColumn Header="Date" Binding="{Binding DateReserve, StringFormat=d}" Width="150" />
-                    <DataGridTextColumn Header="Time" Binding="{Binding TimeReserve}" Width="150" />
-                    <DataGridTextColumn Header="Table" Binding="{Binding TableNumber}" Width="150" />
-                    <DataGridTextColumn Header="Guests" Binding="{Binding NumberOfGuests}" Width="120" />
-                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="140" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </ScrollViewer>
+        <!-- Main Content -->
+        <Border Grid.Row="1" Margin="50,20,50,20" Background="#FF1A4645" CornerRadius="15">
+            <Grid Margin="30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Summary Section -->
+                <Border Grid.Row="0" Background="#FF0D2D2C" CornerRadius="10" Padding="20" Margin="0,0,0,20">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <StackPanel Margin="0,0,30,0">
+                            <TextBlock Text="Total Reservations" Foreground="#FFAAAAAA" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="TotalReservationsText" Text="0" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Rectangle Width="2" Height="30" Fill="#FF4A9EFF" Margin="0,5"/>
+
+                        <StackPanel Margin="30,0,30,0">
+                            <TextBlock Text="Confirmed" Foreground="#FF4CAF50" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="ConfirmedText" Text="0" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Rectangle Width="2" Height="30" Fill="#FF4A9EFF" Margin="0,5"/>
+
+                        <StackPanel Margin="30,0,30,0">
+                            <TextBlock Text="Pending" Foreground="#FFFF9800" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="PendingText" Text="0" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Rectangle Width="2" Height="30" Fill="#FF4A9EFF" Margin="0,5"/>
+
+                        <StackPanel Margin="30,0,0,0">
+                            <TextBlock Text="Cancelled" Foreground="#FFF44336" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="CancelledText" Text="0" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Filter Section -->
+                <!-- Filter Section -->
+                <Border Grid.Row="1" Background="#FF0D2D2C" CornerRadius="10" Padding="20" Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- New column for actions -->
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Search -->
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                            <TextBlock Text="Search Customer" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <TextBox x:Name="SearchTextBox" Width="200" Height="40" 
+                    Background="#FF28666E" Foreground="White" 
+                    BorderBrush="#FF4A9EFF" BorderThickness="1"
+                    Padding="10" FontSize="14" CaretBrush="White"
+                    VerticalContentAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Date Range -->
+                        <StackPanel Grid.Column="2" HorizontalAlignment="Center" Width="300">
+                            <TextBlock Text="Date Range" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <DatePicker x:Name="StartDatePicker" Width="auto" Height="40" 
+                           Background="#FF28666E" Foreground="black"
+                           BorderBrush="#FF4A9EFF" BorderThickness="1"
+                           FontSize="12"/>
+                                <TextBlock Text=" to " Foreground="White" FontSize="12" 
+                          VerticalAlignment="Center" Margin="5,0,5,0"/>
+                                <DatePicker x:Name="EndDatePicker" Width="auto" Height="40" 
+                           Background="#FF28666E" Foreground="black"
+                           BorderBrush="#FF4A9EFF" BorderThickness="1"
+                           FontSize="12"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Status Filter -->
+                        <StackPanel Grid.Column="4" HorizontalAlignment="Center">
+                            <TextBlock Text="Filter by Status" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="StatusFilterComboBox" Width="150" Height="40"
+                     Background="#FF28666E" Foreground="Black"
+                     BorderBrush="#FF4A9EFF" BorderThickness="1"
+                     FontSize="14" Padding="5">
+                                <ComboBoxItem Content="All Status" Foreground="Black" IsSelected="True"/>
+                                <ComboBoxItem Content="Confirmed" Foreground="Black"/>
+                                <ComboBoxItem Content="Pending" Foreground="Black"/>
+                                <ComboBoxItem Content="Cancelled" Foreground="Black"/>
+                                <ComboBoxItem Content="Completed" Foreground="Black"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+
+                <!-- DataGrid Section -->
+                <Border Grid.Row="2" Background="#FF0D2D2C" CornerRadius="10" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Section Title -->
+                        <TextBlock Grid.Row="0" Text="All Reservation Records" 
+                                  Foreground="White" FontSize="16" FontWeight="Bold" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+                        <!-- DataGrid (Keeping your original properties exactly as they were) -->
+                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <DataGrid x:Name="RecordsDataGrid" 
+                                      AutoGenerateColumns="False" 
+                                      HeadersVisibility="Column" 
+                                      IsReadOnly="True"
+                                      RowHeight="40" 
+                                      FontSize="14"
+                                      GridLinesVisibility="Horizontal" 
+                                      CanUserResizeColumns="True"
+                                      MinWidth="800"
+                                      LoadingRow="RecordsDataGrid_LoadingRow"
+                                      Background="#FF0D2D2C"
+                                      Foreground="black"
+                                      BorderBrush="#FF4A9EFF" Width="690">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Customer" Binding="{Binding CustomerFullName}" Width="Auto" />
+                                    <DataGridTextColumn Header="Date" Binding="{Binding DateReserve, StringFormat=d}" Width="Auto" />
+                                    <DataGridTextColumn Header="Time" Binding="{Binding TimeReserve}" Width="100" />
+                                    <DataGridTextColumn Header="Table" Binding="{Binding TableNumber}" Width="150" />
+                                    <DataGridTextColumn Header="Guests" Binding="{Binding NumberOfGuests}" Width="150" />
+                                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <TextBlock Text="View and manage all restaurant reservation records" 
+                      Foreground="#FFAAAAAA" FontSize="12" FontStyle="Italic"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
     </Grid>
 </Page>

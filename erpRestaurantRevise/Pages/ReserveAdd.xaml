@@ -4,44 +4,237 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:practice.Pages"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="900"
-      Title="ReserveAdd">
+      Title="Add Reservation">
 
     <Grid Background="#FF051821">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="700"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1" Margin="50,38,50,64" Background="#FF28666E">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="539*"/>
-                <ColumnDefinition Width="261*"/>
-            </Grid.ColumnDefinitions>
-            <Label Content="Add Customer Reservation" HorizontalAlignment="Left" Margin="46,41,0,0" VerticalAlignment="Top" Width="259" Foreground="White" FontSize="18" HorizontalContentAlignment="Center" FontFamily="Sitka Small" FontStyle="Italic" FontWeight="Bold"/>
-            <Label Content="First Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="46,128,363,440" FontFamily="Sitka Small"/>
-            <Button x:Name="submitBtn" Content="Submit" Margin="76,508,66,54" Background="#FFCA0C0C" Foreground="White" Grid.Column="1" FontFamily="Sitka Small" Click="submitBtn_Click" />
-            <TextBox x:Name="firstnameField" Height="30" Width="220" Margin="46,158,273,410"/>
-            <Label Content="Middle Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="300,128,109,440" FontFamily="Sitka Small"/>
-            <TextBox x:Name="middlenameField" Height="30" Width="220" Margin="300,158,19,410"/>
-            <Label Content="Last Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="11,128,120,440" Grid.Column="1" FontFamily="Sitka Small"/>
-            <TextBox x:Name="lastnameField" Height="30" Width="220" Margin="11,158,30,410" Grid.Column="1"/>
-            <Label Content="Email" FontSize="15" FontWeight="Bold" Foreground="White" Margin="46,208,363,360" FontFamily="Sitka Small"/>
-            <TextBox x:Name="emailField" Height="30" Width="220" Margin="46,238,273,330"/>
-            <Label Content="Contact No." FontSize="15" FontWeight="Bold" Foreground="White" Margin="300,208,109,360"/>
-            <TextBox x:Name="contactField" Height="30" Width="220" Margin="300,238,19,330"/>
-            <Label Content="Date Reserve" FontSize="15" FontWeight="Bold" Foreground="White" Margin="46,384,363,184" FontFamily="Sitka Small"/>
-            <TextBox x:Name="dateField" Height="30" Width="220" Margin="46,414,273,154"/>
-            <Label Content="Time Reserve" FontSize="15" FontWeight="Bold" Foreground="White" Margin="300,384,109,184" FontFamily="Sitka Small"/>
-            <TextBox x:Name="timeField" Height="30" Width="220" Margin="300,414,19,154"/>
-            <TextBox x:Name="guestField" Height="30" Margin="10,414,31,154" Grid.Column="1"/>
-            <Label Content="Reservation Details" HorizontalAlignment="Left" Margin="23,337,0,0" VerticalAlignment="Top" Width="176" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalContentAlignment="Center"/>
-            <Label Content="No. of Guest/s" FontSize="15" Foreground="White" Margin="10,384,121,184" Grid.Column="1" FontFamily="Sitka Small" FontWeight="Bold"/>
 
-        </Grid>
-        <Button x:Name="backBtn" Content="Back" HorizontalAlignment="Left" Margin="50,50,0,0" VerticalAlignment="Top" Height="23" Width="74" Click="backBtn_Click" Background="#FFE4DD2B" FontWeight="Bold" FontSize="14"/>
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <Grid>
+                <Button x:Name="backBtn" Content="← Back" HorizontalAlignment="Left" Margin="15,0,0,0" 
+                        VerticalAlignment="Center" Height="35" Width="100" Click="backBtn_Click" 
+                        Background="Transparent" BorderBrush="#FF4A9EFF" BorderThickness="2"
+                        Foreground="White" FontWeight="Bold" FontSize="14" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="8">
+                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                              VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FF1E4976"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
 
+                <TextBlock Text="ADD CUSTOMER RESERVATION" Foreground="White" FontSize="20" 
+                           FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontFamily="Sitka Small"/>
+            </Grid>
+        </Border>
 
+        <!-- Main Form -->
+        <Border Grid.Row="1" Margin="50,1,50,39" Background="#FF28666E" CornerRadius="15">
+            <Grid Margin="30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Form Title -->
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="Customer Information" 
+                          Foreground="White" FontSize="18" FontWeight="Bold" FontFamily="Sitka Small"
+                          HorizontalAlignment="Center" Margin="0,20,0,30"/>
+
+                <!-- Left Column - Personal Information -->
+                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,0">
+                    <!-- First Name -->
+                    <TextBlock Text="First Name *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                              FontFamily="Sitka Small" Margin="0,0,0,5"/>
+                    <TextBox x:Name="firstnameField" Height="40" Background="#FF1A4D54" 
+                            Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                            Padding="10" FontSize="14" CaretBrush="White"/>
+
+                    <!-- Middle Name -->
+                    <TextBlock Text="Middle Name *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                              FontFamily="Sitka Small" Margin="0,15,0,5"/>
+                    <TextBox x:Name="middlenameField" Height="40" Background="#FF1A4D54" 
+                            Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                            Padding="10" FontSize="14" CaretBrush="White"/>
+
+                    <!-- Email -->
+                    <TextBlock Text="Email *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                              FontFamily="Sitka Small" Margin="0,15,0,5"/>
+                    <TextBox x:Name="emailField" Height="40" Background="#FF1A4D54" 
+                            Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                            Padding="10" FontSize="14" CaretBrush="White"/>
+                </StackPanel>
+
+                <!-- Right Column - Contact & Reservation Details -->
+                <StackPanel Grid.Row="1" Grid.Column="2" Margin="10,0,0,0">
+                    <!-- Last Name -->
+                    <TextBlock Text="Last Name *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                              FontFamily="Sitka Small" Margin="0,0,0,5"/>
+                    <TextBox x:Name="lastnameField" Height="40" Background="#FF1A4D54" 
+                            Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                            Padding="10" FontSize="14" CaretBrush="White"/>
+
+                    <!-- Contact No -->
+                    <TextBlock Text="Contact No. *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                              FontFamily="Sitka Small" Margin="0,15,0,5"/>
+                    <TextBox x:Name="contactField" Height="40" Background="#FF1A4D54" 
+                            Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                            Padding="10" FontSize="14" CaretBrush="White"/>
+
+                    <!-- Number of Guests -->
+                    <TextBlock Text="Number of Guests *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                              FontFamily="Sitka Small" Margin="0,15,0,5"/>
+                    <TextBox x:Name="guestField" Height="40" Background="#FF1A4D54" 
+                            Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                            Padding="10" FontSize="14" CaretBrush="White"/>
+                </StackPanel>
+
+                <!-- Reservation Details Section -->
+                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="#FF1A4D54" 
+                       CornerRadius="10" Margin="0,234,0,176" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Section Title -->
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="Reservation Details" 
+                                  Foreground="White" FontSize="16" FontWeight="Bold" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                        <!-- Date Reserve -->
+                        <StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
+                            <TextBlock Text="Date Reserve *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                      FontFamily="Sitka Small" Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                            <DatePicker x:Name="datePicker" Height="35" Width="200" 
+                                       Background="#FF28666E" Foreground="Black"
+                                       BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                       SelectedDate="{x:Static sys:DateTime.Now}"
+                                       FontSize="14"/>
+                        </StackPanel>
+
+                        <!-- Time Reserve (Military Time) -->
+                        <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">
+                            <TextBlock Text="Time Reserve (24h) *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                      FontFamily="Sitka Small" Margin="0,0,0,5" HorizontalAlignment="Center"/>
+
+                            <Grid Width="150" Height="35">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Hours (00-23) -->
+                                <ComboBox x:Name="hourComboBox" Grid.Column="0" Height="35"
+                                         Background="#FF28666E" Foreground="Black"
+                                         BorderBrush="#FF4A9EFF" BorderThickness="1,1,0,1"
+                                         FontSize="14" Padding="5"
+                                         SelectedIndex="0">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" Foreground="Black" Padding="5" HorizontalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+
+                                <!-- Separator -->
+                                <TextBlock Grid.Column="1" Text=":" VerticalAlignment="Center" 
+                                          HorizontalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold"/>
+
+                                <!-- Minutes (00, 15, 30, 45) -->
+                                <ComboBox x:Name="minuteComboBox" Grid.Column="2" Height="35"
+                                         Background="#FF28666E" Foreground="Black"
+                                         BorderBrush="#FF4A9EFF" BorderThickness="0,1,1,1"
+                                         FontSize="14" Padding="5"
+                                         SelectedIndex="0">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" Foreground="black" Padding="5" HorizontalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Grid>
+                            <TextBlock Text="Format: HH:MM (24-hour)" Foreground="#FFAAAAAA" FontSize="10" 
+                                      FontStyle="Italic" Margin="0,5,0,0" HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Submit Button -->
+                        <StackPanel Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button x:Name="submitBtn" Content="SUBMIT RESERVATION" 
+                                   Width="200" Height="45" Background="#FF4CAF50" 
+                                   Foreground="White" FontWeight="Bold" FontSize="14"
+                                   FontFamily="Sitka Small" Click="submitBtn_Click"
+                                   BorderThickness="0" Cursor="Hand">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}"
+                                                            CornerRadius="8">
+                                                        <ContentPresenter HorizontalAlignment="Center" 
+                                                                          VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#FF45A049"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <TextBlock Text="Fill in all required fields (*) to create a new reservation. Time is in 24-hour format." 
+                      Foreground="#FFAAAAAA" FontSize="12" FontStyle="Italic"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
     </Grid>
 </Page>

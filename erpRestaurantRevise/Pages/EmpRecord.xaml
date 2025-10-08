@@ -6,73 +6,254 @@
       xmlns:local="clr-namespace:practice.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="900"
-      Title="EmpRecord">
+      Title="Employee Records">
 
     <Grid Background="#FF051821">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="700"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1">
-            <TextBlock Height="50"/>
-            <Label Content="Employee Records" Foreground="White" FontSize="20" Width="750"/>
-            <TextBlock Height="20"/>
-            <WrapPanel Height="50" Width="750" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">
-                <!-- Search Box -->
-                <TextBox x:Name="SearchBox"
-             Width="200" Height="30"
-             VerticalAlignment="Center"
-             HorizontalAlignment="Center"
-             HorizontalContentAlignment="Center"
-             VerticalContentAlignment="Center"
-             Margin="0,0,20,0"
-             TextChanged="SearchBox_TextChanged"
-             />
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <Grid>
+                <TextBlock Text="EMPLOYEE RECORDS" Foreground="White" FontSize="20" 
+                           FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontFamily="Sitka Small"/>
+            </Grid>
+        </Border>
 
-                <!-- Sort ComboBox -->
-                <ComboBox x:Name="SortBox"
-              Width="120" Height="30"
-              VerticalAlignment="Center"
-              HorizontalAlignment="Center"
-              SelectionChanged="SortBox_SelectionChanged">
-                    <ComboBoxItem Content="Newest"/>
-                    <ComboBoxItem Content="Oldest"/>
-                </ComboBox>
-            </WrapPanel>
+        <!-- Main Content -->
+        <Border Grid.Row="1" Margin="50,20,50,20" Background="#FF1A4645" CornerRadius="15">
+            <Grid Margin="30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-            <StackPanel Width="750">
-                <DataGrid x:Name="employeeDataGrid"
-                          AutoGenerateColumns="False"
-                          CanUserAddRows="False"
-                          CanUserDeleteRows="False"
-                          IsReadOnly="True"
-                          Background="White"
-                          Height="500"
-                          Width="750"
-                          Margin="0,10,0,0">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Binding="{Binding EmployeeID}" Width="50"/>
-                        <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="*"/>
-                        <DataGridTextColumn Header="Middle Name" Binding="{Binding MiddleName}" Width="*"/>
-                        <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" Width="*"/>
-                        <DataGridTextColumn Header="Sex" Binding="{Binding Sex}" Width="*"/>
-                        <DataGridTextColumn Header="Contact" Binding="{Binding Contact}" Width="*"/>
-                        <DataGridTextColumn Header="Position" Binding="{Binding PositionName}" Width="*"/>
-                        <DataGridTemplateColumn Header="Actions" Width="150">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Content="Edit" Margin="5,0" Click="EditButton_Click"/>
-                                        <Button Content="Delete" Margin="5,0" Click="DeleteButton_Click"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </StackPanel>
-        </StackPanel>
+                <!-- Search and Filter Section -->
+                <Border Grid.Row="0" Background="#FF0D2D2C" CornerRadius="10" Padding="20" Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Search -->
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Left">
+                            <TextBlock Text="Search Employees" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <TextBox x:Name="SearchBox" Width="250" Height="35" 
+                                    Background="#FF28666E" Foreground="White" 
+                                    BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                    Padding="10" FontSize="14" CaretBrush="White"
+                                    VerticalContentAlignment="Center"
+                                    TextChanged="SearchBox_TextChanged">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="TextBox">
+                                                    <Border Background="{TemplateBinding Background}"
+                                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                                            CornerRadius="5">
+                                                        <ScrollViewer x:Name="PART_ContentHost"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </StackPanel>
+
+                        <!-- Sort -->
+                        <StackPanel HorizontalAlignment="Left" Grid.ColumnSpan="3" Margin="275,0,0,0">
+                            <TextBlock Text="Sort By" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="SortBox" Width="150" Height="35"
+                                     Background="#FF28666E" Foreground="White"
+                                     BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                     FontSize="14" Padding="5"
+                                     SelectionChanged="SortBox_SelectionChanged">
+                                <ComboBoxItem Content="Newest" Foreground="White"/>
+                                <ComboBoxItem Content="Oldest" Foreground="White"/>
+                                <ComboBoxItem Content="Name (A-Z)" Foreground="White"/>
+                                <ComboBoxItem Content="Name (Z-A)" Foreground="White"/>
+                                <ComboBoxItem Content="Position" Foreground="White"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Summary Section -->
+                <Border Grid.Row="1" Background="#FF0D2D2C" CornerRadius="10" Padding="15" Margin="0,0,0,20">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock x:Name="TotalEmployeesText" Text="Total Employees: 0" 
+                                  Foreground="White" FontSize="14" FontWeight="Bold"
+                                  VerticalAlignment="Center"/>
+                        <Rectangle Width="2" Height="20" Fill="#FF4A9EFF" Margin="20,0,20,0"/>
+                        <TextBlock x:Name="ActiveEmployeesText" Text="Active: 0" 
+                                  Foreground="#FF4CAF50" FontSize="14" FontWeight="Bold"
+                                  VerticalAlignment="Center"/>
+                        <Rectangle Width="2" Height="20" Fill="#FF4A9EFF" Margin="20,0,20,0"/>
+                        <TextBlock x:Name="InactiveEmployeesText" Text="Inactive: 0" 
+                                  Foreground="#FFF44336" FontSize="14" FontWeight="Bold"
+                                  VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- DataGrid Section -->
+                <Border Grid.Row="2" Background="#FF0D2D2C" CornerRadius="10" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Section Title -->
+                        <TextBlock Grid.Row="0" Text="Employee List" 
+                                  Foreground="White" FontSize="16" FontWeight="Bold" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+                        <!-- DataGrid -->
+                        <DataGrid Grid.Row="1" 
+                                  x:Name="employeeDataGrid"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  IsReadOnly="True"
+                                  Background="Transparent"
+                                  Foreground="White"
+                                  BorderBrush="#FF4A9EFF"
+                                  GridLinesVisibility="Horizontal"
+                                  HeadersVisibility="Column"
+                                  RowHeight="40"
+                                  VerticalScrollBarVisibility="Auto"
+                                  CanUserResizeColumns="False"
+                                  CanUserReorderColumns="False">
+
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#FF1E4976"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                    <Setter Property="BorderBrush" Value="#FF4A9EFF"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+
+                            <DataGrid.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGrid.CellStyle>
+
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="AlternationIndex" Value="0">
+                                            <Setter Property="Background" Value="#FF0D2D2C"/>
+                                        </Trigger>
+                                        <Trigger Property="AlternationIndex" Value="1">
+                                            <Setter Property="Background" Value="#FF1A4645"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#FF1E4976"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding EmployeeID}" Width="Auto"/>
+                                <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="Auto"/>
+                                <DataGridTextColumn Header="Middle Name" Binding="{Binding MiddleName}"  Width="Auto"/>
+                                <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"  Width="Auto"/>
+                                <DataGridTextColumn Header="Sex" Binding="{Binding Sex}"  Width="Auto"/>
+                                <DataGridTextColumn Header="Contact" Binding="{Binding Contact}"  Width="Auto"/>
+                                <DataGridTextColumn Header="Position" Binding="{Binding PositionName}"  Width="Auto"/>
+                                <DataGridTemplateColumn Header="Actions" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Button Content="Edit" Width="70" Height="30" Margin="5,2"
+                                                        Background="#FF4A9EFF" Foreground="White" FontWeight="Bold"
+                                                        Click="EditButton_Click"
+                                                        Cursor="Hand">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Border Background="{TemplateBinding Background}"
+                                                                                CornerRadius="4">
+                                                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                                                              VerticalAlignment="Center"/>
+                                                                        </Border>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="#FF2A7BBF"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                                <Button Content="Delete" Width="70" Height="30" Margin="5,2"
+                                                        Background="#FFE53935" Foreground="White" FontWeight="Bold"
+                                                        Click="DeleteButton_Click"
+                                                        Cursor="Hand">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Border Background="{TemplateBinding Background}"
+                                                                                CornerRadius="4">
+                                                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                                                              VerticalAlignment="Center"/>
+                                                                        </Border>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="#FFC62828"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <TextBlock Text="View and manage all employee records" 
+                      Foreground="#FFAAAAAA" FontSize="12" FontStyle="Italic"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
     </Grid>
 </Page>
+    

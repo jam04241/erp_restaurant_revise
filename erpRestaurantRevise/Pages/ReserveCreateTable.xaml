@@ -6,54 +6,378 @@
       xmlns:local="clr-namespace:practice.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="900"
-      Title="ReserveCreateTable">
+      Title="Create Tables">
 
-    <Grid Background='#FF051821'>
+    <Grid Background="#FF051821">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="800"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.RowSpan="2">
-            <Label Content="Create Table" Margin="70,144,0,0" VerticalAlignment="Top" Foreground="White" FontSize="18" FontFamily="Arial" HorizontalAlignment="Left" FontWeight="Bold" />
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <Grid>
+                <Button x:Name="backBtn" Content="← Back" HorizontalAlignment="Left" Margin="15,0,0,0" 
+                        VerticalAlignment="Center" Height="35" Width="100" Click="backBtn_Click" 
+                        Background="Transparent" BorderBrush="#FF4A9EFF" BorderThickness="2"
+                        Foreground="White" FontWeight="Bold" FontSize="14" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="8">
+                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                              VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FF1E4976"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
 
-            <Label Content="Table No" Margin="70,198,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="Arial" HorizontalAlignment="Left" />
-            <Label Content="Station" HorizontalAlignment="Left" Margin="231,198,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="Arial" />
-            <Label Content="Table Quantity" HorizontalAlignment="Left" Margin="371,198,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="Arial" />
-            <Label Content="Chair Quantity" HorizontalAlignment="Left" Margin="537,198,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="Arial" />
+                <TextBlock Text="CREATE TABLES" Foreground="White" FontSize="20" 
+                           FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontFamily="Sitka Small"/>
+            </Grid>
+        </Border>
 
-            <TextBox x:Name="TableNoTextBox" HorizontalAlignment="Left" Margin="70,241,0,0" Width="117" Height="29" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="15"/>
-            <TextBox x:Name="LocationTextBox" HorizontalAlignment="Left" Margin="231,241,0,0" Width="117" Height="29" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="15"/>
-            <TextBox x:Name="TableQuantityTextBox" HorizontalAlignment="Left" Margin="381,241,0,0" Width="117" Height="29" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="15"/>
-            <TextBox x:Name="ChairQuantityTextBox" HorizontalAlignment="Left" Margin="533,241,0,0" Width="118" Height="29" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="15"/>
+        <!-- Main Content -->
+        <Border Grid.Row="1" Margin="50,20,50,20" Background="#FF1A4645" CornerRadius="15">
+            <Grid Margin="30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-            <Button Content="Create" HorizontalAlignment="Left" Margin="690,239,0,0" VerticalAlignment="Top" Width="122" Height="24" Background="#FFABFF00" Foreground="Black" FontWeight="Bold" FontSize="15"
-                    Click="CreateTableButton_Click"/>
+                <!-- Form Section -->
+                <Border Grid.Row="0" Background="#FF0D2D2C" CornerRadius="10" Padding="20" Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-            <DataGrid x:Name="TablesDataGrid" Height="200" AutoGenerateColumns="False" IsReadOnly="True" Margin="70,325,88,325">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Table No" Binding="{Binding TableNumber}" Width="*"/>
-                    <DataGridTextColumn Header="Station" Binding="{Binding Location}" Width="*"/>
-                    <DataGridTextColumn Header="Table Quantity" Binding="{Binding TableQuantity}" Width="*"/>
-                    <DataGridTextColumn Header="Chair Quantity" Binding="{Binding ChairQuantity}" Width="*"/>
+                        <!-- Section Title -->
+                        <TextBlock Grid.Row="0" Text="Add New Table" 
+                                  Foreground="White" FontSize="16" FontWeight="Bold" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
-                    <!-- Action Column -->
-                    <DataGridTemplateColumn Header="Actions" Width="150">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Button Content="Edit" Width="60" Height="25" Background="#FF00BFFF" Foreground="White" FontWeight="Bold"
-                                Click="EditRowButton_Click"/>
-                                    <Button Content="Delete" Width="60" Height="25" Background="#FFFF4500" Foreground="White" FontWeight="Bold"
-                                Click="DeleteRowButton_Click"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-            <Button x:Name="backBtn" Content="Back" HorizontalAlignment="Left" Margin="70,67,0,0" VerticalAlignment="Top" Height="23" Width="74" Click="backBtn_Click" Background="#FFE4DD2B" FontWeight="Bold" FontSize="14"/>
-        </Grid>
+                        <!-- Input Fields -->
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Table Number -->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Table No *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <TextBox x:Name="TableNoTextBox" Height="38" Width="120" 
+                                        Background="#FF28666E" Foreground="White" 
+                                        BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="14" CaretBrush="White"
+                                        VerticalContentAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="TextBox">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="5">
+                                                            <ScrollViewer x:Name="PART_ContentHost"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </StackPanel>
+
+                            <!-- Location -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Station *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <TextBox x:Name="LocationTextBox" Height="38" Width="120" 
+                                        Background="#FF28666E" Foreground="White" 
+                                        BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="14" CaretBrush="White"
+                                        VerticalContentAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="TextBox">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="5">
+                                                            <ScrollViewer x:Name="PART_ContentHost"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </StackPanel>
+
+                            <!-- Table Quantity -->
+                            <StackPanel Grid.Column="4">
+                                <TextBlock Text="Table Quantity *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <TextBox x:Name="TableQuantityTextBox" Height="38" Width="120" 
+                                        Background="#FF28666E" Foreground="White" 
+                                        BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="14" CaretBrush="White"
+                                        VerticalContentAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="TextBox">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="5">
+                                                            <ScrollViewer x:Name="PART_ContentHost"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </StackPanel>
+
+                            <!-- Chair Quantity -->
+                            <StackPanel Grid.Column="6">
+                                <TextBlock Text="Chair Quantity *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <TextBox x:Name="ChairQuantityTextBox" Height="38" Width="120" 
+                                        Background="#FF28666E" Foreground="White" 
+                                        BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="14" CaretBrush="White"
+                                        VerticalContentAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="TextBox">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="5">
+                                                            <ScrollViewer x:Name="PART_ContentHost"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </StackPanel>
+
+                            <!-- Create Button -->
+                            <StackPanel Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                                <Button Content="➕ CREATE" Width="120" Height="40" 
+                                        Background="#FF4CAF50" Foreground="White" FontWeight="Bold" FontSize="12"
+                                        Click="CreateTableButton_Click"
+                                        Cursor="Hand">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                CornerRadius="5">
+                                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                                              VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#FF45A049"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- DataGrid Section -->
+                <Border Grid.Row="2" Background="#FF0D2D2C" CornerRadius="10" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Section Title -->
+                        <TextBlock Grid.Row="0" Text="Existing Tables" 
+                                  Foreground="White" FontSize="16" FontWeight="Bold" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+                        <!-- DataGrid -->
+                        <DataGrid Grid.Row="1" 
+                                  x:Name="TablesDataGrid" 
+                                  Height="300"
+                                  AutoGenerateColumns="False" 
+                                  IsReadOnly="True"
+                                  Background="Transparent"
+                                  Foreground="White"
+                                  BorderBrush="#FF4A9EFF"
+                                  GridLinesVisibility="Horizontal"
+                                  HeadersVisibility="Column"
+                                  RowHeight="35"
+                                  VerticalScrollBarVisibility="Auto"
+                                  CanUserResizeColumns="False"
+                                  CanUserReorderColumns="False">
+
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#FF1E4976"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                    <Setter Property="BorderBrush" Value="#FF4A9EFF"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+
+                            <DataGrid.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGrid.CellStyle>
+
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="AlternationIndex" Value="0">
+                                            <Setter Property="Background" Value="#FF0D2D2C"/>
+                                        </Trigger>
+                                        <Trigger Property="AlternationIndex" Value="1">
+                                            <Setter Property="Background" Value="#FF1A4645"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#FF1E4976"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Table No" Binding="{Binding TableNumber}" Width="*"/>
+                                <DataGridTextColumn Header="Station" Binding="{Binding Location}" Width="*"/>
+                                <DataGridTextColumn Header="Table Quantity" Binding="{Binding TableQuantity}" Width="*"/>
+                                <DataGridTextColumn Header="Chair Quantity" Binding="{Binding ChairQuantity}" Width="*"/>
+
+                                <!-- Action Column -->
+                                <DataGridTemplateColumn Header="Actions" Width="200">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Button Content="EDIT" Width="70" Height="25" 
+                                                        Background="#FF4A9EFF" Foreground="White" FontWeight="Bold"
+                                                        Click="EditRowButton_Click"
+                                                        Cursor="Hand" FontSize="10">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Border Background="{TemplateBinding Background}"
+                                                                                CornerRadius="3">
+                                                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                                                              VerticalAlignment="Center"/>
+                                                                        </Border>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="#FF2A7BBF"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                                <Button Content="DELETE" Width="70" Height="25" 
+                                                        Background="#FFE53935" Foreground="White" FontWeight="Bold"
+                                                        Click="DeleteRowButton_Click"
+                                                        Cursor="Hand" FontSize="10" Margin="5,0,0,0">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Border Background="{TemplateBinding Background}"
+                                                                                CornerRadius="3">
+                                                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                                                              VerticalAlignment="Center"/>
+                                                                        </Border>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="#FFC62828"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <TextBlock Text="Create and manage restaurant tables for reservations" 
+                      Foreground="#FFAAAAAA" FontSize="12" FontStyle="Italic"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
     </Grid>
 </Page>

@@ -120,7 +120,6 @@ namespace practice.Landing_Page
 
         private void reservationListBtn_Click(object sender, RoutedEventArgs e)
         {
-            Navigate_Panel.Navigate(new ReservationList());
         }
 
         private void reservationRecordsBtn_Click(object sender, RoutedEventArgs e)
