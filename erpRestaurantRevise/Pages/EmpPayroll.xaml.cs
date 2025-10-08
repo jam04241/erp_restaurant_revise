@@ -60,8 +60,12 @@ namespace practice.Pages
                     return;
                 }
 
-                // 2️⃣ Get all employees
-                string employeesQuery = "SELECT EmployeeID, firstName, middleName, lastName FROM Employee";
+                // 2️⃣ Get only ACTIVE employees
+                string employeesQuery = @"
+            SELECT EmployeeID, firstName, middleName, lastName 
+            FROM Employee 
+            WHERE IsActive = 1";  // Only active employees
+
                 DataTable employeesData = new DataTable();
                 using (SqlConnection conn = db.GetConnection())
                 using (SqlCommand cmd = new SqlCommand(employeesQuery, conn))
@@ -75,7 +79,7 @@ namespace practice.Pages
 
                 if (employeesData.Rows.Count == 0)
                 {
-                    MessageBox.Show("No employees found in the system.");
+                    MessageBox.Show("No active employees found in the system.");
                     return;
                 }
 
@@ -85,7 +89,7 @@ namespace practice.Pages
                 // Clear existing payroll list
                 payrollList.Clear();
 
-                // 3️⃣ Process payroll for each employee
+                // 3️⃣ Process payroll for each ACTIVE employee
                 foreach (DataRow employeeRow in employeesData.Rows)
                 {
                     processedEmployees++;
@@ -266,7 +270,7 @@ namespace practice.Pages
                 payrollDataGrid.Items.Refresh();
 
                 MessageBox.Show($"Payroll generation completed!\n" +
-                               $"Processed: {processedEmployees} employees\n" +
+                               $"Processed: {processedEmployees} active employees\n" +
                                $"Successful: {successfulPayrolls} payrolls generated\n" +
                                $"Date Range: {startDate:yyyy-MM-dd} to {endDate:yyyy-MM-dd}");
             }

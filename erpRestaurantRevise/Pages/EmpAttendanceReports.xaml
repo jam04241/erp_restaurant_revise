@@ -165,7 +165,7 @@
                         <!-- DataGrid -->
                         <DataGrid x:Name="AttendanceDataGrid"
                           AutoGenerateColumns="False"
-                          Height="460"
+                          Height="700"
                           Background="White"
                           GridLinesVisibility="All"
                           HeadersVisibility="Column"

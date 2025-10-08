@@ -3,24 +3,107 @@ using erpRestaurantRevise.Models;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace practice.Pages
 {
-    public partial class EmpSalaryRecord : Page
+    public partial class EmpSalaryRecord : Page, INotifyPropertyChanged
     {
         private connDB db = new connDB();
-        public ObservableCollection<PayrollRecord> PayrollRecords { get; set; }
+        private ObservableCollection<PayrollRecord> _payrollRecords = new ObservableCollection<PayrollRecord>();
+        private ObservableCollection<PayrollRecord> _filteredPayrollRecords = new ObservableCollection<PayrollRecord>();
+        private string _searchText = "";
+        private string _sortBy = "Newest First";
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public ObservableCollection<PayrollRecord> FilteredPayrollRecords
+        {
+            get => _filteredPayrollRecords;
+            set
+            {
+                _filteredPayrollRecords = value;
+                OnPropertyChanged(nameof(FilteredPayrollRecords));
+            }
+        }
 
         public EmpSalaryRecord()
         {
             InitializeComponent();
-            PayrollRecords = new ObservableCollection<PayrollRecord>();
             DataContext = this;
             LoadAllPayrollRecords();
+
+            // Set up event handlers
+            SortComboBox.SelectionChanged += SortComboBox_SelectionChanged;
+            SortComboBox.SelectedIndex = 0;
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (searchTextBox.Text != "Name / Employee no.")
+            {
+                _searchText = searchTextBox.Text.ToLower();
+                ApplyFilterAndSort();
+            }
+        }
+
+        private void SortComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SortComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                _sortBy = selectedItem.Content.ToString();
+                ApplyFilterAndSort();
+            }
+        }
+
+        private void ApplyFilterAndSort()
+        {
+            if (_payrollRecords == null) return;
+
+            var filtered = _payrollRecords.Where(record =>
+                string.IsNullOrEmpty(_searchText) ||
+                record.EmployeeName.ToLower().Contains(_searchText) ||
+                record.EmployeeID.ToString().Contains(_searchText) ||
+                record.PayrollID.ToString().Contains(_searchText));
+
+            IOrderedEnumerable<PayrollRecord> sorted;
+
+            switch (_sortBy)
+            {
+                case "Newest First":
+                    sorted = filtered.OrderByDescending(record => record.DateIssued).ThenByDescending(record => record.PayrollID);
+                    break;
+                case "Oldest First":
+                    sorted = filtered.OrderBy(record => record.DateIssued).ThenBy(record => record.PayrollID);
+                    break;
+                case "Name (A-Z)":
+                    sorted = filtered.OrderBy(record => record.EmployeeName);
+                    break;
+                case "Name (Z-A)":
+                    sorted = filtered.OrderByDescending(record => record.EmployeeName);
+                    break;
+                case "Net Pay (High-Low)":
+                    sorted = filtered.OrderByDescending(record => record.NetPay);
+                    break;
+                case "Net Pay (Low-High)":
+                    sorted = filtered.OrderBy(record => record.NetPay);
+                    break;
+                default:
+                    sorted = filtered.OrderByDescending(record => record.DateIssued).ThenByDescending(record => record.PayrollID);
+                    break;
+            }
+
+            FilteredPayrollRecords = new ObservableCollection<PayrollRecord>(sorted);
         }
 
         private void LoadAllPayrollRecords()
@@ -46,7 +129,7 @@ namespace practice.Pages
                 ORDER BY p.dateIssue DESC, p.PayrollID DESC";
 
                 DataTable dt = db.GetData(query);
-                PayrollRecords.Clear();
+                _payrollRecords.Clear();
 
                 foreach (DataRow row in dt.Rows)
                 {
@@ -63,20 +146,15 @@ namespace practice.Pages
                         DateIssued = Convert.ToDateTime(row["dateIssue"])
                     };
 
-                    PayrollRecords.Add(record);
+                    _payrollRecords.Add(record);
                 }
 
-                payrollDataGrid.Items.Refresh();
+                ApplyFilterAndSort(); // Apply initial filter and sort
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error loading payroll records: " + ex.Message);
             }
-        }
-
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            SearchRecords();
         }
 
         private void SearchRecords()
@@ -89,49 +167,15 @@ namespace practice.Pages
                 return;
             }
 
-            try
-            {
-                string query = @"
-            SELECT 
-                p.PayrollID,
-                p.EmployeeID,
-                e.firstName + ' ' + COALESCE(e.middleName + ' ', '') + e.lastName as EmployeeName,
-                ISNULL(SUM(a.hourWorked), 0) as TotalHours,
-                p.BasicPay,
-                p.OvertimePay,
-                p.Deductions,
-                p.NetPay,
-                p.dateIssue
-            FROM Payroll p
-            INNER JOIN Employee e ON p.EmployeeID = e.EmployeeID
-            LEFT JOIN Attendance a ON p.EmployeeID = a.employeeID 
-                AND a.dateToday BETWEEN p.payPeriodStart AND p.payPeriodEnd
-            WHERE e.firstName LIKE @SearchText OR 
-                  e.lastName LIKE @SearchText OR 
-                  e.firstName + ' ' + e.lastName LIKE @SearchText OR
-                  CAST(p.EmployeeID AS VARCHAR(10)) LIKE @SearchText OR
-                  CAST(p.PayrollID AS VARCHAR(10)) LIKE @SearchText
-            GROUP BY 
-                p.PayrollID,
-                p.EmployeeID,
-                e.firstName,
-                e.middleName,
-                e.lastName,
-                p.BasicPay,
-                p.OvertimePay,
-                p.Deductions,
-                p.NetPay,
-                p.dateIssue
-            ORDER BY p.dateIssue DESC, p.PayrollID DESC";
-
-                DataTable dt = db.GetData(query, new SqlParameter("@SearchText", "%" + searchText + "%"));
-                // ... rest of your search code
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error searching payroll records: " + ex.Message);
-            }
+            _searchText = searchText.ToLower();
+            ApplyFilterAndSort();
         }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            SearchRecords();
+        }
+
         // Add Enter key support for search
         private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -156,6 +200,8 @@ namespace practice.Pages
             if (string.IsNullOrWhiteSpace(searchTextBox.Text))
             {
                 searchTextBox.Text = "Name / Employee no.";
+                _searchText = "";
+                ApplyFilterAndSort();
             }
         }
     }

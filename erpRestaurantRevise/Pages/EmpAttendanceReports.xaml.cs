@@ -90,10 +90,6 @@ namespace erpRestaurantRevise.Pages
             }
         }
 
-        // Compute the best hours value for a record:
-        //  - prefer stored HourWorked when present and > 0
-        //  - otherwise compute from TimeIn/TimeOut if possible
-        //  - otherwise return 0
         private decimal ComputeHoursForRecord(DailyAttendanceRecord r)
         {
             if (r.HourWorked.HasValue && r.HourWorked.Value > 0m)

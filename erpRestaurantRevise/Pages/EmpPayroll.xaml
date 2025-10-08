@@ -48,13 +48,13 @@
                                       Margin="0,0,0,5" HorizontalAlignment="Center"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <DatePicker x:Name="startDatePicker" Width="120" Height="35" 
-                                           Background="#FF28666E" Foreground="White"
+                                           Background="#FF28666E" Foreground="Black"
                                            BorderBrush="#FF4A9EFF" BorderThickness="1"
                                            FontSize="12"/>
                                 <TextBlock Text=" to " Foreground="White" FontSize="12" 
                                           VerticalAlignment="Center" Margin="5,0,5,0"/>
                                 <DatePicker x:Name="endDatePicker" Width="120" Height="35" 
-                                           Background="#FF28666E" Foreground="White"
+                                           Background="#FF28666E" Foreground="Black"
                                            BorderBrush="#FF4A9EFF" BorderThickness="1"
                                            FontSize="12"/>
                             </StackPanel>
