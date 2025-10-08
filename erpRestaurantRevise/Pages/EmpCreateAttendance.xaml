@@ -51,10 +51,10 @@
                             <StackPanel Margin="0,0,20,0">
                                 <TextBlock Text="Search Employee" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5" 
                                           />
-                                <TextBox x:Name="SearchTextBox" Width="250" Height="35" 
+                                <TextBox x:Name="SearchTextBox" Width="250" Height="38" 
                                         Background="#FF28666E" Foreground="White" 
                                         BorderBrush="#FF4A9EFF" BorderThickness="1"
-                                        Padding="10" FontSize="14" CaretBrush="White"
+                                        Padding="10" FontSize="12" CaretBrush="White"
                                         VerticalContentAlignment="Center">
                                     <TextBox.Style>
                                         <Style TargetType="{x:Type TextBox}">
@@ -79,7 +79,7 @@
                             <StackPanel>
                                 <TextBlock Text="Sort By" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5" 
                                           />
-                                <ComboBox x:Name="SortComboBox" Width="150" Height="35"
+                                <ComboBox x:Name="SortComboBox" Width="150" Height="38"
                                          Background="#FF28666E" Foreground="Black"
                                          BorderBrush="#FF4A9EFF" BorderThickness="1"
                                          FontSize="14" Padding="5">

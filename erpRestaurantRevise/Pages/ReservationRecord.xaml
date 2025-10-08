@@ -81,7 +81,7 @@
                         <!-- Search -->
                         <StackPanel Grid.Column="0" HorizontalAlignment="Center">
                             <TextBlock Text="Search Customer" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
-                            <TextBox x:Name="SearchTextBox" Width="200" Height="35" 
+                            <TextBox x:Name="SearchTextBox" Width="200" Height="40" 
                     Background="#FF28666E" Foreground="White" 
                     BorderBrush="#FF4A9EFF" BorderThickness="1"
                     Padding="10" FontSize="14" CaretBrush="White"
@@ -89,17 +89,17 @@
                         </StackPanel>
 
                         <!-- Date Range -->
-                        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                        <StackPanel Grid.Column="2" HorizontalAlignment="Center" Width="300">
                             <TextBlock Text="Date Range" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5" HorizontalAlignment="Center"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <DatePicker x:Name="StartDatePicker" Width="120" Height="35" 
-                           Background="#FF28666E" Foreground="White"
+                                <DatePicker x:Name="StartDatePicker" Width="auto" Height="40" 
+                           Background="#FF28666E" Foreground="black"
                            BorderBrush="#FF4A9EFF" BorderThickness="1"
                            FontSize="12"/>
                                 <TextBlock Text=" to " Foreground="White" FontSize="12" 
                           VerticalAlignment="Center" Margin="5,0,5,0"/>
-                                <DatePicker x:Name="EndDatePicker" Width="120" Height="35" 
-                           Background="#FF28666E" Foreground="White"
+                                <DatePicker x:Name="EndDatePicker" Width="auto" Height="40" 
+                           Background="#FF28666E" Foreground="black"
                            BorderBrush="#FF4A9EFF" BorderThickness="1"
                            FontSize="12"/>
                             </StackPanel>
@@ -108,7 +108,7 @@
                         <!-- Status Filter -->
                         <StackPanel Grid.Column="4" HorizontalAlignment="Center">
                             <TextBlock Text="Filter by Status" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
-                            <ComboBox x:Name="StatusFilterComboBox" Width="150" Height="35"
+                            <ComboBox x:Name="StatusFilterComboBox" Width="150" Height="40"
                      Background="#FF28666E" Foreground="Black"
                      BorderBrush="#FF4A9EFF" BorderThickness="1"
                      FontSize="14" Padding="5">

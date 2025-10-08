@@ -77,21 +77,21 @@
                     <!-- First Name -->
                     <TextBlock Text="First Name *" Foreground="White" FontSize="14" FontWeight="Bold" 
                               FontFamily="Sitka Small" Margin="0,0,0,5"/>
-                    <TextBox x:Name="firstnameField" Height="35" Background="#FF1A4D54" 
+                    <TextBox x:Name="firstnameField" Height="40" Background="#FF1A4D54" 
                             Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
                             Padding="10" FontSize="14" CaretBrush="White"/>
 
                     <!-- Middle Name -->
                     <TextBlock Text="Middle Name *" Foreground="White" FontSize="14" FontWeight="Bold" 
                               FontFamily="Sitka Small" Margin="0,15,0,5"/>
-                    <TextBox x:Name="middlenameField" Height="35" Background="#FF1A4D54" 
+                    <TextBox x:Name="middlenameField" Height="40" Background="#FF1A4D54" 
                             Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
                             Padding="10" FontSize="14" CaretBrush="White"/>
 
                     <!-- Email -->
                     <TextBlock Text="Email *" Foreground="White" FontSize="14" FontWeight="Bold" 
                               FontFamily="Sitka Small" Margin="0,15,0,5"/>
-                    <TextBox x:Name="emailField" Height="35" Background="#FF1A4D54" 
+                    <TextBox x:Name="emailField" Height="40" Background="#FF1A4D54" 
                             Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
                             Padding="10" FontSize="14" CaretBrush="White"/>
                 </StackPanel>
@@ -101,21 +101,21 @@
                     <!-- Last Name -->
                     <TextBlock Text="Last Name *" Foreground="White" FontSize="14" FontWeight="Bold" 
                               FontFamily="Sitka Small" Margin="0,0,0,5"/>
-                    <TextBox x:Name="lastnameField" Height="35" Background="#FF1A4D54" 
+                    <TextBox x:Name="lastnameField" Height="40" Background="#FF1A4D54" 
                             Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
                             Padding="10" FontSize="14" CaretBrush="White"/>
 
                     <!-- Contact No -->
                     <TextBlock Text="Contact No. *" Foreground="White" FontSize="14" FontWeight="Bold" 
                               FontFamily="Sitka Small" Margin="0,15,0,5"/>
-                    <TextBox x:Name="contactField" Height="35" Background="#FF1A4D54" 
+                    <TextBox x:Name="contactField" Height="40" Background="#FF1A4D54" 
                             Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
                             Padding="10" FontSize="14" CaretBrush="White"/>
 
                     <!-- Number of Guests -->
                     <TextBlock Text="Number of Guests *" Foreground="White" FontSize="14" FontWeight="Bold" 
                               FontFamily="Sitka Small" Margin="0,15,0,5"/>
-                    <TextBox x:Name="guestField" Height="35" Background="#FF1A4D54" 
+                    <TextBox x:Name="guestField" Height="40" Background="#FF1A4D54" 
                             Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
                             Padding="10" FontSize="14" CaretBrush="White"/>
                 </StackPanel>

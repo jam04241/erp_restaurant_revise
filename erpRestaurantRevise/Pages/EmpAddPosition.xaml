@@ -62,7 +62,7 @@
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="Position Name *" Foreground="White" FontSize="14" FontWeight="Bold" 
                                           Margin="0,0,0,5" HorizontalAlignment="Center"/>
-                                <TextBox x:Name="txtPositionName" Height="35" Background="#FF28666E" 
+                                <TextBox x:Name="txtPositionName" Height="38" Background="#FF28666E" 
                                         Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
                                         Padding="10" FontSize="12" CaretBrush="White" HorizontalAlignment="Center" Width="150"/>
                             </StackPanel>
@@ -71,7 +71,7 @@
                             <StackPanel Grid.Column="2">
                                 <TextBlock Text="Base Salary *" Foreground="White" FontSize="14" FontWeight="Bold" 
                                           Margin="0,0,0,5" HorizontalAlignment="Center"/>
-                                <TextBox x:Name="txtBaseSalary" Height="35" Background="#FF28666E" 
+                                <TextBox x:Name="txtBaseSalary" Height="38" Background="#FF28666E" 
                                         Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
                                         Padding="10" FontSize="12" CaretBrush="White" HorizontalAlignment="Center" Width="150"/>
                             </StackPanel>
@@ -80,7 +80,7 @@
                             <StackPanel Grid.Column="4">
                                 <TextBlock Text="Hourly Rate *" Foreground="White" FontSize="14" FontWeight="Bold" 
                                           Margin="0,0,0,5" HorizontalAlignment="Center"/>
-                                <TextBox x:Name="txtHourlyRate" Height="35" Background="#FF28666E" 
+                                <TextBox x:Name="txtHourlyRate" Height="38" Background="#FF28666E" 
                                         Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
                                         Padding="10" FontSize="12" CaretBrush="White" HorizontalAlignment="Center" Width="150"/>
                             </StackPanel>
@@ -89,7 +89,7 @@
                             <StackPanel Grid.Column="6">
                                 <TextBlock Text="Overtime Rate *" Foreground="White" FontSize="14" FontWeight="Bold" 
                                           Margin="0,0,0,5" HorizontalAlignment="Center"/>
-                                <TextBox x:Name="txtOvertime" Height="35" Background="#FF28666E" 
+                                <TextBox x:Name="txtOvertime" Height="38" Background="#FF28666E" 
                                         Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
                                         Padding="10" FontSize="12" CaretBrush="White" HorizontalAlignment="Center" Width="150"/>
                             </StackPanel>
