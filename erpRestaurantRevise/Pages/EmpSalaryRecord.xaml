@@ -32,67 +32,68 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!-- Search Section -->
+                <!-- Search and Filter Section -->
                 <Border Grid.Row="0" Background="#FF0D2D2C" CornerRadius="10" Padding="20" Margin="0,0,0,20">
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                        <!-- Search Box -->
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <TextBox x:Name="searchTextBox" Width="250" Height="38" 
-                                Background="#FF28666E" Foreground="White" 
-                                BorderBrush="#FF4A9EFF" BorderThickness="1"
-                                Padding="10" CaretBrush="White"
-                                Text="Name / Employee no."
-                                KeyDown="SearchTextBox_KeyDown"
-                                GotFocus="SearchTextBox_GotFocus"
-                                LostFocus="SearchTextBox_LostFocus" VerticalContentAlignment="Center" FontSize="12.5">
-                                <TextBox.Style>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type TextBox}">
-                                                    <Border Background="{TemplateBinding Background}"
-                                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                                        CornerRadius="5">
-                                                        <ScrollViewer x:Name="PART_ContentHost"/>
-                                                    </Border>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </TextBox.Style>
-                            </TextBox>
-                            <Button Content="SEARCH" Width="100" Height="38" 
-                                    Background="#FF4A9EFF" Foreground="White" FontWeight="Bold" FontSize="12"
-                                    Margin="10,0,0,0" Cursor="Hand" Click="SearchButton_Click">
-                                <Button.Style>
-                                    <Style TargetType="{x:Type Button}">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type Button}">
-                                                    <Border Background="{TemplateBinding Background}"
+                        <!-- Section Title -->
+                        <TextBlock Grid.Row="0" Text="Manage Payroll Records" 
+                                  Foreground="White" FontSize="16" FontWeight="Bold" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+                        <!-- Search and Sort Controls -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,36,0,0" Grid.RowSpan="2" Width="700">
+                            <!-- Search Box -->
+                            <StackPanel Margin="0,0,20,0">
+                                <TextBlock Text="Search Employee" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
+                                <TextBox x:Name="searchTextBox" Width="250" Height="38" 
+                                        Background="#FF28666E" Foreground="White" 
+                                        BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" CaretBrush="White"
+                                        Text="Name / Employee no."
+                                        KeyDown="SearchTextBox_KeyDown"
+                                        GotFocus="SearchTextBox_GotFocus"
+                                        LostFocus="SearchTextBox_LostFocus" 
+                                        TextChanged="SearchTextBox_TextChanged"
+                                        VerticalContentAlignment="Center" FontSize="12.5">
+                                    <TextBox.Style>
+                                        <Style TargetType="{x:Type TextBox}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type TextBox}">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                                            BorderThickness="{TemplateBinding BorderThickness}"
                                                             CornerRadius="5">
-                                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                                          VerticalAlignment="Center"/>
-                                                    </Border>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="#FF2A7BBF"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                            </Button>
-                            <TextBlock Width="340"></TextBlock>
+                                                            <ScrollViewer x:Name="PART_ContentHost"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </StackPanel>
+
+                            <!-- Sort ComboBox -->
+                            <StackPanel>
+                                <TextBlock Text="Sort By" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
+                                <ComboBox x:Name="SortComboBox" Width="150" Height="38"
+                                         Background="#FF28666E" Foreground="Black"
+                                         BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                         FontSize="14" Padding="5" SelectionChanged="SortComboBox_SelectionChanged">
+                                    <ComboBoxItem Content="Newest First" Foreground="Black"/>
+                                    <ComboBoxItem Content="Oldest First" Foreground="Black"/>
+                                    <ComboBoxItem Content="Name (A-Z)" Foreground="Black"/>
+                                    <ComboBoxItem Content="Name (Z-A)" Foreground="Black"/>
+                                    <ComboBoxItem Content="Net Pay (High-Low)" Foreground="Black"/>
+                                    <ComboBoxItem Content="Net Pay (Low-High)" Foreground="Black"/>
+                                </ComboBox>
+                            </StackPanel>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -114,7 +115,7 @@
                         <DataGrid Grid.Row="1" 
                                   x:Name="payrollDataGrid" 
                                   AutoGenerateColumns="False"
-                                  ItemsSource="{Binding PayrollRecords}"
+                                  ItemsSource="{Binding FilteredPayrollRecords}"
                                   Background="Transparent"
                                   Foreground="White"
                                   BorderBrush="#FF4A9EFF"

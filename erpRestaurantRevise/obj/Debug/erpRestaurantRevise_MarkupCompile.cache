@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-J:\erp_restaurant_revise\erpRestaurantRevise\obj\Debug\
+C:\Users\Admin\source\repos\erp_restaurant_revise-BETTER - Copy - Copy\erpRestaurantRevise\obj\Debug\
 erpRestaurantRevise
 none
 false
 DEBUG;TRACE
-J:\erp_restaurant_revise\erpRestaurantRevise\App.xaml
+C:\Users\Admin\source\repos\erp_restaurant_revise-BETTER - Copy - Copy\erpRestaurantRevise\App.xaml
 15185061996
 
-28721847645
-63-1548495713
+29-1360240973
+63-379454526
 Landing_page\Mainpage.xaml;MainWindow.xaml;Pages\Dashboard.xaml;Pages\EmpAdd.xaml;Pages\EmpAddPosition.xaml;Pages\EmpAttendanceReports.xaml;Pages\EmpCreateAttendance.xaml;Pages\EmpSalaryRecord.xaml;Pages\EmpPayroll.xaml;Pages\EmpRecord.xaml;Pages\ReservationRecord.xaml;Pages\ReserveAdd.xaml;Pages\ReserveCreateTable.xaml;Pages\ReserveManage.xaml;Pages\TESTING.xaml;
 
-False
+True
 

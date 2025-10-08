@@ -74,15 +74,15 @@
                         <StackPanel HorizontalAlignment="Left" Grid.ColumnSpan="3" Margin="275,0,0,0">
                             <TextBlock Text="Sort By" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
                             <ComboBox x:Name="SortBox" Width="150" Height="35"
-                                     Background="#FF28666E" Foreground="White"
+                                     Background="#FF28666E" Foreground="Black"
                                      BorderBrush="#FF4A9EFF" BorderThickness="1"
                                      FontSize="14" Padding="5"
                                      SelectionChanged="SortBox_SelectionChanged">
-                                <ComboBoxItem Content="Newest" Foreground="White"/>
-                                <ComboBoxItem Content="Oldest" Foreground="White"/>
-                                <ComboBoxItem Content="Name (A-Z)" Foreground="White"/>
-                                <ComboBoxItem Content="Name (Z-A)" Foreground="White"/>
-                                <ComboBoxItem Content="Position" Foreground="White"/>
+                                <ComboBoxItem Content="Newest" Foreground="Black"/>
+                                <ComboBoxItem Content="Oldest" Foreground="Black"/>
+                                <ComboBoxItem Content="Name (A-Z)" Foreground="Black"/>
+                                <ComboBoxItem Content="Name (Z-A)" Foreground="Black"/>
+                                <ComboBoxItem Content="Position" Foreground="Black"/>
                             </ComboBox>
                         </StackPanel>
                     </Grid>
@@ -183,23 +183,23 @@
                                 <DataGridTextColumn Header="Sex" Binding="{Binding Sex}"  Width="Auto"/>
                                 <DataGridTextColumn Header="Contact" Binding="{Binding Contact}"  Width="Auto"/>
                                 <DataGridTextColumn Header="Position" Binding="{Binding PositionName}"  Width="Auto"/>
-                                <DataGridTemplateColumn Header="Actions" Width="*">
+                                <DataGridTemplateColumn Header="Status" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                                 <Button Content="Edit" Width="70" Height="30" Margin="5,2"
-                                                        Background="#FF4A9EFF" Foreground="White" FontWeight="Bold"
-                                                        Click="EditButton_Click"
-                                                        Cursor="Hand">
+                        Background="#FF4A9EFF" Foreground="White" FontWeight="Bold"
+                        Click="EditButton_Click"
+                        Cursor="Hand">
                                                     <Button.Style>
                                                         <Style TargetType="Button">
                                                             <Setter Property="Template">
                                                                 <Setter.Value>
                                                                     <ControlTemplate TargetType="Button">
                                                                         <Border Background="{TemplateBinding Background}"
-                                                                                CornerRadius="4">
+                                                CornerRadius="4">
                                                                             <ContentPresenter HorizontalAlignment="Center" 
-                                                                                              VerticalAlignment="Center"/>
+                                                              VerticalAlignment="Center"/>
                                                                         </Border>
                                                                     </ControlTemplate>
                                                                 </Setter.Value>
@@ -212,31 +212,42 @@
                                                         </Style>
                                                     </Button.Style>
                                                 </Button>
-                                                <Button Content="Delete" Width="70" Height="30" Margin="5,2"
-                                                        Background="#FFE53935" Foreground="White" FontWeight="Bold"
-                                                        Click="DeleteButton_Click"
-                                                        Cursor="Hand">
-                                                    <Button.Style>
-                                                        <Style TargetType="Button">
+
+                                                <!-- Toggle Button for Active/Inactive -->
+                                                <ToggleButton x:Name="StatusToggle" 
+            Width="80" Height="30" Margin="5,2"
+            Click="StatusToggle_Click"
+            Cursor="Hand">
+                                                    <ToggleButton.Style>
+                                                        <Style TargetType="ToggleButton">
                                                             <Setter Property="Template">
                                                                 <Setter.Value>
-                                                                    <ControlTemplate TargetType="Button">
+                                                                    <ControlTemplate TargetType="ToggleButton">
                                                                         <Border Background="{TemplateBinding Background}"
-                                                                                CornerRadius="4">
+                                CornerRadius="4">
                                                                             <ContentPresenter HorizontalAlignment="Center" 
-                                                                                              VerticalAlignment="Center"/>
+                                              VerticalAlignment="Center"/>
                                                                         </Border>
                                                                     </ControlTemplate>
                                                                 </Setter.Value>
                                                             </Setter>
+                                                            <Setter Property="Background" Value="#FF4CAF50"/>
                                                             <Style.Triggers>
+                                                                <Trigger Property="IsChecked" Value="True">
+                                                                    <Setter Property="Content" Value="Active"/>
+                                                                    <Setter Property="Background" Value="#FF4CAF50"/>
+                                                                </Trigger>
+                                                                <Trigger Property="IsChecked" Value="False">
+                                                                    <Setter Property="Content" Value="Inactive"/>
+                                                                    <Setter Property="Background" Value="#FFF44336"/>
+                                                                </Trigger>
                                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                                    <Setter Property="Background" Value="#FFC62828"/>
+                                                                    <Setter Property="Background" Value="#FF45a049"/>
                                                                 </Trigger>
                                                             </Style.Triggers>
                                                         </Style>
-                                                    </Button.Style>
-                                                </Button>
+                                                    </ToggleButton.Style>
+                                                </ToggleButton>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>

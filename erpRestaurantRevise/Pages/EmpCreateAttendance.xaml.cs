@@ -2,9 +2,12 @@
 using erpRestaurantRevise.Models;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using Microsoft.Data.SqlClient;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace practice.Pages
 {
@@ -14,21 +17,97 @@ namespace practice.Pages
         public static int LoggedInEmployeeID { get; set; }
     }
 
-    public partial class EmpCreateAttendance : Page
+    public partial class EmpCreateAttendance : Page, INotifyPropertyChanged
     {
         private connDB db = new connDB();
-        private ObservableCollection<DailyAttendanceRecord> attendanceList = new ObservableCollection<DailyAttendanceRecord>();
+        private ObservableCollection<DailyAttendanceRecord> _attendanceList = new ObservableCollection<DailyAttendanceRecord>();
+        private ObservableCollection<DailyAttendanceRecord> _filteredAttendanceList = new ObservableCollection<DailyAttendanceRecord>();
+        private string _searchText = "";
+        private string _sortBy = "Newest First";
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public ObservableCollection<DailyAttendanceRecord> attendanceList
+        {
+            get => _filteredAttendanceList;
+            set
+            {
+                _filteredAttendanceList = value;
+                OnPropertyChanged(nameof(attendanceList));
+            }
+        }
+
+        public string CurrentDate => DateTime.Now.ToString("MMMM dd, yyyy");
 
         public EmpCreateAttendance()
         {
             InitializeComponent();
+            DataContext = this;
             LoadEmployees();
-            attendanceRecordDataGrid.ItemsSource = attendanceList;
+
+            // Set up event handlers
+            SearchTextBox.TextChanged += SearchTextBox_TextChanged;
+            SortComboBox.SelectionChanged += SortComboBox_SelectionChanged;
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _searchText = SearchTextBox.Text.ToLower();
+            ApplyFilterAndSort();
+        }
+
+        private void SortComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SortComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                _sortBy = selectedItem.Content.ToString();
+                ApplyFilterAndSort();
+            }
+        }
+
+        private void ApplyFilterAndSort()
+        {
+            if (_attendanceList == null) return;
+
+            var filtered = _attendanceList.Where(record =>
+                string.IsNullOrEmpty(_searchText) ||
+                record.FullName.ToLower().Contains(_searchText) ||
+                record.EmployeeID.ToString().Contains(_searchText) ||
+                record.Status?.ToLower().Contains(_searchText) == true);
+
+            IOrderedEnumerable<DailyAttendanceRecord> sorted;
+
+            switch (_sortBy)
+            {
+                case "Newest First":
+                    sorted = filtered.OrderByDescending(record => record.EmployeeID);
+                    break;
+                case "Oldest First":
+                    sorted = filtered.OrderBy(record => record.EmployeeID);
+                    break;
+                case "Name (A-Z)":
+                    sorted = filtered.OrderBy(record => record.FullName);
+                    break;
+                case "Name (Z-A)":
+                    sorted = filtered.OrderByDescending(record => record.FullName);
+                    break;
+                default:
+                    sorted = filtered.OrderByDescending(record => record.EmployeeID);
+                    break;
+            }
+
+            _filteredAttendanceList = new ObservableCollection<DailyAttendanceRecord>(sorted);
+            OnPropertyChanged(nameof(attendanceList));
         }
 
         private void LoadEmployees()
         {
-            attendanceList.Clear();
+            _attendanceList.Clear();
 
             using (SqlConnection conn = db.GetConnection())
             {
@@ -47,6 +126,7 @@ namespace practice.Pages
                     LEFT JOIN Attendance a
                         ON e.employeeID = a.employeeID
                        AND a.dateToday = CAST(GETDATE() AS date)
+                    WHERE e.IsActive = 1  -- Only show active employees
                     ORDER BY e.lastName, e.firstName;";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -67,10 +147,12 @@ namespace practice.Pages
                             Status = reader.IsDBNull(6) ? null : reader.GetString(6),
                             HourWorked = reader.IsDBNull(7) ? 0 : reader.GetDecimal(7)
                         };
-                        attendanceList.Add(record);
+                        _attendanceList.Add(record);
                     }
                 }
             }
+
+            ApplyFilterAndSort(); // Apply initial filter and sort
         }
 
         private void TimeIn_Click(object sender, RoutedEventArgs e)
@@ -108,6 +190,9 @@ namespace practice.Pages
 
                 record.TimeIn = DateTime.Now.TimeOfDay;
                 record.Status = "Present";
+
+                // Refresh the filtered list to reflect changes
+                ApplyFilterAndSort();
             }
         }
 
@@ -153,6 +238,9 @@ namespace practice.Pages
 
                         record.TimeOut = timeOut;
                         record.HourWorked = (decimal)hoursWorked;
+
+                        // Refresh the filtered list to reflect changes
+                        ApplyFilterAndSort();
                     }
                     else
                     {
@@ -191,6 +279,9 @@ namespace practice.Pages
                 record.TimeIn = null;
                 record.TimeOut = null;
                 record.HourWorked = 0;
+
+                // Refresh the filtered list to reflect changes
+                ApplyFilterAndSort();
             }
         }
     }
