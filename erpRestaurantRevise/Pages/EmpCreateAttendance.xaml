@@ -6,65 +6,162 @@
       xmlns:local="clr-namespace:practice.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="900"
-      Title="EmpCreateAttendance">
+      Title="Create Attendance">
+
     <Grid Background="#FF051821">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="840"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="700"/>
-                <ColumnDefinition Width="100"/>
-            </Grid.ColumnDefinitions>
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <Grid>
+                <TextBlock Text="DAILY EMPLOYEE ATTENDANCE" Foreground="White" FontSize="20" 
+                           FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontFamily="Sitka Small"/>
+            </Grid>
+        </Border>
 
-            <Grid Grid.Column="1">
+        <!-- Main Content -->
+        <Border Grid.Row="1" Margin="50,20,50,20" Background="#FF1A4645" CornerRadius="15">
+            <Grid Margin="30">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="100"/>
-                    <RowDefinition Height="625"/>
-                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Label Content="Daily Employee Attendance" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="15" FontWeight="Bold"/>
-                <WrapPanel Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,15">
-                    <TextBox Width="250" Height="25"/>
-                    <TextBlock Width="20"></TextBlock>
-                    <ComboBox Width="90">
-                        <ComboBoxItem Content="Newest"/>
-                        <ComboBoxItem Content="Oldest"/>
-                    </ComboBox>
-                </WrapPanel>
-                <StackPanel Grid.Row="1" Background="WhiteSmoke">
-                    <DataGrid x:Name="attendanceRecordDataGrid" Height="625" AutoGenerateColumns="False" ItemsSource="{Binding attendanceList}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Employee ID" Binding="{Binding EmployeeID}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Time In" Binding="{Binding TimeIn, StringFormat={}{0:hh\\:mm}}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Time Out" Binding="{Binding TimeOut, StringFormat={}{0:hh\\:mm}}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Hours Worked" Binding="{Binding HourWorked}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" IsReadOnly="True"/>
-                            <DataGridTemplateColumn Header="Action">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <Button Content="Time In" Width="70" Margin="2"
+
+                <!-- Search and Filter Section -->
+                <Border Grid.Row="0" Background="#FF0D2D2C" CornerRadius="10" Padding="20" Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Section Title -->
+                        <TextBlock Grid.Row="0" Text="Manage Attendance" 
+                                  Foreground="White" FontSize="16" FontWeight="Bold" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+                        <!-- Search and Sort Controls -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,36,0,0" Grid.RowSpan="2" Width="700">
+                            <!-- Search Box -->
+                            <StackPanel Margin="0,0,20,0">
+                                <TextBlock Text="Search Employee" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5" 
+                                          />
+                                <TextBox x:Name="SearchTextBox" Width="250" Height="35" 
+                                        Background="#FF28666E" Foreground="White" 
+                                        BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="14" CaretBrush="White"
+                                        VerticalContentAlignment="Center">
+                                    <TextBox.Style>
+                                        <Style TargetType="{x:Type TextBox}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type TextBox}">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="5">
+                                                            <ScrollViewer x:Name="PART_ContentHost"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </StackPanel>
+
+                            <!-- Sort ComboBox -->
+                            <StackPanel>
+                                <TextBlock Text="Sort By" Foreground="White" FontSize="14" FontWeight="Bold" Margin="0,0,0,5" 
+                                          />
+                                <ComboBox x:Name="SortComboBox" Width="150" Height="35"
+                                         Background="#FF28666E" Foreground="Black"
+                                         BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                         FontSize="14" Padding="5">
+                                    <ComboBoxItem Content="Newest First" Foreground="Black"/>
+                                    <ComboBoxItem Content="Oldest First" Foreground="Black"/>
+                                    <ComboBoxItem Content="Name (A-Z)" Foreground="Black"/>
+                                    <ComboBoxItem Content="Name (Z-A)" Foreground="Black"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Date Display -->
+                            <StackPanel Margin="20,0,0,0">
+                                <TextBlock x:Name="CurrentDateText" Text="{Binding CurrentDate}" 
+                                          Foreground="#FF4A9EFF" FontSize="14" FontWeight="Bold"
+                                          HorizontalAlignment="Center" Padding="10,5"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- DataGrid Section -->
+                <Border Grid.Row="1" Background="#FF0D2D2C" CornerRadius="10" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Section Title -->
+                        <TextBlock Grid.Row="0" Text="Attendance Records" 
+                                  Foreground="White" FontSize="16" FontWeight="Bold" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+                        <!-- DataGrid (Keeping your original properties) -->
+                        <DataGrid Grid.Row="1" 
+                                  x:Name="attendanceRecordDataGrid" 
+                                  Height="625" 
+                                  AutoGenerateColumns="False" 
+                                  ItemsSource="{Binding attendanceList}"
+                                  Background="#FF0D2D2C"
+                                  Foreground="Black"
+                                  BorderBrush="#FF4A9EFF"
+                                  GridLinesVisibility="Horizontal"
+                                  HeadersVisibility="Column"
+                                  CanUserResizeColumns="False"
+                                  CanUserReorderColumns="False"
+                                  VerticalScrollBarVisibility="Auto">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Employee ID" Binding="{Binding EmployeeID}" IsReadOnly="True" Foreground="Black"/>
+                                <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" IsReadOnly="True" Foreground="Black"/>
+                                <DataGridTextColumn Header="Time In" Binding="{Binding TimeIn, StringFormat={}{0:hh\\:mm}}" IsReadOnly="True" Foreground="Black"/>
+                                <DataGridTextColumn Header="Time Out" Binding="{Binding TimeOut, StringFormat={}{0:hh\\:mm}}" IsReadOnly="True" Foreground="Black"/>
+                                <DataGridTextColumn Header="Hours Worked" Binding="{Binding HourWorked}" IsReadOnly="True" Foreground="Black"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" IsReadOnly="True" Foreground="Black"/>
+                                <DataGridTemplateColumn Header="Action">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Button Content="Time In" Width="70" Margin="2"
                                                     Tag="{Binding}" Click="TimeIn_Click"
                                                     IsEnabled="{Binding CanTimeIn}"/>
-                                            <Button Content="Time Out" Width="70" Margin="2"
+                                                <Button Content="Time Out" Width="70" Margin="2"
                                                     Tag="{Binding}" Click="TimeOut_Click"/>
-                                            <Button Content="Absent" Width="70" Margin="2"
+                                                <Button Content="Absent" Width="70" Margin="2"
                                                     Background="Red" Foreground="White"
                                                     Tag="{Binding}" Click="Absent_Click"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
             </Grid>
-        </Grid>
+        </Border>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <TextBlock Text="Record daily employee attendance with Time In, Time Out, and Absent markers" 
+                      Foreground="#FFAAAAAA" FontSize="12" FontStyle="Italic"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
     </Grid>
 </Page>

@@ -6,88 +6,233 @@
       xmlns:local="clr-namespace:erpRestaurantRevise.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="900"
-      Title="EmpAttendanceReports">
+      Title="Attendance Reports">
 
     <Grid Background="#FF051821">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="700"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1" HorizontalAlignment="Center">
-            <Label Content="Employee Attendance Records" 
-                   Width="750" Foreground="White" FontSize="20"
-                   HorizontalContentAlignment="Center" />
-            <TextBlock Height="30"/>
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <Grid>
+                <TextBlock Text="EMPLOYEE ATTENDANCE RECORDS" Foreground="White" FontSize="20" 
+                           FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontFamily="Sitka Small"/>
+            </Grid>
+        </Border>
 
-            <!-- 🔍 FILTERS -->
-            <WrapPanel Height="50" Width="750" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBox x:Name="SearchBox"
-                         Width="200"
-                         Height="30"
-                         VerticalAlignment="Center"
-                         HorizontalAlignment="Center"
-                         HorizontalContentAlignment="Center"
-                         VerticalContentAlignment="Center"
-                         TextChanged="SearchBox_TextChanged" />
+        <!-- Main Content -->
+        <Border Grid.Row="1" Margin="50,20,50,20" Background="#FF1A4645" CornerRadius="15">
+            <Grid Margin="30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                <TextBlock Width="10"/>
+                <!-- Search and Filters Section -->
+                <Border Grid.Row="0" Background="#FF0D2D2C" CornerRadius="10" Padding="20" Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                <Label Content="From:" Foreground="White" VerticalAlignment="Center"/>
-                <DatePicker x:Name="StartDatePicker" Width="150" SelectedDateChanged="DatePicker_Changed"/>
+                        <!-- Section Title -->
+                        <TextBlock Grid.Row="0" Text="Search &amp; Filters" 
+                                  Foreground="White" FontSize="12" FontWeight="Bold" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-                <Label Content="To:" Foreground="White" VerticalAlignment="Center"/>
-                <DatePicker x:Name="EndDatePicker" Width="150" SelectedDateChanged="DatePicker_Changed"/>
+                        <!-- Search and Date Filters -->
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                <Button Content="Clear Filters"
-                        Width="100"
-                        Height="30"
-                        Margin="10,0,0,0"
-                        Background="#007ACC"
-                        Foreground="White"
-                        BorderThickness="0"
-                        Click="ClearFilters_Click"/>
-            </WrapPanel>
+                            <!-- Search Box -->
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                                <TextBlock Text="Search Employee" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <TextBox x:Name="SearchBox" Width="196" Height="38" 
+                                        Background="#FF28666E" Foreground="White" 
+                                        BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="14" CaretBrush="White"
+                                        VerticalContentAlignment="Center"
+                                        TextChanged="SearchBox_TextChanged"
+                                        >
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="TextBox">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="5">
+                                                            <ScrollViewer x:Name="PART_ContentHost"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </StackPanel>
 
-            <StackPanel Width="750" Height="500">
-                <DataGrid x:Name="AttendanceDataGrid"
+                            <!-- Date Range -->
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Center" Margin="20,0,20,0">
+                                <TextBlock Text="Date Range" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <DatePicker x:Name="StartDatePicker" Width="120" Height="38" 
+                                               Background="#FF28666E" Foreground="Black"
+                                               BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                               FontSize="14" SelectedDateChanged="DatePicker_Changed"/>
+                                    <TextBlock Text=" to " Foreground="White" FontSize="12" 
+                                              VerticalAlignment="Center" Margin="5,0,5,0"/>
+                                    <DatePicker x:Name="EndDatePicker" Width="120" Height="38" 
+                                               Background="#FF28666E" Foreground="black"
+                                               BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                               FontSize="14" SelectedDateChanged="DatePicker_Changed"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Clear Filters Button -->
+                            <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                                <TextBlock Text="Actions" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <Button Content="CLEAR FILTERS" Width="150" Height="38"
+                                       Background="#FFE53935" Foreground="White" FontWeight="Bold" FontSize="12"
+                                       BorderThickness="0" Cursor="Hand" Click="ClearFilters_Click">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                CornerRadius="5">
+                                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                                              VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#FFC62828"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- Summary Section -->
+                <Border Grid.Row="1" Background="#FF0D2D2C" CornerRadius="10" Padding="15" Margin="0,0,0,20">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock x:Name="TotalHoursTextBlock" Text="Total Hours Worked: 0.00" 
+                                  Foreground="White" FontSize="14" FontWeight="Bold"
+                                  VerticalAlignment="Center"/>
+                        <Rectangle Width="2" Height="20" Fill="#FF4A9EFF" Margin="20,0,20,0"/>
+                        <Label x:Name="RecordCountTextBlock" Content="Records Found: 0" 
+                                  Foreground="White" FontSize="14" FontWeight="Bold"
+                                  VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- DataGrid Section -->
+                <Border Grid.Row="2" Background="#FF0D2D2C" CornerRadius="10" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Section Title -->
+                        <TextBlock Grid.Row="0" Text="Attendance Records" 
+                                  Foreground="White" FontSize="16" FontWeight="Bold" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+                        <!-- DataGrid -->
+                        <DataGrid x:Name="AttendanceDataGrid"
                           AutoGenerateColumns="False"
                           Height="460"
-                          Width="750"
                           Background="White"
                           GridLinesVisibility="All"
                           HeadersVisibility="Column"
+                          CanUserResizeColumns="False"
+                          CanUserReorderColumns="False"
+                          CanUserSortColumns="True"
+                          VerticalScrollBarVisibility="Auto"
                           IsReadOnly="True">
 
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Employee ID" Binding="{Binding EmployeeID}" Width="100"/>
-                        <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="150"/>
-                        <DataGridTextColumn Header="Time In"
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Employee ID" Binding="{Binding EmployeeID}" Width="Auto"/>
+                                <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="*"/>
+                                <DataGridTextColumn Header="Time In"
                                             Binding="{Binding TimeIn, StringFormat={}{0:hh\\:mm}, TargetNullValue=''}"
-                                            Width="100"/>
-                        <DataGridTextColumn Header="Time Out"
+                                            Width="Auto"/>
+                                <DataGridTextColumn Header="Time Out"
                                             Binding="{Binding TimeOut, StringFormat={}{0:hh\\:mm}, TargetNullValue=''}"
-                                            Width="100"/>
-                        <DataGridTextColumn Header="Hours Worked"
+                                            Width="Auto"/>
+                                <DataGridTextColumn Header="Hours Worked"
                     Binding="{Binding HourWorked, StringFormat={}{0:F2}, TargetNullValue='0.00'}"
-                    Width="100"/>
-                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
-                        <DataGridTextColumn Header="Date"
+                    Width="Auto"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
+                                <DataGridTextColumn Header="Date"
                     Binding="{Binding DateToday, StringFormat=d, TargetNullValue=''}"
-                    Width="100"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                    Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
 
-                <!-- ✅ Added TextBlock for total hours -->
-                <TextBlock x:Name="TotalHoursTextBlock"
-                           Text="Total Hours: 0"
-                           FontWeight="Bold"
-                           FontSize="14"
-                           Foreground="White"
-                           Margin="10,10,0,0"
-                           HorizontalAlignment="Left" />
-            </StackPanel>
-        </StackPanel>
+                <!-- Export Section -->
+                <Border Grid.Row="3" Background="#FF0D2D2C" CornerRadius="10" Padding="15" Margin="0,20,0,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Content="📊 EXPORT TO EXCEL" Width="180" Height="40"
+                               Background="#FF4CAF50" Foreground="White" FontWeight="Bold" FontSize="12"
+                               BorderThickness="0" Cursor="Hand">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="5">
+                                                    <ContentPresenter HorizontalAlignment="Center" 
+                                                                      VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#FF45A049"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <TextBlock Text="View and filter employee attendance records" 
+                      Foreground="#FFAAAAAA" FontSize="12" FontStyle="Italic"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
     </Grid>
 </Page>

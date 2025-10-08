@@ -6,79 +6,259 @@
       xmlns:local="clr-namespace:practice.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="900"
-      Title="EmpAdd">
+      Title="Add Employee">
 
     <Grid Background="#FF051821">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="700"/>
-                <RowDefinition Height="100"/>
-            </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
 
-            <!-- Header -->
-            <Grid Grid.Row="0" Background="#FF051821"/>
-
-            <!-- Main Form -->
-            <Grid Grid.Row="1">
-                <Grid Background="#FF1A4645" Width="800" Margin="50,65,50,65">
-                    <Label Content="Add Employee" FontSize="18" FontWeight="Bold" Foreground="White" Margin="30,46,620,482"/>
-
-                    <!-- Names -->
-                    <Label Content="First Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="30,128,640,409"/>
-                    <Label Content="Middle Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="290,128,380,409"/>
-                    <Label Content="Last Name" FontSize="15" FontWeight="Bold" Foreground="White" Margin="550,128,120,409"/>
-
-                    <!-- Contact & Email -->
-                    <Label Content="Contact no." FontSize="15" FontWeight="Bold" Foreground="White" Margin="30,213,640,324"/>
-                    <Label Content="Email" FontSize="15" FontWeight="Bold" Foreground="White" Margin="290,212,380,325"/>
-
-                    <!-- Status & Sex -->
-                    <Label Content="Status" FontSize="15" FontWeight="Bold" Foreground="White" Margin="550,213,176,324"/>
-                    <Label Content="Sex" FontSize="15" FontWeight="Bold" Foreground="White" Margin="705,217,52,320"/>
-
-                    <!-- Address -->
-                    <Label Content="City / Province" FontSize="15" FontWeight="Bold" Foreground="White" Margin="30,309,640,228"/>
-                    <Label Content="Barangay" FontSize="15" FontWeight="Bold" Foreground="White" Margin="216,309,454,228"/>
-                    <Label Content="Street" FontSize="15" FontWeight="Bold" Foreground="White" Margin="400,309,270,228"/>
-                    <Label Content="Role / Position" FontSize="15" FontWeight="Bold" Foreground="White" Margin="30,390,620,147"/>
-                    <ComboBox x:Name="positionComboBox"
-                      Height="30" Width="220" Margin="30,430,550,107"
-                      />
-                    <!-- Textboxes -->
-                    <TextBox x:Name="firstnameField" Height="30" Width="220" Margin="30,166,550,374"/>
-                    <TextBox x:Name="middlenameField" Height="30" Width="220" Margin="290,166,290,374"/>
-                    <TextBox x:Name="lastnameField" Height="30" Width="220" Margin="550,166,30,374"/>
-                    <TextBox x:Name="contactField" Height="30" Width="220" Margin="30,251,550,289"/>
-                    <TextBox x:Name="emailField" Height="30" Width="220" Margin="290,250,290,290"/>
-                    <ComboBox x:Name="statusComboBox" Height="30" Margin="550,251,125,289">
-                        <ComboBoxItem Content="Single"/>
-                        <ComboBoxItem Content="Married"/>
-                        <ComboBoxItem Content="Widowed"/>
-                        <ComboBoxItem Content="Complicated"/>
-                        <ComboBoxItem Content="Others"/>
-                    </ComboBox>
-                    <ComboBox x:Name="sexComboBox" Height="30" Margin="705,250,30,290" >
-                        <ComboBoxItem Content="Male"/>
-                        <ComboBoxItem Content="Female"/>
-                    </ComboBox>
-                    <TextBox x:Name="cityprovinceField" Height="30" Margin="30,347,620,193"/>
-                    <TextBox x:Name="brgyField" Height="30" Margin="216,347,434,193"/>
-                    <TextBox x:Name="streetField" Height="30" Margin="400,347,30,193"/>
-
-                    <!-- Submit -->
-                    <Button Click="CreateEmployee_Click" Content="Create Employee" x:Name="createEmployeeBtn"
-                            HorizontalAlignment="Left" Margin="640,414,0,0"
-                            VerticalAlignment="Top" Height="38" Width="130"
-                            Background="#FF55901D" Foreground="White" FontSize="14"/>
-                </Grid>
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <Grid>
+                <TextBlock Text="ADD EMPLOYEE" Foreground="White" FontSize="20" 
+                           FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontFamily="Sitka Small"/>
             </Grid>
+        </Border>
 
-            <!-- Footer -->
-            <Grid Grid.Row="2" Background="#FF051821" Height="100" VerticalAlignment="Bottom"/>
-        </Grid>
+        <!-- Main Form -->
+        <Border Grid.Row="1" Margin="50,20,50,20" Background="#FF1A4645" CornerRadius="15">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                <Grid Margin="40" Width="700">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Form Title -->
+                    <TextBlock Grid.Row="0" Text="Employee Information" 
+                              Foreground="White" FontSize="18" FontWeight="Bold" 
+                              HorizontalAlignment="Center" Margin="0,-2,0,32"/>
+
+                    <!-- Personal Information Section -->
+                    <Border Grid.Row="1" Background="#FF0D2D2C" CornerRadius="10" Padding="20" Margin="0,0,0,20">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Section Title -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Text="Personal Information" 
+                                      Foreground="White" FontSize="16" FontWeight="Bold" 
+                                      HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+                            <!-- First Name -->
+                            <StackPanel Grid.Row="1" Grid.Column="0">
+                                <TextBlock Text="First Name *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5"/>
+                                <TextBox x:Name="firstnameField" Height="38" Background="#FF28666E" 
+                                        Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="12" CaretBrush="White"/>
+                            </StackPanel>
+
+                            <!-- Middle Name -->
+                            <StackPanel Grid.Row="1" Grid.Column="2">
+                                <TextBlock Text="Middle Name *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5"/>
+                                <TextBox x:Name="middlenameField" Height="38" Background="#FF28666E" 
+                                        Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="12" CaretBrush="White"/>
+                            </StackPanel>
+
+                            <!-- Last Name -->
+                            <StackPanel Grid.Row="1" Grid.Column="4">
+                                <TextBlock Text="Last Name *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5"/>
+                                <TextBox x:Name="lastnameField" Height="38" Background="#FF28666E" 
+                                        Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="12" CaretBrush="White"/>
+                            </StackPanel>
+
+                            <!-- Contact No -->
+                            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,15,0,0">
+                                <TextBlock Text="Contact No. *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5"/>
+                                <TextBox x:Name="contactField" Height="38" Background="#FF28666E" 
+                                        Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="12" CaretBrush="White"/>
+                            </StackPanel>
+
+                            <!-- Email -->
+                            <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,15,0,0">
+                                <TextBlock Text="Email *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5"/>
+                                <TextBox x:Name="emailField" Height="38" Background="#FF28666E" 
+                                        Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="12" CaretBrush="White"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Status & Personal Details Section -->
+                    <Border Grid.Row="2" Background="#FF0D2D2C" CornerRadius="10" Padding="20" Margin="0,0,0,20">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Section Title -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Text="Personal Details" 
+                                      Foreground="White" FontSize="16" FontWeight="Bold" 
+                                      HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+                            <!-- Status -->
+                            <StackPanel Grid.Row="1" Grid.Column="0">
+                                <TextBlock Text="Status *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5"/>
+                                <ComboBox x:Name="statusComboBox" Height="38" Background="#FF28666E" 
+                                         Foreground="Black" BorderThickness="1"
+                                         FontSize="14" Padding="5">
+                                    <ComboBoxItem Content="Single" Foreground="Black"/>
+                                    <ComboBoxItem Content="Married" Foreground="Black"/>
+                                    <ComboBoxItem Content="Widowed" Foreground="Black"/>
+                                    <ComboBoxItem Content="Complicated" Foreground="Black"/>
+                                    <ComboBoxItem Content="Others" Foreground="Black"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Sex -->
+                            <StackPanel Grid.Row="1" Grid.Column="2">
+                                <TextBlock Text="Sex *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5"/>
+                                <ComboBox x:Name="sexComboBox" Height="38" 
+                                         Foreground="Black" BorderThickness="1"
+                                         FontSize="14" Padding="5">
+                                    <ComboBoxItem Content="Male" Foreground="Black"/>
+                                    <ComboBoxItem Content="Female" Foreground="Black"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Position -->
+                            <StackPanel Grid.Row="1" Grid.Column="4">
+                                <TextBlock Text="Role / Position *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5"/>
+                                <ComboBox x:Name="positionComboBox" Height="38" 
+                                         Foreground="Black" BorderThickness="1"
+                                         FontSize="14" Padding="5"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Address Section -->
+                    <Border Grid.Row="3" Background="#FF0D2D2C" CornerRadius="10" Padding="20" Margin="0,0,0,20">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Section Title -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Text="Address Information" 
+                                      Foreground="White" FontSize="16" FontWeight="Bold" 
+                                      HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+                            <!-- City/Province -->
+                            <StackPanel Grid.Row="1" Grid.Column="0">
+                                <TextBlock Text="City / Province *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5"/>
+                                <TextBox x:Name="cityprovinceField" Height="38" Background="#FF28666E" 
+                                        Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="12" CaretBrush="White"/>
+                            </StackPanel>
+
+                            <!-- Barangay -->
+                            <StackPanel Grid.Row="1" Grid.Column="2">
+                                <TextBlock Text="Barangay *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5"/>
+                                <TextBox x:Name="brgyField" Height="38" Background="#FF28666E" 
+                                        Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="12" CaretBrush="White"/>
+                            </StackPanel>
+
+                            <!-- Street -->
+                            <StackPanel Grid.Row="1" Grid.Column="4">
+                                <TextBlock Text="Street *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5"/>
+                                <TextBox x:Name="streetField" Height="38" Background="#FF28666E" 
+                                        Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="12" CaretBrush="White"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Submit Button -->
+                    <Border Grid.Row="4" Background="#FF0D2D2C" CornerRadius="10" Padding="20">
+                        <StackPanel HorizontalAlignment="Center">
+                            <Button x:Name="createEmployeeBtn" Content="CREATE EMPLOYEE" 
+                                   Width="250" Height="45" Background="#FF4CAF50" 
+                                   Foreground="White" FontWeight="Bold" FontSize="14"
+                                   Click="CreateEmployee_Click"
+                                   BorderThickness="0" Cursor="Hand">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}"
+                                                            CornerRadius="8">
+                                                        <ContentPresenter HorizontalAlignment="Center" 
+                                                                          VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#FF45A049"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <TextBlock Text="* Required fields" Foreground="#FFAAAAAA" FontSize="11" 
+                                      FontStyle="Italic" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <TextBlock Text="Fill in all required fields to add a new employee" 
+                      Foreground="#FFAAAAAA" FontSize="12" FontStyle="Italic"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
     </Grid>
 </Page>

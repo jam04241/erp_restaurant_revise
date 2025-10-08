@@ -6,86 +6,272 @@
       xmlns:local="clr-namespace:erpRestaurantRevise.Pages"
       mc:Ignorable="d"
       d:DesignHeight="900" d:DesignWidth="900"
-      Title="EmpAddPosition">
+      Title="Add Position">
 
-	<Grid Background="#FF051821">
-		<StackPanel Margin="0,113,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="676">
+    <Grid Background="#FF051821">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
 
-			<WrapPanel>
-				<Label Content="Position Name" Width="120" Foreground="White"/>
-				<TextBlock Width="20"/>
-				<Label Content="Base Salary" Width="120" Foreground="White"/>
-				<TextBlock Width="20"/>
-				<Label Content="Hourly Rate" Width="120" Foreground="White"/>
-			</WrapPanel>
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <Grid>
+                <TextBlock Text="EMPLOYEE POSITIONS" Foreground="White" FontSize="20" 
+                           FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontFamily="Sitka Small"/>
+            </Grid>
+        </Border>
 
-			<WrapPanel>
-				<TextBox x:Name="txtPositionName" TextWrapping="Wrap" Width="120" Height="25"/>
-				<TextBlock Width="20"/>
-				<TextBox x:Name="txtBaseSalary" TextWrapping="Wrap" Width="120" Height="25"/>
-				<TextBlock Width="20"/>
-				<TextBox x:Name="txtHourlyRate" TextWrapping="Wrap" Width="120" Height="25"/>
-			</WrapPanel>
+        <!-- Main Content -->
+        <Border Grid.Row="1" Margin="50,20,50,20" Background="#FF1A4645" CornerRadius="15">
+            <Grid Margin="40">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-			<TextBlock Height="20"/>
+                <!-- Add Position Form -->
+                <Border Grid.Row="0" Background="#FF0D2D2C" CornerRadius="10" Padding="20" Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-			<WrapPanel>
-				<Label Content="Overtime Rate" Width="120" Foreground="White"/>
-				<TextBlock Width="20"/>
-			</WrapPanel>
+                        <!-- Section Title -->
+                        <TextBlock Grid.Row="0" Text="Add New Position" 
+                                  Foreground="White" FontSize="16" FontWeight="Bold" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
-			<WrapPanel>
-				<TextBox x:Name="txtOvertime" TextWrapping="Wrap" Width="120" Height="25"/>
-				<TextBlock Width="20"/>
-			</WrapPanel>
+                        <!-- Input Fields -->
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-			<TextBlock Height="20"/>
+                            <!-- Position Name -->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Position Name *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <TextBox x:Name="txtPositionName" Height="35" Background="#FF28666E" 
+                                        Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="12" CaretBrush="White" HorizontalAlignment="Center" Width="150"/>
+                            </StackPanel>
 
-			<WrapPanel HorizontalAlignment="Right">
-				<Button x:Name="CreateBtn" Content="Create" Foreground="Black"
-            Background="#FF79D620" Width="100" Height="24" BorderThickness="0"
-            Click="CreateBtn_Click"/>
-			</WrapPanel>
+                            <!-- Base Salary -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Base Salary *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <TextBox x:Name="txtBaseSalary" Height="35" Background="#FF28666E" 
+                                        Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="12" CaretBrush="White" HorizontalAlignment="Center" Width="150"/>
+                            </StackPanel>
 
+                            <!-- Hourly Rate -->
+                            <StackPanel Grid.Column="4">
+                                <TextBlock Text="Hourly Rate *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <TextBox x:Name="txtHourlyRate" Height="35" Background="#FF28666E" 
+                                        Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="12" CaretBrush="White" HorizontalAlignment="Center" Width="150"/>
+                            </StackPanel>
 
-		</StackPanel>
-		<StackPanel Height="500" Margin="112,296,112,104">
-			<DataGrid x:Name="positionDataGrid"
-          AutoGenerateColumns="False"
-          CanUserAddRows="False"
-          IsReadOnly="True"
-          RowHeight="36"
-          HeadersVisibility="Column"
-          GridLinesVisibility="All"
-          >
+                            <!-- Overtime Rate -->
+                            <StackPanel Grid.Column="6">
+                                <TextBlock Text="Overtime Rate *" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                          Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <TextBox x:Name="txtOvertime" Height="35" Background="#FF28666E" 
+                                        Foreground="White" BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                        Padding="10" FontSize="12" CaretBrush="White" HorizontalAlignment="Center" Width="150"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
 
-				<DataGrid.Columns>
-					<!-- Hidden ID -->
-					<DataGridTextColumn Header="ID" Binding="{Binding PositionID}" Visibility="Collapsed"/>
+                <!-- Create Button -->
+                <Border Grid.Row="1" Background="#FF0D2D2C" CornerRadius="10" Padding="20" Margin="0,0,0,20">
+                    <StackPanel HorizontalAlignment="Center">
+                        <Button x:Name="CreateBtn" Content="CREATE POSITION" 
+                               Width="200" Height="45" Background="#FF4CAF50" 
+                               Foreground="White" FontWeight="Bold" FontSize="14"
+                               Click="CreateBtn_Click"
+                               BorderThickness="0" Cursor="Hand">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="8">
+                                                    <ContentPresenter HorizontalAlignment="Center" 
+                                                                      VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#FF45A049"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </Border>
 
-					<DataGridTextColumn Header="Position" Binding="{Binding Position}" Width="*"/>
-					<DataGridTextColumn Header="Base Salary" Binding="{Binding BaseSalary}" Width="*"/>
-					<DataGridTextColumn Header="Hourly Rate" Binding="{Binding HourlyRate}" Width="*"/>
-					<DataGridTextColumn Header="Overtime Rate" Binding="{Binding Overtime}" Width="*"/>
+                <!-- Positions DataGrid -->
+                <Border Grid.Row="2" Background="#FF0D2D2C" CornerRadius="10" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-					<!-- Actions -->
-					<DataGridTemplateColumn Header="Actions" Width="*">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate>
-								<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-									<Button Content="Edit" Margin="2" Padding="6,2"
-                                Click="EditPosition_Click"/>
-									<Button Content="Delete" Margin="2" Padding="6,2"
-                                Click="DeletePosition_Click"/>
-								</StackPanel>
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-				</DataGrid.Columns>
-			</DataGrid>
+                        <!-- Section Title -->
+                        <TextBlock Grid.Row="0" Text="Existing Positions" 
+                                  Foreground="White" FontSize="16" FontWeight="Bold" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
+                        <!-- DataGrid -->
+                        <DataGrid Grid.Row="1" x:Name="positionDataGrid"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  IsReadOnly="True"
+                                  Background="Transparent"
+                                  Foreground="White"
+                                  BorderBrush="#FF4A9EFF"
+                                  GridLinesVisibility="Horizontal"
+                                  HeadersVisibility="Column"
+                                  RowHeight="40">
 
-		</StackPanel>
-		<Label Content="Employee Add Position" HorizontalAlignment="Left" Margin="112,40,0,0" VerticalAlignment="Top" Width="207" FontSize="18" FontWeight="Bold" Foreground="White"/>
-	</Grid>
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#FF1E4976"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                    <Setter Property="BorderBrush" Value="#FF4A9EFF"/>
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+
+                            <DataGrid.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Style>
+                            </DataGrid.CellStyle>
+
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="AlternationIndex" Value="0">
+                                            <Setter Property="Background" Value="#FF0D2D2C"/>
+                                        </Trigger>
+                                        <Trigger Property="AlternationIndex" Value="1">
+                                            <Setter Property="Background" Value="#FF1A4645"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+
+                            <DataGrid.Columns>
+                                <!-- Hidden ID -->
+                                <DataGridTextColumn Header="ID" Binding="{Binding PositionID}" Visibility="Collapsed"/>
+
+                                <DataGridTextColumn Header="Position" Binding="{Binding Position}" Width="2*"/>
+                                <DataGridTextColumn Header="Base Salary" Binding="{Binding BaseSalary, StringFormat=₱{0:N2}}" Width="1.5*"/>
+                                <DataGridTextColumn Header="Hourly Rate" Binding="{Binding HourlyRate, StringFormat=₱{0:N2}}" Width="1.5*"/>
+                                <DataGridTextColumn Header="Overtime Rate" Binding="{Binding Overtime, StringFormat=₱{0:N2}}" Width="1.5*"/>
+
+                                <!-- Actions -->
+                                <DataGridTemplateColumn Header="Actions" Width="2*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Button Content="Edit" Margin="5,2" Padding="15,2"
+                                                        Width="50"
+                                                        Height="30"
+                                                        Background="#FF4A9EFF" Foreground="White" 
+                                                        BorderThickness="0" Cursor="Hand"
+                                                        Click="EditPosition_Click">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Border Background="{TemplateBinding Background}"
+                                                                                CornerRadius="4">
+                                                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                                                              VerticalAlignment="Center"/>
+                                                                        </Border>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="#FF2A7BBF"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                                <Button Content="Delete" Margin="5,2" Padding="15,5"
+                                                        Width="50"
+                                                        Height="30"
+                                                        Background="#FFE53935" Foreground="White" 
+                                                        BorderThickness="0" Cursor="Hand"
+                                                        Click="DeletePosition_Click">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Border Background="{TemplateBinding Background}"
+                                                                                CornerRadius="4">
+                                                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                                                              VerticalAlignment="Center"/>
+                                                                        </Border>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="#FFC62828"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <TextBlock Text="Manage employee positions and salary rates" 
+                      Foreground="#FFAAAAAA" FontSize="12" FontStyle="Italic"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
+    </Grid>
 </Page>

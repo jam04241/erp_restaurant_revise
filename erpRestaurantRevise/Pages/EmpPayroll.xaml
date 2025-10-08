@@ -4,47 +4,191 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d"
-      Title="EmpPayroll"
+      Title="Employee Payroll"
       d:DesignHeight="900" d:DesignWidth="900">
 
     <Grid Background="#FF051821">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="700"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1" Width="900">
-            <Label Content="Employee Payroll" HorizontalAlignment="Left" Margin="88,10,0,0" VerticalAlignment="Top"
-                   Foreground="White" FontSize="18" FontWeight="Bold"/>
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <Grid>
+                <TextBlock Text="EMPLOYEE PAYROLL" Foreground="White" FontSize="20" 
+                           FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontFamily="Sitka Small"/>
+            </Grid>
+        </Border>
 
-            <!-- Date pickers -->
-            <DatePicker x:Name="startDatePicker" HorizontalAlignment="Left" Margin="88,50,0,0"
-                        VerticalAlignment="Top" Width="150" />
-            <DatePicker x:Name="endDatePicker" HorizontalAlignment="Left" Margin="258,50,0,0"
-                        VerticalAlignment="Top" Width="150" />
+        <!-- Main Content -->
+        <Border Grid.Row="1" Margin="50,20,50,20" Background="#FF1A4645" CornerRadius="15">
+            <Grid Margin="30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-            <!-- Generate button -->
-            <Button Content="Generate Payroll for All Employees" HorizontalAlignment="Left" Margin="428,50,0,0" VerticalAlignment="Top"
-                    Width="200" Height="28" Background="#FF7DD22C" Foreground="White"
-                    Click="GeneratePayroll_Click"/>
+                <!-- Controls Section -->
+                <Border Grid.Row="0" Background="#FF0D2D2C" CornerRadius="10" Padding="20" Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-            <!-- Payroll Details -->
-            <StackPanel Margin="88,110,112,37" Width="700">
-                <DataGrid x:Name="payrollDataGrid" Height="500" AutoGenerateColumns="False"
-          Foreground="Black" Background="White" AlternatingRowBackground="#FFE5E5E5">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Payroll ID" Binding="{Binding PayrollID}" Width="80"/>
-                        <DataGridTextColumn Header="Employee Name" Binding="{Binding EmployeeName}" Width="150"/>
-                        <DataGridTextColumn Header="Total Hours" Binding="{Binding TotalHours}" Width="100"/>
-                        <DataGridTextColumn Header="Basic Pay" Binding="{Binding BasicPay, StringFormat=N2}" Width="100"/>
-                        <DataGridTextColumn Header="Overtime Pay" Binding="{Binding OvertimePay, StringFormat=N2}" Width="100"/>
-                        <DataGridTextColumn Header="Deduction" Binding="{Binding Deduction, StringFormat=N2}" Width="100"/>
-                        <DataGridTextColumn Header="Net Pay" Binding="{Binding NetPay, StringFormat=N2}" Width="100"/>
-                        <DataGridTextColumn Header="Date Issued" Binding="{Binding DateIssued, StringFormat=yyyy-MM-dd}" Width="100"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </StackPanel>
-        </Grid>
+                        <!-- Date Range -->
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                            <TextBlock Text="Payroll Period" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                      Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <DatePicker x:Name="startDatePicker" Width="120" Height="35" 
+                                           Background="#FF28666E" Foreground="White"
+                                           BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                           FontSize="12"/>
+                                <TextBlock Text=" to " Foreground="White" FontSize="12" 
+                                          VerticalAlignment="Center" Margin="5,0,5,0"/>
+                                <DatePicker x:Name="endDatePicker" Width="120" Height="35" 
+                                           Background="#FF28666E" Foreground="White"
+                                           BorderBrush="#FF4A9EFF" BorderThickness="1"
+                                           FontSize="12"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Generate Button -->
+                        <StackPanel Grid.Column="3" HorizontalAlignment="Center">
+                            <TextBlock Text="Actions" Foreground="White" FontSize="14" FontWeight="Bold" 
+                                      Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                            <Button Content="💰 GENERATE PAYROLL" Width="220" Height="35" 
+                                    Background="#FF4CAF50" Foreground="White" FontWeight="Bold" FontSize="12"
+                                    Cursor="Hand" Click="GeneratePayroll_Click">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}"
+                                                            CornerRadius="5">
+                                                        <ContentPresenter HorizontalAlignment="Center" 
+                                                                          VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#FF45A049"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- DataGrid Section -->
+                <Border Grid.Row="1" Background="#FF0D2D2C" CornerRadius="10" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Section Title -->
+                        <TextBlock Grid.Row="0" Text="Payroll Details" 
+                                  Foreground="White" FontSize="16" FontWeight="Bold" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+                        <!-- DataGrid -->
+                        <DataGrid Grid.Row="1" 
+                                  x:Name="payrollDataGrid" 
+                                  Height="500" 
+                                  AutoGenerateColumns="False"
+                                  Background="Transparent"
+                                  Foreground="White"
+                                  BorderBrush="#FF4A9EFF"
+                                  GridLinesVisibility="Horizontal"
+                                  HeadersVisibility="Column"
+                                  IsReadOnly="True"
+                                  RowHeight="35"
+                                  VerticalScrollBarVisibility="Auto"
+                                  CanUserResizeColumns="False"
+                                  CanUserReorderColumns="False">
+
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#FF1E4976"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                    <Setter Property="BorderBrush" Value="#FF4A9EFF"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+
+                            <DataGrid.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGrid.CellStyle>
+
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="AlternationIndex" Value="0">
+                                            <Setter Property="Background" Value="#FF0D2D2C"/>
+                                        </Trigger>
+                                        <Trigger Property="AlternationIndex" Value="1">
+                                            <Setter Property="Background" Value="#FF1A4645"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#FF1E4976"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Payroll ID" Binding="{Binding PayrollID}" Width="auto"/>
+                                <DataGridTextColumn Header="Employee Name" Binding="{Binding EmployeeName}" Width="auto"/>
+                                <DataGridTextColumn Header="Total Hours" Binding="{Binding TotalHours}" Width="auto"/>
+                                <DataGridTextColumn Header="Basic Pay" Binding="{Binding BasicPay, StringFormat=N2}" Width="auto"/>
+                                <DataGridTextColumn Header="Overtime Pay" Binding="{Binding OvertimePay, StringFormat=N2}" Width="auto"/>
+                                <DataGridTextColumn Header="Deduction" Binding="{Binding Deduction, StringFormat=N2}" Width="auto"/>
+                                <DataGridTextColumn Header="Net Pay" Binding="{Binding NetPay, StringFormat=N2}" Width="auto">
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="Foreground" Value="#FF4CAF50"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Date Issued" Binding="{Binding DateIssued, StringFormat=yyyy-MM-dd}" Width="auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="#FF0A2236" Margin="20,10,20,10" CornerRadius="10">
+            <TextBlock Text="Generate and manage employee payroll for selected periods" 
+                      Foreground="#FFAAAAAA" FontSize="12" FontStyle="Italic"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
     </Grid>
 </Page>
